@@ -21,6 +21,7 @@ This repository contains **ten examples** organized in separate folders, each in
 | 8 | [[ce]-[ontology]-[bfsi]-[2026-05]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bontology%5D-%5Bbfsi%5D-%5B2026-05%5D) | OWL/SKOS domain ontology | 15-class BFSI ontology parsed by rdflib. Agent understands concept hierarchy, Basel III articles, and formulas — domain-aware, not just schema-aware |
 | 9 | [[ce]-[metrics]-[bfsi]-[2026-05]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bmetrics%5D-%5Bbfsi%5D-%5B2026-05%5D) | dbt Metric Layer (MetricFlow) | 5 named governed metrics — cet1_ratio, buffer_headroom, rwa, cet1_capital, combined_buffer. Agent calls mf query, never writes SQL |
 | 10 | [[ce]-[agentic]-[full-stack]-[2026-05]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bagentic%5D-%5Bfull-stack%5D-%5B2026-05%5D) | Full stack comparison | One question through all 9 context layers. Scored side-by-side table proves CE has a measurable effect on answer quality |
+| 11 | [[ce]-[knowledge-graph]-[amazon-delivery]-[2026-07]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bknowledge-graph%5D-%5Bamazon-delivery%5D-%5B2026-07%5D) | Knowledge Graph — Neo4j, new domain | Real three-stage context-building pipeline: raw DuckDB rows + a prose policy document are ingested into a Neo4j graph. New domain: Amazon UK Delivery (order tracking, A-to-Z Guarantee) — local, open-source equivalent of Amazon Neptune |
 
 ---
 
@@ -261,6 +262,7 @@ Run the examples in this order for the clearest learning curve:
 | 8 | Example 8 — OWL/SKOS Ontology | How a formal domain ontology makes the agent domain-aware — it understands Basel III concept hierarchy, formulas, and regulatory articles, not just column names. |
 | 9 | Example 9 — dbt Metric Layer | How named, governed business metrics (MetricFlow) replace raw SQL — the metric layer enforces the formula, the agent just asks by name. |
 | 10 | Example 10 — Full Stack Comparison | One question, five agents, scored — CE's measurable payoff. The capstone. |
+| 11 | Example 11 — Knowledge Graph (Neo4j) | How a real ingestion pipeline builds a graph from raw data + a prose policy document — and how editing the policy's wording, not the code, changes what the graph connects. |
 
 ---
 
@@ -542,9 +544,73 @@ mf query --metrics cet1_ratio,buffer_headroom --group-by metric_time__month
 
 ---
 
+### Example 11: Knowledge Graph — Neo4j (Amazon UK Delivery)
+
+**Semantic component:** Knowledge Graph (Component 4) — new domain
+
+**What it shows:**
+- A real three-stage context-building pipeline, not a pre-loaded graph. `bootstrap_source.py` seeds raw, flat rows into DuckDB. `ingest_to_graph.py` reads those rows *and* a prose policy document (`contracts/guarantee_policy.md` — not YAML) to decide which scans connect to a `Guarantee` node, and only then writes the graph into Neo4j.
+- The guarantee rule is **parsed out of the policy document's prose at runtime** — there is no hardcoded `if scan_type == 'DEL'` anywhere in the ingestion code. Change the policy's wording, rerun ingestion, and the graph changes with zero code edits — the same way a real governed rule change would work.
+- New domain: **Amazon UK Delivery** (multi-hop carrier scans, A-to-Z Guarantee eligibility) — shows the graph component isn't BFSI-specific, the same way Example 5 showed data products aren't either.
+- Uses **Neo4j** — a local, open-source, Cypher-native equivalent of Amazon Neptune. The same `neo4j` Python driver call shape works against Neptune's openCypher endpoint with just a connection-string change.
+
+**Quick Start:**
+```bash
+docker run -d --name neo4j-delivery -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/password neo4j:5
+cd my-hello-worlds/[ce]-[knowledge-graph]-[amazon-delivery]-[2026-07]/code
+pip install neo4j duckdb openai structlog
+ollama serve && ollama pull qwen2.5
+python3 bootstrap_source.py && python3 ingest_to_graph.py && python3 agent_graph_ollama.py
+```
+
+**Options:** Ollama (`agent_graph_ollama.py`) — Anthropic Claude variant planned.
+
+---
+
+### Example 11: Architecture
+
+```
+┌───────────────────────────┐        ┌──────────────────────────────────┐
+│   bootstrap_source.py      │  ──►   │   delivery.duckdb                  │
+│   (raw, flat rows)         │        │   customers · carriers · orders ·  │
+└───────────────────────────┘        │   scans  (plain FK columns only)   │
+                                       └─────────────────┬──────────────────┘
+                                                          │ read
+┌───────────────────────────┐                            ▼
+│  contracts/                │        ┌──────────────────────────────────┐
+│  guarantee_policy.md       │  ──►   │      ingest_to_graph.py            │
+│  (prose, Legal-signed-off) │  read  │  parse_policy() extracts the rule  │
+└───────────────────────────┘        │  from prose -- no hardcoded `if`   │
+                                       └─────────────────┬──────────────────┘
+                                                          │ write
+                                                          ▼
+                                       ┌──────────────────────────────────┐
+                                       │              Neo4j                 │
+                                       │  Customer -[:PLACED]-> Order        │
+                                       │  Order -[:SCANNED_AT]-> Scan (x N)  │
+                                       │  Scan -[:NEXT]-> Scan (journey)     │
+                                       │  Scan -[:TRIGGERS]-> Guarantee?     │
+                                       │     (only if policy rule matches)   │
+                                       └─────────────────┬──────────────────┘
+                                                          │ tool call: trace_order
+                                                          ▼
+                                       ┌──────────────────────────────────┐
+                                       │        LLM Agent (qwen2.5)         │
+                                       └─────────────────┬──────────────────┘
+                                                          ▼
+                                        "Dispatched -> in transit -> arrived
+                                         DAMAGED -> triggers the AtoZ
+                                         Guarantee. You're covered."
+```
+
+**Key difference from Example 8 (Ontology):** the ontology encodes domain knowledge as a class hierarchy parsed from a Turtle file; this example encodes it as a **traversable graph built by a real ingestion pipeline** — raw source data and a governed policy document go in, a connected graph comes out.
+
+---
+
 ## 🔍 Debugging Ollama
 
-All Ollama-backed examples (Examples 1–5, 8–10) send requests to the local `qwen2.5` model. Enable debug logging to see every request, response, and token count in real time:
+All Ollama-backed examples (Examples 1–5, 8–11) send requests to the local `qwen2.5` model. Enable debug logging to see every request, response, and token count in real time:
 
 ```bash
 # 1 — Enable verbose logging (persists until reboot or explicit unset)
@@ -604,6 +670,9 @@ pkill ollama && ollama serve &
 | **MetricFlow** | Open-source metric framework (Apache 2.0) that powers the dbt Semantic Layer. Compiles metric queries into SQL. CLI: `mf query`. |
 | **dbt** | Data build tool. Transforms raw data into governed models and metrics. `dbt-duckdb` adapter enables fully local usage with DuckDB. |
 | **YAML** | Human-readable data format. Used for data contracts and configuration. |
+| **Knowledge Graph** | A network of entities (nodes) and their relationships (edges) that makes connected context traversable — e.g. Customer → Order → Scan → Guarantee. Amazon Neptune's property-graph equivalent, run locally. |
+| **Neo4j** | Open-source, Cypher-native graph database. Local, open-source equivalent of Amazon Neptune's property-graph (openCypher/Gremlin) deployment mode. |
+| **Cypher** | Neo4j's declarative graph query language (`MATCH`, `MERGE`, pattern traversal). Also supported by Amazon Neptune via its openCypher endpoint — same query shape, different connection string. |
 
 ---
 
