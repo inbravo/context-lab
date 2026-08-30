@@ -1,0 +1,845 @@
+{
+  "graph_id": "941dee5d-a260-4546-b22c-f3b4e4e8dd08",
+  "nodes": [
+    {
+      "id": "customer:cust:8842",
+      "type": "Customer",
+      "properties": {
+        "name": "Sarah",
+        "city": "Manchester",
+        "content": "customer:cust:8842"
+      }
+    },
+    {
+      "id": "customer:cust:5521",
+      "type": "Customer",
+      "properties": {
+        "name": "Tom",
+        "city": "London",
+        "content": "customer:cust:5521"
+      }
+    },
+    {
+      "id": "customer:cust:3390",
+      "type": "Customer",
+      "properties": {
+        "name": "Emma",
+        "city": "Leeds",
+        "content": "customer:cust:3390"
+      }
+    },
+    {
+      "id": "carrier:evri",
+      "type": "Carrier",
+      "properties": {
+        "name": "Evri",
+        "content": "carrier:evri"
+      }
+    },
+    {
+      "id": "carrier:royal-mail",
+      "type": "Carrier",
+      "properties": {
+        "name": "Royal Mail",
+        "content": "carrier:royal-mail"
+      }
+    },
+    {
+      "id": "order:48213",
+      "type": "Order",
+      "properties": {
+        "order_id": "48213",
+        "product": "Trainers",
+        "order_date": "2026-07-08",
+        "content": "order:48213"
+      }
+    },
+    {
+      "id": "order:51890",
+      "type": "Order",
+      "properties": {
+        "order_id": "51890",
+        "product": "Kettle",
+        "order_date": "2026-07-10",
+        "content": "order:51890"
+      }
+    },
+    {
+      "id": "order:60021",
+      "type": "Order",
+      "properties": {
+        "order_id": "60021",
+        "product": "Book",
+        "order_date": "2026-07-05",
+        "content": "order:60021"
+      }
+    },
+    {
+      "id": "order:60022",
+      "type": "Order",
+      "properties": {
+        "order_id": "60022",
+        "product": "Headphones",
+        "order_date": "2026-07-11",
+        "content": "order:60022"
+      }
+    },
+    {
+      "id": "order:60023",
+      "type": "Order",
+      "properties": {
+        "order_id": "60023",
+        "product": "Phone Case",
+        "order_date": "2026-07-13",
+        "content": "order:60023"
+      }
+    },
+    {
+      "id": "order:71100",
+      "type": "Order",
+      "properties": {
+        "order_id": "71100",
+        "product": "Blender",
+        "order_date": "2026-07-09",
+        "content": "order:71100"
+      }
+    },
+    {
+      "id": "scan:9929",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "9929",
+        "scan_type": "DISPATCHED",
+        "condition": "OK",
+        "scan_time": "2026-07-08T14:10:00Z",
+        "content": "scan:9929"
+      }
+    },
+    {
+      "id": "hub:leeds-wh",
+      "type": "Hub",
+      "properties": {
+        "hub_id": "leeds-wh",
+        "location": "Leeds Warehouse",
+        "content": "hub:leeds-wh"
+      }
+    },
+    {
+      "id": "scan:9930",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "9930",
+        "scan_type": "IN_TRANSIT",
+        "condition": "OK",
+        "scan_time": "2026-07-09T02:30:00Z",
+        "content": "scan:9930"
+      }
+    },
+    {
+      "id": "hub:sheffield-depot",
+      "type": "Hub",
+      "properties": {
+        "hub_id": "sheffield-depot",
+        "location": "Sheffield Depot",
+        "content": "hub:sheffield-depot"
+      }
+    },
+    {
+      "id": "scan:9931",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "9931",
+        "scan_type": "DEL",
+        "condition": "DAMAGED",
+        "scan_time": "2026-07-09T06:42:00Z",
+        "content": "scan:9931"
+      }
+    },
+    {
+      "id": "hub:manchester-hub",
+      "type": "Hub",
+      "properties": {
+        "hub_id": "manchester-hub",
+        "location": "Manchester Hub",
+        "content": "hub:manchester-hub"
+      }
+    },
+    {
+      "id": "guarantee:48213",
+      "type": "Guarantee",
+      "properties": {
+        "guarantee_type": "AtoZGuarantee",
+        "rule_ref": "policy:4.2",
+        "triggered_by_scan": "9931",
+        "content": "guarantee:48213"
+      }
+    },
+    {
+      "id": "a98ce9ce-0288-4389-a8aa-810fe1d730fc",
+      "type": "decision",
+      "properties": {
+        "category": "guarantee_eligibility",
+        "outcome": "eligible:AtoZGuarantee",
+        "confidence": 1.0,
+        "timestamp": 1788124420.842524,
+        "scenario": "Order 48213: scan 9931 is DEL with condition DAMAGED",
+        "decision_maker": "guarantee-policy-engine",
+        "reasoning": "Policy policy:4.2 states: scan_type=DEL AND condition=DAMAGED triggers AtoZGuarantee. Scan 9931 matches both criteria. No LLM involved — this is a deterministic rule parsed from the policy document at ingestion time.",
+        "recorded_at": "2026-08-30T21:13:40.842550",
+        "policy_doc": "../contracts/guarantee_policy.md",
+        "rule_ref": "policy:4.2",
+        "content": "Order 48213: scan 9931 is DEL with condition DAMAGED"
+      }
+    },
+    {
+      "id": "category_guarantee_eligibility",
+      "type": "category",
+      "properties": {
+        "name": "guarantee_eligibility",
+        "content": "category_guarantee_eligibility"
+      }
+    },
+    {
+      "id": "maker_guarantee-policy-engine",
+      "type": "decision_maker",
+      "properties": {
+        "name": "guarantee-policy-engine",
+        "content": "maker_guarantee-policy-engine"
+      }
+    },
+    {
+      "id": "scan:4410",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "4410",
+        "scan_type": "DISPATCHED",
+        "condition": "OK",
+        "scan_time": "2026-07-10T09:15:00Z",
+        "content": "scan:4410"
+      }
+    },
+    {
+      "id": "scan:4411",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "4411",
+        "scan_type": "IN_TRANSIT",
+        "condition": "OK",
+        "scan_time": "2026-07-10T18:40:00Z",
+        "content": "scan:4411"
+      }
+    },
+    {
+      "id": "scan:4412",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "4412",
+        "scan_type": "DEL",
+        "condition": "OK",
+        "scan_time": "2026-07-11T08:05:00Z",
+        "content": "scan:4412"
+      }
+    },
+    {
+      "id": "scan:7701",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "7701",
+        "scan_type": "DISPATCHED",
+        "condition": "OK",
+        "scan_time": "2026-07-05T11:00:00Z",
+        "content": "scan:7701"
+      }
+    },
+    {
+      "id": "hub:london-depot",
+      "type": "Hub",
+      "properties": {
+        "hub_id": "london-depot",
+        "location": "London Depot",
+        "content": "hub:london-depot"
+      }
+    },
+    {
+      "id": "scan:7702",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "7702",
+        "scan_type": "ATT",
+        "condition": "OK",
+        "scan_time": "2026-07-06T10:20:00Z",
+        "content": "scan:7702"
+      }
+    },
+    {
+      "id": "scan:7710",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "7710",
+        "scan_type": "DISPATCHED",
+        "condition": "OK",
+        "scan_time": "2026-07-11T09:30:00Z",
+        "content": "scan:7710"
+      }
+    },
+    {
+      "id": "scan:7711",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "7711",
+        "scan_type": "SAF",
+        "condition": "OK",
+        "scan_time": "2026-07-12T13:15:00Z",
+        "content": "scan:7711"
+      }
+    },
+    {
+      "id": "scan:7720",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "7720",
+        "scan_type": "DISPATCHED",
+        "condition": "OK",
+        "scan_time": "2026-07-13T08:50:00Z",
+        "content": "scan:7720"
+      }
+    },
+    {
+      "id": "scan:7721",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "7721",
+        "scan_type": "NEI",
+        "condition": "OK",
+        "scan_time": "2026-07-14T15:05:00Z",
+        "content": "scan:7721"
+      }
+    },
+    {
+      "id": "scan:3301",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "3301",
+        "scan_type": "DISPATCHED",
+        "condition": "OK",
+        "scan_time": "2026-07-09T10:00:00Z",
+        "content": "scan:3301"
+      }
+    },
+    {
+      "id": "hub:leeds-depot",
+      "type": "Hub",
+      "properties": {
+        "hub_id": "leeds-depot",
+        "location": "Leeds Depot",
+        "content": "hub:leeds-depot"
+      }
+    },
+    {
+      "id": "scan:3302",
+      "type": "Scan",
+      "properties": {
+        "scan_id": "3302",
+        "scan_type": "LIT",
+        "condition": "OK",
+        "scan_time": "2026-07-12T00:00:00Z",
+        "content": "scan:3302"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "6f667be1-dcf4-5af4-80c1-7081d31be82c",
+      "familyId": "6f667be1-dcf4-5af4-80c1-7081d31be82c",
+      "source_id": "customer:cust:8842",
+      "target_id": "order:48213",
+      "type": "PLACED",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "239b210d-5fcd-5813-a386-6b365a3ac239",
+      "familyId": "239b210d-5fcd-5813-a386-6b365a3ac239",
+      "source_id": "order:48213",
+      "target_id": "carrier:evri",
+      "type": "HANDLED_BY",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "e816408c-e28b-504e-bc42-acd9f14844ad",
+      "familyId": "e816408c-e28b-504e-bc42-acd9f14844ad",
+      "source_id": "customer:cust:8842",
+      "target_id": "order:51890",
+      "type": "PLACED",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "7c135d7f-7993-5365-b8cc-04e5c28fbded",
+      "familyId": "7c135d7f-7993-5365-b8cc-04e5c28fbded",
+      "source_id": "order:51890",
+      "target_id": "carrier:evri",
+      "type": "HANDLED_BY",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "3ae415e2-a172-5d4e-b814-17d842c93664",
+      "familyId": "3ae415e2-a172-5d4e-b814-17d842c93664",
+      "source_id": "customer:cust:5521",
+      "target_id": "order:60021",
+      "type": "PLACED",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "016d333a-4477-52a4-ab87-3d746bd99945",
+      "familyId": "016d333a-4477-52a4-ab87-3d746bd99945",
+      "source_id": "order:60021",
+      "target_id": "carrier:royal-mail",
+      "type": "HANDLED_BY",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "58c9900b-56b9-5fa3-bf5a-ae7663267bb1",
+      "familyId": "58c9900b-56b9-5fa3-bf5a-ae7663267bb1",
+      "source_id": "customer:cust:5521",
+      "target_id": "order:60022",
+      "type": "PLACED",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "695ff289-8288-59e3-9b39-71a4b28e7e88",
+      "familyId": "695ff289-8288-59e3-9b39-71a4b28e7e88",
+      "source_id": "order:60022",
+      "target_id": "carrier:royal-mail",
+      "type": "HANDLED_BY",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "e81b6b26-88d8-531d-958a-c8e58d96928d",
+      "familyId": "e81b6b26-88d8-531d-958a-c8e58d96928d",
+      "source_id": "customer:cust:5521",
+      "target_id": "order:60023",
+      "type": "PLACED",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "480d9b93-3fe1-5a87-823e-9c4aacefbc49",
+      "familyId": "480d9b93-3fe1-5a87-823e-9c4aacefbc49",
+      "source_id": "order:60023",
+      "target_id": "carrier:royal-mail",
+      "type": "HANDLED_BY",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "8ee204c1-22a4-518d-9793-d14992568383",
+      "familyId": "8ee204c1-22a4-518d-9793-d14992568383",
+      "source_id": "customer:cust:3390",
+      "target_id": "order:71100",
+      "type": "PLACED",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "a228ffe4-cb7f-5e68-b09e-8c9e712b1220",
+      "familyId": "a228ffe4-cb7f-5e68-b09e-8c9e712b1220",
+      "source_id": "order:71100",
+      "target_id": "carrier:evri",
+      "type": "HANDLED_BY",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "0d7f6df2-9887-5995-8f0b-06ded6a723aa",
+      "familyId": "0d7f6df2-9887-5995-8f0b-06ded6a723aa",
+      "source_id": "order:48213",
+      "target_id": "scan:9929",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "cf3bf247-1064-5c1d-a878-002c556c9eb2",
+      "familyId": "cf3bf247-1064-5c1d-a878-002c556c9eb2",
+      "source_id": "scan:9929",
+      "target_id": "hub:leeds-wh",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "e37fdf57-0615-5212-8409-e504404abc8c",
+      "familyId": "e37fdf57-0615-5212-8409-e504404abc8c",
+      "source_id": "order:48213",
+      "target_id": "scan:9930",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "3e40bd67-3e6b-5628-89ee-dbb259185e23",
+      "familyId": "3e40bd67-3e6b-5628-89ee-dbb259185e23",
+      "source_id": "scan:9930",
+      "target_id": "hub:sheffield-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "24ffee53-2969-5389-8e6e-482a026e4986",
+      "familyId": "24ffee53-2969-5389-8e6e-482a026e4986",
+      "source_id": "scan:9929",
+      "target_id": "scan:9930",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "fa456de1-b664-5d83-9206-f8e40bed0b24",
+      "familyId": "fa456de1-b664-5d83-9206-f8e40bed0b24",
+      "source_id": "order:48213",
+      "target_id": "scan:9931",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "530e6114-62f1-553b-9edf-f85176223986",
+      "familyId": "530e6114-62f1-553b-9edf-f85176223986",
+      "source_id": "scan:9931",
+      "target_id": "hub:manchester-hub",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "6643fa19-7b95-5e27-931b-01c56590c28f",
+      "familyId": "6643fa19-7b95-5e27-931b-01c56590c28f",
+      "source_id": "scan:9930",
+      "target_id": "scan:9931",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "ccb54a23-ae97-5f94-b2f8-4f5b6ddca1ae",
+      "familyId": "ccb54a23-ae97-5f94-b2f8-4f5b6ddca1ae",
+      "source_id": "scan:9931",
+      "target_id": "guarantee:48213",
+      "type": "TRIGGERS",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "4ec37242-89e2-5651-9340-f3bf5e95f67e",
+      "familyId": "4ec37242-89e2-5651-9340-f3bf5e95f67e",
+      "source_id": "a98ce9ce-0288-4389-a8aa-810fe1d730fc",
+      "target_id": "scan:9931",
+      "type": "involves",
+      "weight": 1.0,
+      "properties": {
+        "confidence": 1.0
+      }
+    },
+    {
+      "id": "de300738-9749-53af-8ec8-85b219cf453e",
+      "familyId": "de300738-9749-53af-8ec8-85b219cf453e",
+      "source_id": "a98ce9ce-0288-4389-a8aa-810fe1d730fc",
+      "target_id": "order:48213",
+      "type": "involves",
+      "weight": 1.0,
+      "properties": {
+        "confidence": 1.0
+      }
+    },
+    {
+      "id": "8eb3fa42-4206-5ff6-94e7-5505b608c2e2",
+      "familyId": "8eb3fa42-4206-5ff6-94e7-5505b608c2e2",
+      "source_id": "a98ce9ce-0288-4389-a8aa-810fe1d730fc",
+      "target_id": "guarantee:48213",
+      "type": "involves",
+      "weight": 1.0,
+      "properties": {
+        "confidence": 1.0
+      }
+    },
+    {
+      "id": "67a62ab7-87ea-5293-9fb6-f92ff9cd4079",
+      "familyId": "67a62ab7-87ea-5293-9fb6-f92ff9cd4079",
+      "source_id": "a98ce9ce-0288-4389-a8aa-810fe1d730fc",
+      "target_id": "category_guarantee_eligibility",
+      "type": "belongs_to",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "53ee6ecd-800c-5f42-947d-8c1748213ab4",
+      "familyId": "53ee6ecd-800c-5f42-947d-8c1748213ab4",
+      "source_id": "a98ce9ce-0288-4389-a8aa-810fe1d730fc",
+      "target_id": "maker_guarantee-policy-engine",
+      "type": "made_by",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "a8e5815b-58d8-5502-96e4-5a54e72bb467",
+      "familyId": "a8e5815b-58d8-5502-96e4-5a54e72bb467",
+      "source_id": "order:51890",
+      "target_id": "scan:4410",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "b20d0f05-5373-5363-b206-2d5b770eabf3",
+      "familyId": "b20d0f05-5373-5363-b206-2d5b770eabf3",
+      "source_id": "scan:4410",
+      "target_id": "hub:leeds-wh",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "3cc195e1-0da5-5fc4-b228-f4d3ea9bef4e",
+      "familyId": "3cc195e1-0da5-5fc4-b228-f4d3ea9bef4e",
+      "source_id": "order:51890",
+      "target_id": "scan:4411",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "df18bf6a-c3d8-5b59-aa91-2f2c32c24844",
+      "familyId": "df18bf6a-c3d8-5b59-aa91-2f2c32c24844",
+      "source_id": "scan:4411",
+      "target_id": "hub:sheffield-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "2a77319d-e6c4-5109-ab9c-ed0567cfbbee",
+      "familyId": "2a77319d-e6c4-5109-ab9c-ed0567cfbbee",
+      "source_id": "scan:4410",
+      "target_id": "scan:4411",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "c80903c3-df9c-536c-b03a-4fb0b1baf31c",
+      "familyId": "c80903c3-df9c-536c-b03a-4fb0b1baf31c",
+      "source_id": "order:51890",
+      "target_id": "scan:4412",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "2d39d1fa-3bfc-5e70-b4aa-2ff5baf566a1",
+      "familyId": "2d39d1fa-3bfc-5e70-b4aa-2ff5baf566a1",
+      "source_id": "scan:4412",
+      "target_id": "hub:manchester-hub",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "dd50a4f6-99d1-5742-825d-9d1638ae90d1",
+      "familyId": "dd50a4f6-99d1-5742-825d-9d1638ae90d1",
+      "source_id": "scan:4411",
+      "target_id": "scan:4412",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "4b0802db-dc22-5757-9829-473470429b00",
+      "familyId": "4b0802db-dc22-5757-9829-473470429b00",
+      "source_id": "order:60021",
+      "target_id": "scan:7701",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "5b9c38aa-1484-5d69-9c32-a1b970aed206",
+      "familyId": "5b9c38aa-1484-5d69-9c32-a1b970aed206",
+      "source_id": "scan:7701",
+      "target_id": "hub:london-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "60930cd8-97b4-5771-a226-9b86bb690e0d",
+      "familyId": "60930cd8-97b4-5771-a226-9b86bb690e0d",
+      "source_id": "order:60021",
+      "target_id": "scan:7702",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "b4483b96-d9d8-58ac-9a47-050bcd01d88c",
+      "familyId": "b4483b96-d9d8-58ac-9a47-050bcd01d88c",
+      "source_id": "scan:7702",
+      "target_id": "hub:london-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "208620a6-a4a8-5a1c-9dfe-d4779233e235",
+      "familyId": "208620a6-a4a8-5a1c-9dfe-d4779233e235",
+      "source_id": "scan:7701",
+      "target_id": "scan:7702",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "df28ec1b-8b77-5c61-ae70-2cfb90586f68",
+      "familyId": "df28ec1b-8b77-5c61-ae70-2cfb90586f68",
+      "source_id": "order:60022",
+      "target_id": "scan:7710",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "e58e30a5-ad17-5213-95ea-82036cc0c9aa",
+      "familyId": "e58e30a5-ad17-5213-95ea-82036cc0c9aa",
+      "source_id": "scan:7710",
+      "target_id": "hub:london-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "e87306de-89ef-509b-a7b0-929dbbd76479",
+      "familyId": "e87306de-89ef-509b-a7b0-929dbbd76479",
+      "source_id": "order:60022",
+      "target_id": "scan:7711",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "01fb5eb0-b0b0-5245-b2be-b5fc80b0f6d1",
+      "familyId": "01fb5eb0-b0b0-5245-b2be-b5fc80b0f6d1",
+      "source_id": "scan:7711",
+      "target_id": "hub:london-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "7ee31729-1d65-523d-a204-380e721eabe9",
+      "familyId": "7ee31729-1d65-523d-a204-380e721eabe9",
+      "source_id": "scan:7710",
+      "target_id": "scan:7711",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "25d4d372-cd8c-508c-b4a7-bd48d69d9258",
+      "familyId": "25d4d372-cd8c-508c-b4a7-bd48d69d9258",
+      "source_id": "order:60023",
+      "target_id": "scan:7720",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "1036be89-081b-5aaa-b955-f1b122d38d85",
+      "familyId": "1036be89-081b-5aaa-b955-f1b122d38d85",
+      "source_id": "scan:7720",
+      "target_id": "hub:london-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "938897c6-968b-5009-bdfd-a746bc2c3790",
+      "familyId": "938897c6-968b-5009-bdfd-a746bc2c3790",
+      "source_id": "order:60023",
+      "target_id": "scan:7721",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "b3d3dc38-3375-5632-8442-36bf12136c50",
+      "familyId": "b3d3dc38-3375-5632-8442-36bf12136c50",
+      "source_id": "scan:7721",
+      "target_id": "hub:london-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "bb2774c3-2f8d-5fbe-a0a1-93180923ce20",
+      "familyId": "bb2774c3-2f8d-5fbe-a0a1-93180923ce20",
+      "source_id": "scan:7720",
+      "target_id": "scan:7721",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "df44703b-643b-55c7-8ada-891c5f39d553",
+      "familyId": "df44703b-643b-55c7-8ada-891c5f39d553",
+      "source_id": "order:71100",
+      "target_id": "scan:3301",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "dc473404-1e89-5adb-b105-f16b48394da1",
+      "familyId": "dc473404-1e89-5adb-b105-f16b48394da1",
+      "source_id": "scan:3301",
+      "target_id": "hub:leeds-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "be409e7d-efc4-55ba-a48e-5c662b8c6b19",
+      "familyId": "be409e7d-efc4-55ba-a48e-5c662b8c6b19",
+      "source_id": "order:71100",
+      "target_id": "scan:3302",
+      "type": "SCANNED_AT",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "046d8400-dced-585b-8b77-4c3f811b1838",
+      "familyId": "046d8400-dced-585b-8b77-4c3f811b1838",
+      "source_id": "scan:3302",
+      "target_id": "hub:leeds-depot",
+      "type": "AT_LOCATION",
+      "weight": 1.0,
+      "properties": {}
+    },
+    {
+      "id": "caa3e1f5-011b-5ec2-a1cd-1d2d0ad93157",
+      "familyId": "caa3e1f5-011b-5ec2-a1cd-1d2d0ad93157",
+      "source_id": "scan:3301",
+      "target_id": "scan:3302",
+      "type": "NEXT",
+      "weight": 1.0,
+      "properties": {}
+    }
+  ],
+  "links": []
+}

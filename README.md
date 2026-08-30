@@ -5,7 +5,7 @@ Minimal, working examples across the agentic AI stack — MCP servers, agent fra
 
 ## Repository Structure
 
-This repository contains **ten examples** organized in separate folders, each introducing a new semantic component in the Context Engineering ladder:
+This repository contains **thirteen examples** organized in separate folders, each introducing a new semantic component in the Context Engineering ladder:
 
 ### 📂 Directory Listing
 
@@ -22,6 +22,8 @@ This repository contains **ten examples** organized in separate folders, each in
 | 9 | [[ce]-[metrics]-[bfsi]-[2026-05]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bmetrics%5D-%5Bbfsi%5D-%5B2026-05%5D) | dbt Metric Layer (MetricFlow) | 5 named governed metrics — cet1_ratio, buffer_headroom, rwa, cet1_capital, combined_buffer. Agent calls mf query, never writes SQL |
 | 10 | [[ce]-[agentic]-[full-stack]-[2026-05]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bagentic%5D-%5Bfull-stack%5D-%5B2026-05%5D) | Full stack comparison | One question through all 9 context layers. Scored side-by-side table proves CE has a measurable effect on answer quality |
 | 11 | [[ce]-[knowledge-graph]-[amazon-delivery]-[2026-07]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bknowledge-graph%5D-%5Bamazon-delivery%5D-%5B2026-07%5D) | Knowledge Graph — Neo4j, new domain | Real three-stage context-building pipeline: raw DuckDB rows + a prose policy document are ingested into a Neo4j graph. New domain: Amazon UK Delivery (order tracking, A-to-Z Guarantee) — local, open-source equivalent of Amazon Neptune |
+| 12 | [[ce]-[bsl]-[amazon-delivery]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bbsl%5D-%5Bamazon-delivery%5D-%5B2026-08%5D) | Boring Semantic Layer (BSL) — YAML metric contracts | YAML-governed metric contracts translated to SQL by Ibis. Agent has two tools (glossary + query_metric) and cannot write SQL. Same Amazon UK Delivery domain as Example 11 — compare the graph approach vs. the metric contract approach |
+| 13 | [[ce]-[semantica]-[amazon-delivery]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bsemantica%5D-%5Bamazon-delivery%5D-%5B2026-08%5D) | Semantica ContextGraph — same domain, no Docker | Direct rebuild of Example 11 using Semantica instead of Neo4j. No Cypher, no Docker. Adds W3C PROV-O provenance via record_decision() — every guarantee trigger has a full audit record |
 
 ---
 
@@ -263,6 +265,8 @@ Run the examples in this order for the clearest learning curve:
 | 9 | Example 9 — dbt Metric Layer | How named, governed business metrics (MetricFlow) replace raw SQL — the metric layer enforces the formula, the agent just asks by name. |
 | 10 | Example 10 — Full Stack Comparison | One question, five agents, scored — CE's measurable payoff. The capstone. |
 | 11 | Example 11 — Knowledge Graph (Neo4j) | How a real ingestion pipeline builds a graph from raw data + a prose policy document — and how editing the policy's wording, not the code, changes what the graph connects. |
+| 12 | Example 12 — Boring Semantic Layer (BSL) | How YAML metric contracts lock business formulas so no agent can rewrite them — the metric layer translates YAML to SQL, the agent never sees either. |
+| 13 | Example 13 — Semantica ContextGraph | Same delivery graph as Example 11, rebuilt with Semantica — no Docker, Python API instead of Cypher, and a W3C PROV-O audit record for every guarantee decision. |
 
 ---
 
@@ -608,6 +612,165 @@ python3 bootstrap_source.py && python3 ingest_to_graph.py && python3 agent_graph
 
 ---
 
+### Example 12: Boring Semantic Layer (BSL) — Amazon UK Delivery
+
+**Semantic component:** Boring Semantic Layer (BSL) — YAML-governed metric contracts, Ibis translation, backend-agnostic execution.
+
+**What it shows:**
+- The agent has exactly two tools: `lookup_glossary` (Knowledge Base layer) and `query_metric` (BSL layer). It cannot write SQL or access the database directly.
+- Business metric formulas live in YAML files that a non-engineer can read, review, and approve. The agent selects which metric to call and passes optional dimension filters — it cannot change the formula.
+- `metric_layer.py` translates a metric YAML contract into SQL via three passes (SELECT → WHERE → GROUP BY), then executes via `ibis.Backend.sql()`. The generated SQL is printed by the CLI — fully auditable.
+- Governance filters in the YAML (e.g. `postcode_match = true`) are enforced automatically — the agent does not know they exist.
+- Same Amazon UK Delivery domain as Example 11 — a direct comparison: graph traversal vs. metric contract, same data, two different CE approaches.
+
+**Quick Start:**
+```bash
+pip3 install ibis-framework[duckdb] pyyaml openai
+ollama serve && ollama pull qwen2.5
+cd my-hello-worlds/[ce]-[bsl]-[amazon-delivery]-[2026-08]/code
+python3 bootstrap_bsl.py
+python3 metric_layer.py edd order_id=48213
+python3 agent_bsl_ollama.py
+```
+
+---
+
+### Example 12: Architecture
+
+```
+┌──────────────────────────────────────────────────┐
+│         Knowledge Base (KB) Layer                 │
+│         glossary/delivery_terms.yaml              │
+│   DEL/ATT/SAF/NEI/LIT/EDD — meaning, exclusions, │
+│   interpretation guidance, owner                 │
+└───────────────────────┬──────────────────────────┘
+                        │  tool: lookup_glossary
+                        ▼
+┌──────────────────────────────────────────────────┐
+│         BSL Contract Layer (YAML)                 │
+│   metrics/edd.yaml          v2.1                  │
+│   metrics/order_count.yaml  v1.0                  │
+│   formula, filters, dimensions, owner, SLA        │
+└───────────────────────┬──────────────────────────┘
+                        │  tool: query_metric → metric_layer.py
+                        ▼
+┌──────────────────────────────────────────────────┐
+│         BSL Translation Engine                    │
+│         code/metric_layer.py                      │
+│   _build_sql():  YAML → SQL string               │
+│   conn.sql():    ibis executes against backend   │
+│   query_metric() → list[dict] → agent           │
+└───────────────────────┬──────────────────────────┘
+                        │
+                        ▼
+┌───────────────┐    ┌──────────────────────────────┐
+│   DuckDB      │    │  Swap to: Postgres / BigQuery │
+│  delivery.duckdb   │  (change one connect() call)  │
+└───────┬───────┘    └──────────────────────────────┘
+        │
+        ▼
+┌──────────────────────────────────────────────────┐
+│          LLM Agent (qwen2.5 via Ollama)           │
+│   Calls lookup_glossary → reads KB meaning       │
+│   Calls query_metric → receives list[dict]       │
+│   Cannot write SQL, cannot modify formulas       │
+└──────────────────────────────────────────────────┘
+```
+
+**Key difference from Example 11 (Knowledge Graph):** Example 11 connects entities into a traversable graph to answer *relational* questions (who placed what, what path did the parcel take, is there a guarantee edge). Example 12 governs *metric computation* — how EDD is calculated, which rows qualify, who approved the formula. Different CE components; same domain; same data.
+
+---
+
+### Example 13: Semantica ContextGraph — Amazon UK Delivery
+
+**Semantic component:** Knowledge Graph via Semantica ContextGraph — in-memory graph, Python traversal API, W3C PROV-O decision provenance.
+
+**What it shows:**
+- A direct rebuild of Example 11 (Neo4j) using Semantica instead of Neo4j — same domain, same data, same guarantee policy, zero Docker. The Semantica ContextGraph is in-memory and serialised to `delivery_graph.json`.
+- **The policy invariant holds.** `guarantee_policy.md` is still parsed at runtime. Change "DAMAGED" to anything else, rerun ingestion, the guarantee disappears — zero code edits, same as Example 11.
+- **Python API replaces Cypher.** `get_neighbors(node_id, relationship_types=["SCANNED_AT"])` does what `MATCH (o)-[:SCANNED_AT]->(s)` did. No query language to learn; the traversal logic is plain Python in the tool implementation.
+- **Provenance is new.** Every guarantee trigger also calls `record_decision()` — a W3C PROV-O audit record with reasoning, policy reference, entities, confidence, and decision_maker. Example 11 had the TRIGGERS edge (the *fact*). This adds the *why* — what a regulator, auditor, or SLA review actually needs.
+- **Close to Neo4j and Amazon Neptune.** Semantica ContextGraph uses the same property-graph model — typed nodes, typed edges, multi-hop traversal. The patterns map directly to Neo4j Cypher and to Amazon Neptune's openCypher/property-graph deployment. Swap the connection string, not the mental model.
+
+**Quick Start:**
+```bash
+pip install semantica duckdb openai
+ollama serve && ollama pull qwen2.5
+cd my-hello-worlds/[ce]-[semantica]-[amazon-delivery]-[2026-08]/code
+python3 bootstrap_source.py          # seed DuckDB (same as Example 11)
+python3 ingest_to_semantica.py       # build Semantica graph + record provenance decisions
+python3 agent_semantica_ollama.py    # ask questions
+```
+
+**Side-by-side with Example 11:**
+
+| | Example 11 — Neo4j | Example 13 — Semantica |
+|---|---|---|
+| Storage | Neo4j (Docker required) | In-memory + `save_to_file()` |
+| Query language | Cypher | Python API |
+| Guarantee trigger | TRIGGERS edge only | Edge + `record_decision()` provenance |
+| Audit trail | None | W3C PROV-O record |
+
+**Semantica repo:** https://github.com/semantica-agi/semantica
+
+---
+
+### Example 13: Architecture
+
+```
+┌──────────────────────────────────────────────────────┐
+│   bootstrap_source.py — same as Example 11           │
+│   DuckDB: customers · carriers · orders · scans      │
+│   (raw, flat, no relationships yet)                  │
+└──────────────────────┬───────────────────────────────┘
+                       │ read
+┌──────────────────────┴───────────────────────────────┐
+│   contracts/guarantee_policy.md                       │
+│   "scan_type=DEL AND condition=DAMAGED →              │
+│    AtoZGuarantee (policy:4.2)"                        │
+│   (same policy doc as Example 11)                    │
+└──────────────────────┬───────────────────────────────┘
+                       │ parse_policy() — no hardcoded `if`
+                       ▼
+┌──────────────────────────────────────────────────────┐
+│   ingest_to_semantica.py                              │
+│                                                      │
+│   graph.add_node('order:48213', 'Order', ...)        │
+│   graph.add_edge('scan:9931', 'guarantee:48213',     │
+│                  'TRIGGERS')                         │
+│                                                      │
+│   graph.record_decision(                  ← NEW      │
+│     category='guarantee_eligibility',               │
+│     reasoning='Policy policy:4.2 states…',          │
+│     confidence=1.0,                                  │
+│     entities=['scan:9931', 'order:48213']            │
+│   )   → W3C PROV-O audit record                     │
+└──────────────────────┬───────────────────────────────┘
+                       │ save_to_file('delivery_graph.json')
+                       ▼
+┌──────────────────────────────────────────────────────┐
+│   Semantica ContextGraph  (in-memory, no Docker)     │
+│                                                      │
+│   Customer -[:PLACED]-> Order                        │
+│   Order -[:SCANNED_AT]-> Scan (x N)                 │
+│   Scan -[:NEXT]-> Scan  (journey chain)              │
+│   Scan -[:TRIGGERS]-> Guarantee  (policy-driven)    │
+│   + Decision provenance record per Guarantee        │
+└──────────────────────┬───────────────────────────────┘
+                       │ tools: trace_order · get_guarantee_status
+                       ▼
+┌──────────────────────────────────────────────────────┐
+│   LLM Agent (qwen2.5 via Ollama)                     │
+│   get_neighbors() · find_node() — Python, not Cypher │
+└──────────────────────────────────────────────────────┘
+```
+
+**Key difference from Example 11:** same graph shape, same nodes, same edges — but no Docker, and the guarantee trigger is now a first-class auditable decision, not just a graph edge. The *why* is as queryable as the *what*.
+
+**Key difference from Example 12 (BSL):** Example 12 governs *how metrics are computed* (formula locked in YAML). Example 13 governs *what happened and why* (entity relationships + decision provenance). Different CE layers; same domain; same data.
+
+---
+
 ## 🔍 Debugging Ollama
 
 All Ollama-backed examples (Examples 1–5, 8–11) send requests to the local `qwen2.5` model. Enable debug logging to see every request, response, and token count in real time:
@@ -673,6 +836,9 @@ pkill ollama && ollama serve &
 | **Knowledge Graph** | A network of entities (nodes) and their relationships (edges) that makes connected context traversable — e.g. Customer → Order → Scan → Guarantee. Amazon Neptune's property-graph equivalent, run locally. |
 | **Neo4j** | Open-source, Cypher-native graph database. Local, open-source equivalent of Amazon Neptune's property-graph (openCypher/Gremlin) deployment mode. |
 | **Cypher** | Neo4j's declarative graph query language (`MATCH`, `MERGE`, pattern traversal). Also supported by Amazon Neptune via its openCypher endpoint — same query shape, different connection string. |
+| **BSL** | Boring Semantic Layer. A metric governance pattern: business formulas are written in human-readable YAML contracts, translated to SQL by a translation layer, and executed via a backend-agnostic query engine. The agent calls a named metric; it cannot modify the formula. |
+| **Ibis** | Python library providing a unified query interface across DuckDB, PostgreSQL, BigQuery, Snowflake, Redshift, and others. Backend-agnostic: the same Python expression compiles to SQL for any registered backend. |
+| **Metric contract** | A YAML file that defines a named business metric — base table, selected columns, derived columns, governance filters, valid dimension filters, owner, version, and approval status. The BSL translation engine reads this and generates SQL. |
 
 ---
 

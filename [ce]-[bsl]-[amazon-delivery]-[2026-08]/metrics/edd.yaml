@@ -1,0 +1,62 @@
+##############################################################################
+# Metric: Estimated Delivery Date (EDD)
+#
+# This is the executable governance contract — the YAML layer in the
+# Galina Young / Boring Semantic Layer (BSL) architecture.
+#
+# A non-engineer can review and approve this file.
+# The metric_layer.py script translates it into an Ibis expression that
+# runs against whatever backend is configured (DuckDB, PostgreSQL, …).
+#
+# The agent CANNOT rewrite this formula.
+# It can only call query_metric('edd', filters={…}).
+##############################################################################
+
+metric: edd
+label: "Estimated Delivery Date (EDD)"
+description: >
+  The date by which an order is expected to reach the customer.
+  Calculated as order_date plus carrier-specific processing and transit
+  offsets, adjusted for weekends.  EDD is a commitment — breaching it
+  triggers SLA penalties.
+version: "2.1"
+owner: delivery-experience-team
+approved_by: Priya Sharma
+approved_on: "2026-07-01"
+status: approved
+
+# ── Computation ────────────────────────────────────────────────────────────
+computation:
+  base_table: orders
+  select:
+    - order_id
+    - customer_id
+    - order_date
+    - processing_days
+    - transit_days
+    - weekend_adjustment
+    - current_status
+  derived_columns:
+    edd_date: "order_date + processing_days + transit_days + weekend_adjustment"
+  filters:
+    - "current_status NOT IN ('CANCELLED', 'RETURNED')"
+    - "postcode_match = true"
+
+# ── Dimensions (agent-callable filter keys) ─────────────────────────────────
+dimensions:
+  - name: order_id
+    description: Filter to a single order
+    type: string
+  - name: customer_id
+    description: Filter to all orders for a customer
+    type: string
+  - name: current_status
+    description: Filter by delivery status code (DEL, ATT, SAF, NEI, LIT)
+    type: string
+
+# ── SLA ────────────────────────────────────────────────────────────────────
+sla:
+  breach_action: >
+    If today > edd_date and current_status not in (DEL, SAF, NEI),
+    trigger customer compensation eligibility workflow.
+  recompute_on_att: true

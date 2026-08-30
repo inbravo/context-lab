@@ -1,0 +1,102 @@
+##############################################################################
+# Business Glossary — Amazon UK Delivery
+#
+# This is the Knowledge Base (KB) layer.
+# It answers MEANING questions — what a term is, who owns it, what it
+# excludes, and how an agent should interpret it.
+#
+# It is not a computation engine.  The computation lives in ../metrics/.
+# A metric without this layer is just a number with no story.
+##############################################################################
+
+owner: Delivery Experience Team
+version: "1.0"
+approved_by: Priya Sharma
+approved_on: "2026-08-01"
+
+terms:
+
+  DEL:
+    label: Delivered
+    definition: >
+      A proof-of-delivery scan confirmed at the customer's address.
+      Requires: (1) photo evidence captured, (2) postcode of scan matches
+      order delivery postcode, (3) doorstep scan recorded by the carrier.
+    excludes:
+      - Scans where postcode_match = false
+      - Scans with no photo_captured flag
+    triggers: AtoZ guarantee eligibility window (30 days from DEL scan)
+    owner: Delivery Experience Team
+    how_to_interpret: >
+      DEL is a contractual confirmation, not a best-effort status.
+      If DEL is present but the customer reports non-receipt, escalate
+      to the proof-of-delivery photo before contacting the carrier.
+
+  ATT:
+    label: Attempted
+    definition: >
+      A delivery was attempted but could not be completed.
+      Photo taken at the address but one or more of the DEL conditions
+      was not met — typically postcode mismatch or no safe place available.
+    excludes:
+      - Orders where the carrier did not reach the delivery address
+    owner: Delivery Experience Team
+    how_to_interpret: >
+      ATT does NOT mean the item is lost. It means the carrier visited
+      but could not complete. The EDD is recalculated from the ATT date.
+      Customers should be told to expect redelivery within 2 business days.
+
+  SAF:
+    label: Safe Place
+    definition: >
+      Item delivered to a customer-nominated safe location (e.g. porch,
+      garage, specific neighbour) with photo evidence captured.
+    excludes:
+      - Locations not pre-authorised by the customer
+    owner: Delivery Experience Team
+    how_to_interpret: >
+      SAF counts as successful delivery for SLA purposes.
+      The customer has pre-authorised this location.
+      If the customer claims non-receipt, check the safe-place photo first.
+
+  NEI:
+    label: Neighbour Drop
+    definition: >
+      Item left with a named neighbour. A card must be left at the
+      customer's door identifying the neighbour's address.
+    owner: Delivery Experience Team
+    how_to_interpret: >
+      NEI counts as successful delivery for SLA purposes.
+      If the customer denies receiving, retrieve the card-left record
+      and the neighbour's confirmation scan.
+
+  LIT:
+    label: Lost in Transit
+    definition: >
+      No carrier scan has been recorded for 48 hours after the last
+      known checkpoint. The item is presumed lost.
+    owner: Delivery Experience Team
+    how_to_interpret: >
+      LIT triggers an automatic refund or replacement workflow.
+      Do not ask the customer to wait further — initiate the resolution
+      workflow immediately.
+
+  EDD:
+    label: Estimated Delivery Date
+    definition: >
+      The date by which an order is expected to reach the customer,
+      calculated from order_date plus processing, transit, and
+      weekend-adjustment offsets.
+    formula_hint: "order_date + processing_days + transit_days + weekend_adjustment"
+    excludes:
+      - Orders with status CANCELLED or RETURNED
+      - Orders where postcode_match = false (ATT state)
+    owner: Delivery Experience Team
+    how_to_interpret: >
+      EDD is a commitment, not an estimate.
+      Breaching EDD triggers SLA penalties and customer compensation
+      eligibility.  If the current_status is ATT, EDD is recalculated
+      from the ATT scan date — do NOT quote the original EDD.
+    version: "2.1"
+    approved_by: Priya Sharma
+    approved_on: "2026-07-01"

@@ -1,0 +1,37 @@
+##############################################################################
+# Metric: Order Count
+#
+# A simple second metric to show that the BSL layer handles multiple
+# governed definitions — not just EDD.
+##############################################################################
+
+metric: order_count
+label: "Order Count"
+description: >
+  The number of orders placed, optionally filtered by status or customer.
+  Excludes cancelled and returned orders from SLA reporting by default.
+version: "1.0"
+owner: delivery-experience-team
+approved_by: Priya Sharma
+approved_on: "2026-07-01"
+status: approved
+
+computation:
+  base_table: orders
+  select:
+    - customer_id
+    - current_status
+  aggregation:
+    function: count
+    column: order_id
+    alias: order_count
+  filters:
+    - "current_status NOT IN ('CANCELLED', 'RETURNED')"
+
+dimensions:
+  - name: customer_id
+    description: Count orders for a specific customer
+    type: string
+  - name: current_status
+    description: Count orders with a specific delivery status
+    type: string
