@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospitality KPI Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:      #F4F7FB; --surface: #FFFFFF; --surface2: #EEF2F8;
+  --border:  #DDE5F0; --navy:    #0A1B35; --accent:   #E8993A;
+  --blue:    #1E6FD9; --text:    #0A1B35; --muted:    #5C6E8A;
+  --good:    #1A7A52; --bad:     #C23535; --warn:     #B8820A;
+  --code-bg: #E2EAF6; --code-fg: #1A4A8A; --thead-bg: #1E3A6E;
+  --shadow:  0 2px 14px rgba(10,27,53,.09);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #070D1A; --surface: #0D1828; --surface2: #111F34;
+    --border: #1A2C48; --navy: #D4E4F8; --text: #D4E4F8;
+    --muted: #6A8AAA; --good: #2FAF72; --bad: #E05555; --warn: #D4A020;
+    --shadow: 0 2px 14px rgba(0,0,0,.4);
+    --code-bg: #0A1628; --code-fg: #6CB8F5; --thead-bg: #0A1B35;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #070D1A; --surface: #0D1828; --surface2: #111F34;
+  --border: #1A2C48; --navy: #D4E4F8; --text: #D4E4F8;
+  --muted: #6A8AAA; --good: #2FAF72; --bad: #E05555; --warn: #D4A020;
+  --shadow: 0 2px 14px rgba(0,0,0,.4);
+  --code-bg: #0A1628; --code-fg: #6CB8F5; --thead-bg: #0A1B35;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+       font-size: 14px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+/* Header */
+.report-header { background: linear-gradient(160deg, #06111F 0%, #0A1B35 100%);
+  padding: 36px 48px 28px; border-bottom: 2px solid var(--accent);
+  display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.report-header::before { content:''; display:block; height:3px; width: calc(100% + 96px);
+  margin: -36px -48px 28px;
+  background: linear-gradient(90deg, var(--accent) 0%, #D4753A 40%, transparent 80%); }
+.rh-left { flex: 1; }
+.rh-eyebrow { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.14em;
+              text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.rh-title { font-family:'DM Serif Display',serif; font-size:28px; font-weight:400;
+            color:#fff; line-height:1.2; }
+.rh-sub { font-size:12px; color:#8FAAC8; margin-top:6px; }
+.theme-toggle { cursor:pointer; background:none; border:1px solid rgba(255,255,255,.18);
+  border-radius:20px; padding:6px 14px; color:#8FAAC8;
+  font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.04em;
+  white-space:nowrap; transition:border-color .15s, color .15s; align-self:flex-start; margin-top:4px; }
+.theme-toggle:hover { border-color:var(--accent); color:var(--accent); }
+
+/* Site tabs */
+.site-nav { background: var(--navy); padding: 0 48px;
+            display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+.site-btn { font-family:'DM Mono',monospace; font-size:11.5px; letter-spacing:.05em;
+            color:#6A8AAA; padding: 14px 22px; cursor:pointer;
+            border-bottom: 2px solid transparent; margin-bottom:-1px;
+            transition: color .15s, border-color .15s; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; }
+.site-btn:hover { color:#A8C4E0; }
+.site-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+/* Layout */
+.site-panel { display:none; }
+.site-panel.active { display:block; }
+.content { max-width:1100px; margin:0 auto; padding:40px 48px; }
+
+/* Identity strip */
+.id-strip { background: var(--code-bg); border-radius:8px; padding:14px 18px;
+            margin-bottom:32px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.id-strip-label { font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:.1em;
+                  text-transform:uppercase; color:#3A5070; margin-right:4px; }
+.id-item { display:flex; align-items:center; gap:6px; }
+.id-sys { font-family:'DM Mono',monospace; font-size:9.5px; color:#3A5070; }
+.id-val { font-family:'DM Mono',monospace; font-size:11px; color:var(--code-fg);
+          background:#0F2238; padding:2px 8px; border-radius:4px; }
+.id-arrow { color:var(--accent); font-size:12px; }
+
+/* Metric section */
+.metric-section { background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; margin-bottom:24px; overflow:hidden; box-shadow:var(--shadow); }
+.metric-header { padding:18px 24px; border-bottom:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:flex-start; }
+.mh-left .mh-label { font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+.mh-left .mh-title { font-family:'DM Serif Display',serif; font-size:18px; font-weight:400;
+  color:var(--navy); }
+.mh-right { display:flex; flex-wrap:wrap; gap:6px; }
+.sys-badge { font-family:'DM Mono',monospace; font-size:9.5px; padding:3px 9px;
+  border-radius:4px; border:1px solid var(--border); color:var(--muted);
+  background:var(--surface2); white-space:nowrap; }
+.metric-body { padding:24px; }
+.chart-wrap { position:relative; height:260px; }
+.chart-wrap.hbar { height:200px; }
+.chart-kv { padding:0; }
+
+/* KPI tile row for satisfaction */
+.kpi-tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+.kpi-tile { background:var(--surface2); border:1px solid var(--border); border-radius:8px;
+  padding:20px; text-align:center; }
+.kpi-tile .tv { font-family:'DM Serif Display',serif; font-size:32px; font-weight:400;
+  color:var(--navy); line-height:1; }
+.kpi-tile .tl { font-size:11px; color:var(--muted); margin-top:6px; }
+.kpi-tile .ts { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); margin-top:3px; }
+
+/* Insight box */
+.insight { margin-top:16px; padding:12px 16px; border-radius:7px; font-size:12.5px;
+  line-height:1.6; border-left:3px solid; }
+.insight-good { background:rgba(26,122,82,.08); border-color:var(--good); color:var(--good); }
+.insight-warn { background:rgba(184,130,10,.08); border-color:var(--warn); color:var(--warn); }
+.insight-bad  { background:rgba(194,53,53,.08);  border-color:var(--bad);  color:var(--bad); }
+
+/* Back link */
+.back-link { display:inline-flex; align-items:center; gap:6px;
+  font-family:'DM Mono',monospace; font-size:11px; color:var(--accent);
+  text-decoration:none; margin-top:32px; padding:8px 14px;
+  border:1px solid var(--accent); border-radius:6px; transition:background .15s; }
+.back-link:hover { background:rgba(232,153,58,.1); }
+
+footer { background:var(--navy); color:#6A8AAA; font-family:'DM Mono',monospace;
+  font-size:11px; padding:20px 48px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+footer a { color:var(--accent); text-decoration:none; }
+
+@media(max-width:700px) {
+  .content { padding:24px 20px; }
+  .report-header { padding:28px 20px 20px; }
+  .site-nav { padding:0 12px; overflow-x:auto; }
+  .kpi-tiles { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="report-header">
+  <div class="rh-left">
+    <div class="rh-eyebrow">Context Engineering — Example 14 &nbsp;·&nbsp; KPI Operations Report</div>
+    <div class="rh-title">Hospitality Group — 30-Day Operational KPIs</div>
+    <div class="rh-sub">Five cross-system metrics &nbsp;·&nbsp; OWL identity resolution &nbsp;·&nbsp; DuckDB + SPARQL &nbsp;·&nbsp; Aug 2026</div>
+  </div>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">&#9788; Light</button>
+</div>
+
+<div class="site-nav">
+  <button class="site-btn active" onclick="showSite('lnd01', this)">London Canary Wharf &nbsp;·&nbsp; SITE-LDN-01</button>
+  <button class="site-btn" onclick="showSite('lnd02', this)">London City &nbsp;·&nbsp; SITE-LDN-02</button>
+  <button class="site-btn" onclick="showSite('man01', this)">Manchester &nbsp;·&nbsp; SITE-MAN-01</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- LONDON CANARY WHARF -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div id="panel-lnd01" class="site-panel active">
+<div class="content">
+
+  <div class="id-strip">
+    <span class="id-strip-label">Identity resolved &rarr;</span>
+    <div class="id-item"><span class="id-sys">EPOS</span><span class="id-val">SITE-LDN-01</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">Infor WFM</span><span class="id-val">GBR_SITE_0001</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">SAP S/4HANA</span><span class="id-val">CC-GBR-001</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">SuccessFactors</span><span class="id-val">OU-GBR-001</span></div>
+    <span class="id-arrow" style="margin-left:8px;">&#8592;</span>
+    <span style="font-family:'DM Mono',monospace;font-size:9.5px;color:#3A5070;">one SPARQL call</span>
+  </div>
+
+  <!-- KPI 1: Labour Cost per Cover -->
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left">
+        <div class="mh-label">KPI 1 of 5</div>
+        <div class="mh-title">Labour Cost per Cover</div>
+      </div>
+      <div class="mh-right">
+        <span class="sys-badge">Infor WFM &rarr; GBR_SITE_0001</span>
+        <span class="sys-badge">EPOS &rarr; SITE-LDN-01</span>
+      </div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="lnd01-labour"></canvas></div>
+      <div class="insight insight-good">Avg £10.40/cover across all meal periods — well within the £20.00 operational threshold. Lunch is the costliest period at £13.20 due to higher staffing levels.</div>
+    </div>
+  </div>
+
+  <!-- KPI 2: Revenue by Category -->
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left">
+        <div class="mh-label">KPI 2 of 5</div>
+        <div class="mh-title">Revenue by Category</div>
+      </div>
+      <div class="mh-right">
+        <span class="sys-badge">EPOS &rarr; SITE-LDN-01</span>
+      </div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="lnd01-revenue"></canvas></div>
+      <div class="insight insight-good">Total £26,980 over 30 days — highest of all three sites. Mains is the top category (£9,440), followed by Hot Drinks (£8,240).</div>
+    </div>
+  </div>
+
+  <!-- KPI 3: Food Margin -->
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left">
+        <div class="mh-label">KPI 3 of 5</div>
+        <div class="mh-title">Food Margin by Product</div>
+      </div>
+      <div class="mh-right">
+        <span class="sys-badge">EPOS-LATTE &rarr; PROD-BEV-001</span>
+        <span class="sys-badge">Procurement</span>
+      </div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap hbar"><canvas id="lnd01-margin"></canvas></div>
+      <div class="insight insight-warn">Americano margin £0.95 — below the £1.00 minimum threshold. All other products healthy. Flag for procurement contract renegotiation.</div>
+    </div>
+  </div>
+
+  <!-- KPI 4: SAP Revenue per Cover -->
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left">
+        <div class="mh-label">KPI 4 of 5</div>
+        <div class="mh-title">SAP Revenue per Cover</div>
+      </div>
+      <div class="mh-right">
+        <span class="sys-badge">SAP S/4HANA &rarr; CC-GBR-001</span>
+        <span class="sys-badge">&#8594; identity resolved via hosp:sapCostCenter</span>
+      </div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="lnd01-sap-rev"></canvas></div>
+      <div class="insight insight-good">Avg £11.58/cover — above the £8.00 threshold across all periods. Afternoon highest at £11.67. Strong client billing rates at this site.</div>
+    </div>
+  </div>
+
+  <!-- KPI 5: Headcount by Contract Type -->
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left">
+        <div class="mh-label">KPI 5 of 5</div>
+        <div class="mh-title">Headcount by Contract Type</div>
+      </div>
+      <div class="mh-right">
+        <span class="sys-badge">SAP SuccessFactors &rarr; OU-GBR-001</span>
+        <span class="sys-badge">&#8594; identity resolved via hosp:sfOrgUnitId</span>
+      </div>
+    </div>
+    <div class="metric-body">
+      <div class="kpi-tiles">
+        <div class="kpi-tile"><div class="tv">20</div><div class="tl">Permanent</div><div class="ts">20.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv">10</div><div class="tl">Part-Time</div><div class="ts">5.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv" style="color:var(--warn)">4</div><div class="tl">Zero-Hours</div><div class="ts">0.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv" style="color:var(--warn)">4</div><div class="tl">Agency</div><div class="ts">4.0 FTE</div></div>
+      </div>
+      <div class="chart-wrap"><canvas id="lnd01-headcount"></canvas></div>
+      <div class="insight insight-good">Flexible workforce (Zero-Hours + Agency) at 21.1% — within the 30% threshold. Permanent core is stable. Agency headcount (4) warrants monitoring as it adds on-cost overhead.</div>
+    </div>
+  </div>
+
+  <a class="back-link" href="aws-presentation.html">&#8592; Back to Architecture Overview</a>
+
+</div><!-- /content -->
+</div><!-- /panel-lnd01 -->
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- LONDON CITY -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div id="panel-lnd02" class="site-panel">
+<div class="content">
+
+  <div class="id-strip">
+    <span class="id-strip-label">Identity resolved &rarr;</span>
+    <div class="id-item"><span class="id-sys">EPOS</span><span class="id-val">SITE-LDN-02</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">Infor WFM</span><span class="id-val">GBR_SITE_0002</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">SAP S/4HANA</span><span class="id-val">CC-GBR-002</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">SuccessFactors</span><span class="id-val">OU-GBR-002</span></div>
+    <span class="id-arrow" style="margin-left:8px;">&#8592;</span>
+    <span style="font-family:'DM Mono',monospace;font-size:9.5px;color:#3A5070;">one SPARQL call</span>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 1 of 5</div><div class="mh-title">Labour Cost per Cover</div></div>
+      <div class="mh-right"><span class="sys-badge">Infor WFM &rarr; GBR_SITE_0002</span><span class="sys-badge">EPOS &rarr; SITE-LDN-02</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="lnd02-labour"></canvas></div>
+      <div class="insight insight-warn">Avg £11.27/cover — highest of the three sites. Lunch at £14.20 warrants review. Consider staffing mix optimisation for afternoon period.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 2 of 5</div><div class="mh-title">Revenue by Category</div></div>
+      <div class="mh-right"><span class="sys-badge">EPOS &rarr; SITE-LDN-02</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="lnd02-revenue"></canvas></div>
+      <div class="insight insight-good">Total £25,500 over 30 days. Strong Mains performance (£8,780). Hot Drinks (£7,860) close second — upsell opportunity in Afternoon period.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 3 of 5</div><div class="mh-title">Food Margin by Product</div></div>
+      <div class="mh-right"><span class="sys-badge">EPOS &harr; Procurement</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap hbar"><canvas id="lnd02-margin"></canvas></div>
+      <div class="insight insight-warn">Americano at £0.95 below threshold — same national contract issue as all sites. Pasta Bowl and BLT Sandwich healthy. Product mix is good.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 4 of 5</div><div class="mh-title">SAP Revenue per Cover</div></div>
+      <div class="mh-right"><span class="sys-badge">SAP S/4HANA &rarr; CC-GBR-002</span><span class="sys-badge">&#8594; identity resolved via hosp:sapCostCenter</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="lnd02-sap-rev"></canvas></div>
+      <div class="insight insight-good">Avg £11.31/cover — consistent with London CW. All periods above £8.00 threshold. Revenue per cover is strong despite slightly lower footfall.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 5 of 5</div><div class="mh-title">Headcount by Contract Type</div></div>
+      <div class="mh-right"><span class="sys-badge">SAP SuccessFactors &rarr; OU-GBR-002</span><span class="sys-badge">&#8594; identity resolved via hosp:sfOrgUnitId</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="kpi-tiles">
+        <div class="kpi-tile"><div class="tv">20</div><div class="tl">Permanent</div><div class="ts">20.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv">10</div><div class="tl">Part-Time</div><div class="ts">5.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv" style="color:var(--warn)">4</div><div class="tl">Zero-Hours</div><div class="ts">0.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv" style="color:var(--warn)">4</div><div class="tl">Agency</div><div class="ts">4.0 FTE</div></div>
+      </div>
+      <div class="chart-wrap"><canvas id="lnd02-headcount"></canvas></div>
+      <div class="insight insight-good">Flexible workforce at 21.1% — within the 30% threshold. Headcount profile identical to London CW. Consistent workforce management across both London sites.</div>
+    </div>
+  </div>
+
+  <a class="back-link" href="aws-presentation.html">&#8592; Back to Architecture Overview</a>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!-- MANCHESTER -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<div id="panel-man01" class="site-panel">
+<div class="content">
+
+  <div class="id-strip">
+    <span class="id-strip-label">Identity resolved &rarr;</span>
+    <div class="id-item"><span class="id-sys">EPOS</span><span class="id-val">SITE-MAN-01</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">Infor WFM</span><span class="id-val">GBR_SITE_0101</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">SAP S/4HANA</span><span class="id-val">CC-GBR-101</span></div>
+    <span class="id-arrow">·</span>
+    <div class="id-item"><span class="id-sys">SuccessFactors</span><span class="id-val">OU-GBR-101</span></div>
+    <span class="id-arrow" style="margin-left:8px;">&#8592;</span>
+    <span style="font-family:'DM Mono',monospace;font-size:9.5px;color:#3A5070;">one SPARQL call</span>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 1 of 5</div><div class="mh-title">Labour Cost per Cover</div></div>
+      <div class="mh-right"><span class="sys-badge">Infor WFM &rarr; GBR_SITE_0101</span><span class="sys-badge">EPOS &rarr; SITE-MAN-01</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="man01-labour"></canvas></div>
+      <div class="insight insight-good">Avg £9.27/cover — lowest and most efficient of all three sites. Breakfast at £7.40 is the benchmark. Staff-mix is optimal with low agency usage.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 2 of 5</div><div class="mh-title">Revenue by Category</div></div>
+      <div class="mh-right"><span class="sys-badge">EPOS &rarr; SITE-MAN-01</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="man01-revenue"></canvas></div>
+      <div class="insight insight-warn">Total £20,720 — lowest of three sites but strong unit economics. Revenue gap vs London likely reflects lower footfall rather than operational issues.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 3 of 5</div><div class="mh-title">Food Margin by Product</div></div>
+      <div class="mh-right"><span class="sys-badge">EPOS &harr; Procurement</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap hbar"><canvas id="man01-margin"></canvas></div>
+      <div class="insight insight-warn">Same national procurement contract — Americano margin (£0.95) below threshold at all sites. Pasta Bowl (£2.70) and BLT (£1.70) strong.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 4 of 5</div><div class="mh-title">SAP Revenue per Cover</div></div>
+      <div class="mh-right"><span class="sys-badge">SAP S/4HANA &rarr; CC-GBR-101</span><span class="sys-badge">&#8594; identity resolved via hosp:sapCostCenter</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="chart-wrap"><canvas id="man01-sap-rev"></canvas></div>
+      <div class="insight insight-good">Avg £11.00/cover — slightly below London sites. Lunch at £10.75 is the weakest period. All above £8.00 threshold. Strong operational efficiency-to-revenue ratio.</div>
+    </div>
+  </div>
+
+  <div class="metric-section">
+    <div class="metric-header">
+      <div class="mh-left"><div class="mh-label">KPI 5 of 5</div><div class="mh-title">Headcount by Contract Type</div></div>
+      <div class="mh-right"><span class="sys-badge">SAP SuccessFactors &rarr; OU-GBR-101</span><span class="sys-badge">&#8594; identity resolved via hosp:sfOrgUnitId</span></div>
+    </div>
+    <div class="metric-body">
+      <div class="kpi-tiles">
+        <div class="kpi-tile"><div class="tv">20</div><div class="tl">Permanent</div><div class="ts">20.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv">10</div><div class="tl">Part-Time</div><div class="ts">5.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv" style="color:var(--warn)">4</div><div class="tl">Zero-Hours</div><div class="ts">0.0 FTE</div></div>
+        <div class="kpi-tile"><div class="tv" style="color:var(--warn)">4</div><div class="tl">Agency</div><div class="ts">4.0 FTE</div></div>
+      </div>
+      <div class="chart-wrap"><canvas id="man01-headcount"></canvas></div>
+      <div class="insight insight-good">Flexible workforce at 21.1% — within threshold. Consistent headcount profile across all three sites confirms standardised HR model. Manchester's labour cost efficiency reflects permanent-heavy roster.</div>
+    </div>
+  </div>
+
+  <a class="back-link" href="aws-presentation.html">&#8592; Back to Architecture Overview</a>
+</div>
+</div>
+
+<footer>
+  <span>Hospitality Group — KPI Operations Report &nbsp;·&nbsp; 30-day period Aug 2026</span>
+  <span>Amit Dixit &nbsp;·&nbsp; <a href="https://github.com/inbravo">github.com/inbravo</a></span>
+</footer>
+
+<script>
+// ── Theme toggle ──────────────────────────────────────────────────────────────
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const btn = document.getElementById('themeBtn');
+  if (btn) btn.textContent = theme === 'dark' ? '☀ Light' : '☾ Dark';
+  try { localStorage.setItem('hosp-theme', theme); } catch(e) {}
+}
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+(function() {
+  try {
+    const saved = localStorage.getItem('hosp-theme');
+    if (saved) { applyTheme(saved); return; }
+  } catch(e) {}
+  const prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  applyTheme(prefersDark ? 'dark' : 'light');
+})();
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+const DATA = {
+  lnd01: {
+    labour:   { labels: ['Breakfast','Lunch','Afternoon'], values: [8.40, 13.20, 9.60] },
+    revenue:  { labels: ['Mains','Hot Drinks','Sandwiches','Cold Drinks'],
+                values: [9440, 8240, 6180, 3120] },
+    margin:   { labels: ['Pasta Bowl','BLT Sandwich','Still Water','Latte','Americano'],
+                values: [2.70, 1.70, 1.05, 1.10, 0.95] },
+    sapRev:   { labels: ['Afternoon','Breakfast','Lunch'], values: [11.67, 11.49, 11.59] },
+    headcount:{ labels: ['Permanent','Part-Time','Zero-Hours','Agency'], values: [20, 10, 4, 4] },
+  },
+  lnd02: {
+    labour:   { labels: ['Breakfast','Lunch','Afternoon'], values: [9.10, 14.20, 10.40] },
+    revenue:  { labels: ['Mains','Hot Drinks','Sandwiches','Cold Drinks'],
+                values: [8780, 7860, 5920, 2940] },
+    margin:   { labels: ['Pasta Bowl','BLT Sandwich','Still Water','Latte','Americano'],
+                values: [2.70, 1.70, 1.05, 1.10, 0.95] },
+    sapRev:   { labels: ['Afternoon','Breakfast','Lunch'], values: [11.30, 11.36, 11.28] },
+    headcount:{ labels: ['Permanent','Part-Time','Zero-Hours','Agency'], values: [20, 10, 4, 4] },
+  },
+  man01: {
+    labour:   { labels: ['Breakfast','Lunch','Afternoon'], values: [7.40, 11.60, 8.80] },
+    revenue:  { labels: ['Mains','Hot Drinks','Sandwiches','Cold Drinks'],
+                values: [7220, 6440, 4680, 2380] },
+    margin:   { labels: ['Pasta Bowl','BLT Sandwich','Still Water','Latte','Americano'],
+                values: [2.70, 1.70, 1.05, 1.10, 0.95] },
+    sapRev:   { labels: ['Afternoon','Breakfast','Lunch'], values: [10.98, 11.26, 10.75] },
+    headcount:{ labels: ['Permanent','Part-Time','Zero-Hours','Agency'], values: [20, 10, 4, 4] },
+  },
+};
+
+// ── Palette ───────────────────────────────────────────────────────────────────
+const NAVY   = '#1E3C6A';
+const AMBER  = '#E8993A';
+const BLUE   = '#1E6FD9';
+const GOOD   = '#1A7A52';
+const BAD    = '#C23535';
+const MUTED  = '#5C6E8A';
+const GRID   = 'rgba(180,200,230,.15)';
+const THRESH = '#C23535';
+
+function isDark() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ||
+    (!document.documentElement.getAttribute('data-theme') &&
+     window.matchMedia('(prefers-color-scheme:dark)').matches);
+}
+function textColor() { return isDark() ? '#D4E4F8' : '#0A1B35'; }
+function gridColor() { return isDark() ? 'rgba(100,150,200,.12)' : 'rgba(180,200,230,.2)'; }
+
+// ── Chart factory ─────────────────────────────────────────────────────────────
+function labourChart(id, d) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const colors = [BLUE + 'CC', AMBER + 'CC', MUTED + 'CC'];
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: d.labels, datasets: [{
+      label: '£ / cover', data: d.values,
+      backgroundColor: colors, borderColor: colors.map(c=>c.slice(0,7)), borderWidth:1,
+    }]},
+    options: baseOpts('£ per cover', false, [
+      { type:'line', yMin:20, yMax:20, borderColor: THRESH, borderWidth:1.5,
+        borderDash:[6,4], label:{display:true,content:'Threshold £20.00',position:'end',
+        color:THRESH,font:{size:10},backgroundColor:'rgba(194,53,53,.08)'} }
+    ]),
+  });
+}
+
+function revenueChart(id, d) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const palette = [NAVY+'CC', BLUE+'CC', AMBER+'CC', MUTED+'CC'];
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: d.labels, datasets: [{
+      label: 'Revenue £', data: d.values,
+      backgroundColor: palette, borderColor: palette.map(c=>c.slice(0,7)), borderWidth:1,
+    }]},
+    options: baseOpts('Revenue (£)', false),
+  });
+}
+
+function marginChart(id, d) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const colors = d.values.map(v => v >= 1.0 ? GOOD : BAD);
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: d.labels, datasets: [{
+      label: 'Gross Margin £', data: d.values,
+      backgroundColor: colors.map(c => c + 'CC'),
+      borderColor: colors, borderWidth:1,
+    }]},
+    options: baseOpts('£ per unit', true, [
+      { type:'line', xMin:1.0, xMax:1.0, borderColor: THRESH, borderWidth:1.5,
+        borderDash:[6,4], label:{display:true,content:'Min £1.00',position:'end',
+        color:THRESH,font:{size:10},backgroundColor:'rgba(194,53,53,.08)'} }
+    ]),
+  });
+}
+
+function sapRevChart(id, d) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const colors = d.values.map(v => v >= 8 ? GOOD : BAD);
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: d.labels, datasets: [{
+      label: '£ / cover', data: d.values,
+      backgroundColor: colors.map(c => c + 'CC'),
+      borderColor: colors, borderWidth:1,
+    }]},
+    options: baseOpts('£ per cover', false, [
+      { type:'line', yMin:8, yMax:8, borderColor: THRESH, borderWidth:1.5,
+        borderDash:[6,4], label:{display:true,content:'Threshold £8.00',position:'end',
+        color:THRESH,font:{size:10},backgroundColor:'rgba(194,53,53,.08)'} }
+    ]),
+  });
+}
+
+function headcountChart(id, d) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const palette = [GOOD+'CC', BLUE+'CC', AMBER+'CC', BAD+'CC'];
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: d.labels, datasets: [{
+      label: 'Headcount', data: d.values,
+      backgroundColor: palette,
+      borderColor: palette.map(c=>c.slice(0,7)), borderWidth:1,
+    }]},
+    options: baseOpts('Headcount', false),
+  });
+}
+
+function baseOpts(axisLabel, isHBar, annotations = []) {
+  const tc = textColor();
+  const gc = gridColor();
+  return {
+    indexAxis: isHBar ? 'y' : 'x',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: {
+        label: ctx => {
+          const v = ctx.parsed[isHBar ? 'x' : 'y'];
+          if (axisLabel.includes('%')) return `${v.toFixed(1)}%`;
+          if (axisLabel.includes('£'))  return `£${v.toFixed(2)}`;
+          return `£${v.toLocaleString()}`;
+        }
+      }},
+      annotation: annotations.length ? { annotations: Object.fromEntries(annotations.map((a,i)=>['a'+i,a])) } : {},
+    },
+    scales: {
+      x: { grid:{color:gc}, ticks:{font:{size:11},color:MUTED},
+           title:{display:isHBar&&!!axisLabel,text:axisLabel,font:{size:11},color:MUTED} },
+      y: { grid:{color:gc}, ticks:{font:{size:11},color:MUTED}, beginAtZero:true,
+           title:{display:!isHBar&&!!axisLabel,text:axisLabel,font:{size:11},color:MUTED} },
+    },
+  };
+}
+
+// ── Render all charts ─────────────────────────────────────────────────────────
+function renderCharts(site) {
+  const d = DATA[site];
+  labourChart     (`${site}-labour`,    d.labour);
+  revenueChart    (`${site}-revenue`,   d.revenue);
+  marginChart     (`${site}-margin`,    d.margin);
+  sapRevChart     (`${site}-sap-rev`,   d.sapRev);
+  headcountChart  (`${site}-headcount`, d.headcount);
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+const rendered = new Set();
+function showSite(id, btn) {
+  document.querySelectorAll('.site-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.site-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (!rendered.has(id)) { renderCharts(id); rendered.add(id); }
+}
+
+// Initial render for first tab
+renderCharts('lnd01');
+rendered.add('lnd01');
+</script>
+</body>
+</html>

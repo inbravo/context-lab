@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospitality Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* ── Tokens ──────────────────────────────────────────────────────────────── */
+:root {
+  --bg:       #F4F7FB;
+  --surface:  #FFFFFF;
+  --surface2: #EEF2F8;
+  --border:   #DDE5F0;
+  --navy:     #0A1B35;
+  --accent:   #E8993A;
+  --aws:      #FF9900;
+  --blue:     #1E6FD9;
+  --text:     #0A1B35;
+  --muted:    #5C6E8A;
+  --good:     #1A7A52;
+  --bad:      #C23535;
+  --warn:     #B8820A;
+  --code-bg:  #E2EAF6;
+  --code-fg:  #1A4A8A;
+  --thead-bg: #1E3A6E;
+  --shadow:   0 2px 16px rgba(10,27,53,.09);
+  --aws-tint: rgba(255,153,0,.07);
+  --aws-border: rgba(255,153,0,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #070D1A; --surface: #0D1828; --surface2: #111F34;
+    --border: #1A2C48; --navy: #D4E4F8; --text: #D4E4F8;
+    --muted: #6A8AAA; --good: #2FAF72; --bad: #E05555;
+    --warn: #D4A020; --shadow: 0 2px 16px rgba(0,0,0,.4);
+    --aws-tint: rgba(255,153,0,.06); --aws-border: rgba(255,153,0,.2);
+    --code-bg: #0A1628; --code-fg: #6CB8F5; --thead-bg: #0A1B35;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #070D1A; --surface: #0D1828; --surface2: #111F34;
+  --border: #1A2C48; --navy: #D4E4F8; --text: #D4E4F8;
+  --muted: #6A8AAA; --good: #2FAF72; --bad: #E05555;
+  --warn: #D4A020; --shadow: 0 2px 16px rgba(0,0,0,.4);
+  --aws-tint: rgba(255,153,0,.06); --aws-border: rgba(255,153,0,.2);
+  --code-bg: #0A1628; --code-fg: #6CB8F5; --thead-bg: #0A1B35;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+       font-size: 14px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+/* ── Sticky nav ──────────────────────────────────────────────────────────── */
+nav { position: sticky; top: 0; z-index: 100; background: var(--navy);
+      border-bottom: 2px solid var(--accent); padding: 0 40px;
+      display: flex; align-items: center; gap: 4px; overflow-x: auto; }
+nav a { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .05em;
+        text-transform: uppercase; color: #8FAAC8; text-decoration: none;
+        padding: 14px 12px; border-bottom: 2px solid transparent;
+        white-space: nowrap; transition: color .15s, border-color .15s; margin-bottom: -2px; }
+nav a:hover, nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-brand { font-family: 'DM Serif Display', serif; font-size: 14px; color: #fff;
+             margin-right: 20px; white-space: nowrap; flex-shrink: 0;
+             padding: 14px 0; }
+.theme-toggle { margin-left: auto; flex-shrink: 0; cursor: pointer; background: none;
+                border: 1px solid rgba(255,255,255,.18); border-radius: 20px;
+                padding: 5px 12px; color: #8FAAC8; font-family: 'DM Mono', monospace;
+                font-size: 10.5px; letter-spacing: .04em; white-space: nowrap;
+                transition: border-color .15s, color .15s; }
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.hero { background: linear-gradient(160deg, #06111F 0%, #0A1B35 60%, #0D2344 100%);
+        padding: 72px 60px 60px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, #D4753A 40%, transparent 80%); }
+.hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .14em;
+                text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+.hero h1 { font-family: 'DM Serif Display', serif; font-size: 42px; font-weight: 400;
+           color: #fff; line-height: 1.15; text-wrap: balance; max-width: 720px; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub { font-size: 15px; color: #8FAAC8; margin-top: 14px; max-width: 640px;
+            line-height: 1.7; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 36px; }
+.hero-stat { display: flex; flex-direction: column; }
+.hero-stat .hs-val { font-family: 'DM Serif Display', serif; font-size: 28px;
+                     color: #fff; line-height: 1; }
+.hero-stat .hs-lbl { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em;
+                     text-transform: uppercase; color: #6A8AAA; margin-top: 4px; }
+.hero-divider { width: 1px; background: #1E3050; align-self: stretch; margin: 4px 0; }
+
+/* ── Section wrapper ─────────────────────────────────────────────────────── */
+section { padding: 60px 60px; border-bottom: 1px solid var(--border); }
+section:nth-child(even) { background: var(--surface); }
+section:nth-child(odd)  { background: var(--bg); }
+.section-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em;
+                   text-transform: uppercase; color: var(--accent);
+                   padding-left: 14px; border-left: 3px solid var(--accent);
+                   margin-bottom: 10px; }
+.section-title { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400;
+                 color: var(--navy); margin-bottom: 6px; line-height: 1.25; }
+.section-lead { font-size: 14px; color: var(--muted); max-width: 680px;
+                margin-bottom: 32px; line-height: 1.7; }
+
+/* ── Source cards ────────────────────────────────────────────────────────── */
+.source-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.source-card { background: var(--surface); border: 1px solid var(--border);
+               border-radius: 10px; padding: 20px; box-shadow: var(--shadow);
+               border-top: 3px solid var(--accent); }
+section:nth-child(even) .source-card { background: var(--bg); }
+.sc-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent);
+          letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+.sc-name { font-weight: 700; font-size: 14px; color: var(--navy); margin-bottom: 8px; }
+.sc-id { font-family: 'DM Mono', monospace; font-size: 11px; background: var(--code-bg);
+         color: #6CB8F5; padding: 4px 8px; border-radius: 4px; display: inline-block;
+         margin-bottom: 10px; }
+.sc-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+.sc-tech { display: inline-flex; align-items: center; gap: 5px;
+           font-family: 'DM Mono', monospace; font-size: 10.5px; font-weight: 500;
+           color: var(--blue); background: rgba(30,111,217,.09);
+           border: 1px solid rgba(30,111,217,.22);
+           padding: 3px 9px; border-radius: 5px; margin-bottom: 10px; }
+.sc-tech::before { content: '⬡'; font-size: 9px; opacity: .6; }
+.sc-rows { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted);
+           letter-spacing: .04em; }
+
+/* ── Schema tabs ─────────────────────────────────────────────────────────── */
+.tab-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 20px; }
+.tab-btn { font-family: 'DM Mono', monospace; font-size: 11px; padding: 7px 14px;
+           border-radius: 6px; border: 1px solid var(--border);
+           background: var(--surface2); color: var(--muted); cursor: pointer;
+           transition: all .15s; letter-spacing: .04em; }
+.tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border);
+              box-shadow: var(--shadow); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--thead-bg); }
+thead th { color: #fff; font-weight: 600; padding: 12px 16px; text-align: left;
+           font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .07em;
+           text-transform: uppercase; white-space: nowrap; }
+thead th.aws-col { background: #2A1A00; color: var(--aws); }
+tbody tr { border-bottom: 1px solid var(--border); background: var(--surface); }
+tbody tr:nth-child(even) { background: var(--surface2); }
+tbody tr:last-child { border-bottom: none; }
+td { padding: 11px 16px; vertical-align: top; line-height: 1.5; }
+td.aws-col { background: var(--aws-tint); border-left: 2px solid var(--aws-border); }
+td code { font-family: 'DM Mono', monospace; font-size: 11.5px; background: var(--code-bg);
+          color: var(--code-fg); padding: 2px 6px; border-radius: 3px; }
+td .pill { display: inline-block; font-size: 10.5px; padding: 2px 8px; border-radius: 12px;
+           font-weight: 600; letter-spacing: .03em; }
+td .pill-good { background: rgba(26,122,82,.12); color: var(--good); }
+td .pill-warn { background: rgba(184,130,10,.12); color: var(--warn); }
+td .pill-bad  { background: rgba(194,53,53,.12);  color: var(--bad); }
+td .sys-tag { display: inline-block; font-family:'DM Mono',monospace; font-size:9.5px;
+              background: var(--surface2); border: 1px solid var(--border);
+              color: var(--muted); padding: 1px 6px; border-radius: 3px; margin: 1px; }
+
+/* ── KPI snapshot grid ───────────────────────────────────────────────────── */
+.kpi-grid { display: grid; grid-template-columns: 200px repeat(3, 1fr); gap: 0;
+            border-radius: 10px; overflow: hidden; border: 1px solid var(--border);
+            box-shadow: var(--shadow); }
+.kpi-hdr { background: var(--navy); color: #fff; padding: 12px 16px;
+           font-family: 'DM Mono', monospace; font-size: 10.5px;
+           text-transform: uppercase; letter-spacing: .07em;
+           border-bottom: 1px solid rgba(255,255,255,.06); }
+.kpi-site-hdr { background: var(--navy); color: var(--accent); text-align: center; }
+.kpi-label { background: var(--surface); padding: 14px 16px; border-bottom: 1px solid var(--border);
+             font-size: 12px; font-weight: 600; color: var(--text); }
+.kpi-label small { display: block; font-weight: 400; font-family: 'DM Mono',monospace;
+                   font-size: 10px; color: var(--muted); margin-top: 2px; }
+.kpi-val { background: var(--surface); padding: 14px 12px; border-bottom: 1px solid var(--border);
+           border-left: 1px solid var(--border); text-align: center; }
+.kpi-val:nth-child(even) { background: var(--surface2); }
+.kv-num { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500;
+          font-variant-numeric: tabular-nums; }
+.kv-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.kpi-cta { grid-column: 1 / -1; background: var(--accent);
+           display: flex; align-items: center; justify-content: space-between;
+           padding: 14px 20px; }
+.kpi-cta span { font-size: 13px; font-weight: 600; color: #fff; }
+.kpi-cta a { font-family: 'DM Mono', monospace; font-size: 11px; color: #fff;
+             text-decoration: none; background: rgba(0,0,0,.2);
+             padding: 7px 16px; border-radius: 5px; transition: background .15s;
+             white-space: nowrap; }
+.kpi-cta a:hover { background: rgba(0,0,0,.35); }
+
+/* ── NLP table ───────────────────────────────────────────────────────────── */
+.q-type { font-weight: 600; font-size: 12.5px; white-space: nowrap; }
+.q-question { font-style: italic; color: var(--muted); font-size: 12.5px; }
+.q-response { font-size: 12.5px; line-height: 1.55; }
+.q-response strong { color: var(--navy); }
+.res-strip { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; align-items: center; }
+.res-chip { font-family: 'DM Mono', monospace; font-size: 9.5px; color: #6CB8F5;
+            background: var(--code-bg); padding: 2px 7px; border-radius: 3px; }
+.res-arrow { font-size: 10px; color: var(--accent); }
+
+/* ── Internals section ───────────────────────────────────────────────────── */
+.internals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:860px) { .internals-grid { grid-template-columns: 1fr; } }
+.int-card { background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 22px 24px; }
+section:nth-child(even) .int-card { background: var(--bg); }
+.int-card h4 { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em;
+               text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.stat-row { display: flex; justify-content: space-between; align-items: baseline;
+            padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.stat-row:last-child { border-bottom: none; }
+.stat-val { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--navy); }
+pre.code-block { background: var(--code-bg); border-radius: 8px; padding: 18px 20px;
+                 font-family: 'DM Mono', monospace; font-size: 11.5px; line-height: 1.8;
+                 color: #8FAAC8; overflow-x: auto; }
+pre.code-block .kw  { color: #6CB8F5; }
+pre.code-block .str { color: #5CC898; }
+pre.code-block .cmt { color: #3A5070; }
+
+.pipeline { display: flex; flex-direction: column; gap: 0; }
+.pipe-step { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0;
+             border-bottom: 1px dashed var(--border); }
+.pipe-step:last-child { border-bottom: none; }
+.pipe-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
+            background: rgba(232,153,58,.12); padding: 2px 8px; border-radius: 4px;
+            min-width: 24px; text-align: center; flex-shrink: 0; margin-top: 1px; }
+.pipe-content strong { font-size: 13px; font-weight: 600; display: block; }
+.pipe-content span { font-size: 12px; color: var(--muted); }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+footer { background: var(--navy); color: #6A8AAA; font-family: 'DM Mono', monospace;
+         font-size: 11px; padding: 24px 60px; display: flex; justify-content: space-between;
+         flex-wrap: wrap; gap: 8px; }
+footer a { color: var(--accent); text-decoration: none; }
+
+@media(max-width:700px) {
+  section { padding: 40px 24px; }
+  .hero { padding: 48px 24px 40px; }
+  nav { padding: 0 16px; }
+  footer { padding: 20px 24px; }
+  .kpi-grid { grid-template-columns: 1fr; }
+  .kpi-hdr, .kpi-site-hdr, .kpi-val, .kpi-label { grid-column: 1; }
+}
+
+/* ── Local Stack (PoC) collapsible column ─────────────────────────── */
+th.poc-th { cursor: default; }
+
+.poc-toggle {
+  display: flex; flex-direction: column; gap: 3px; width: 100%;
+  background: none; border: none; cursor: pointer;
+  text-align: left; padding: 0;
+}
+.poc-toggle-label {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  letter-spacing: .01em;
+}
+td.poc-td.poc-hidden { display: none; }
+.poc-toggle-hint {
+  font-family: 'DM Mono', monospace; font-size: 9.5px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--accent);
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Hospitality Group</span>
+  <a href="#sources">Sources</a>
+  <a href="#schemas">Schemas</a>
+  <a href="#stack">Tech Stack</a>
+  <a href="#nlp">NLP Queries</a>
+  <a href="#kpi">KPI Reports</a>
+  <a href="#internals">Internals</a>
+  <a href="#reqflow">Request Flow</a>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">&#9788; Light</button>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-eyebrow">Context Engineering — Example 14 &nbsp;·&nbsp; AWS Architecture Review</div>
+  <h1>Multi-Source <em>Intelligence Platform</em><br>for UK Hospitality Operations</h1>
+  <p class="hero-sub">Five operational source systems. Four incompatible site ID formats. One OWL ontology that resolves them all — making natural language cross-system queries possible without hardcoded join logic.</p>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <span class="hs-val">5</span>
+      <span class="hs-lbl">Source Systems</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <span class="hs-val">4</span>
+      <span class="hs-lbl">Site ID Formats</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <span class="hs-val">148</span>
+      <span class="hs-lbl">OWL Triples</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <span class="hs-val">~2,700</span>
+      <span class="hs-lbl">Rows · 30 Days</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <span class="hs-val">5</span>
+      <span class="hs-lbl">Cross-System KPIs</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 1. FIVE DATA SOURCES ──────────────────────────────────────────────── -->
+<section id="sources">
+  <div class="section-eyebrow">01 — The Identity Problem</div>
+  <div class="section-title">Five Source Systems, Four ID Formats</div>
+  <p class="section-lead">Every system was built by a different vendor. Each refers to the same three physical sites using a different identifier convention. No system shares a key with another — making cross-system joins impossible without a semantic bridge.</p>
+
+  <div class="source-grid">
+    <div class="source-card">
+      <div class="sc-num">Source 01 · EPOS</div>
+      <div class="sc-name">Electronic Point of Sale</div>
+      <div class="sc-tech">Oracle MICROS</div>
+      <div class="sc-id">SITE-LDN-01</div>
+      <div class="sc-desc">Transaction-level till data. Every item sold: category, quantity, unit price, meal period, date. The primary revenue signal.</div>
+      <div class="sc-rows">~1,913 rows · 30 days</div>
+    </div>
+    <div class="source-card">
+      <div class="sc-num">Source 02 · WFM</div>
+      <div class="sc-name">Workforce Management</div>
+      <div class="sc-tech">Infor WFM</div>
+      <div class="sc-id">GBR_SITE_0001</div>
+      <div class="sc-desc">Staff shift records. Hours worked, role, labour cost per shift, worker type. The primary labour cost signal.</div>
+      <div class="sc-rows">~406 rows · 30 days</div>
+    </div>
+    <div class="source-card">
+      <div class="sc-num">Source 03 · Procurement</div>
+      <div class="sc-name">National Procurement</div>
+      <div class="sc-tech">Coupa</div>
+      <div class="sc-id">(no site_id)</div>
+      <div class="sc-desc">National contracted product catalogue. Supplier-agreed unit costs per SKU. No site dimension — applies to all locations.</div>
+      <div class="sc-rows">5 rows · product master</div>
+    </div>
+    <div class="source-card">
+      <div class="sc-num">Source 04 · SAP Sales</div>
+      <div class="sc-name">SAP Sales &amp; Invoicing</div>
+      <div class="sc-tech">SAP S/4HANA</div>
+      <div class="sc-id">CC-GBR-001</div>
+      <div class="sc-desc">Client invoicing records. Net revenue billed per meal period, by cost centre. The authoritative revenue signal for P&amp;L reporting.</div>
+      <div class="sc-rows">~150 rows · 30 days</div>
+    </div>
+    <div class="source-card">
+      <div class="sc-num">Source 05 · HR &amp; Payroll</div>
+      <div class="sc-name">HR &amp; Payroll</div>
+      <div class="sc-tech">SAP SuccessFactors</div>
+      <div class="sc-id">OU-GBR-001</div>
+      <div class="sc-desc">Employee headcount by contract type (PERMANENT, PART_TIME, ZERO_HOURS, AGENCY). FTE and headcount per org unit. The workforce composition signal.</div>
+      <div class="sc-rows">~45 rows · current snapshot</div>
+    </div>
+  </div>
+
+  <div style="margin-top:28px; padding:18px 22px; background:var(--surface);
+       border:1px solid var(--border); border-radius:10px; border-left:3px solid var(--bad);">
+    <p style="font-size:13px; font-weight:600; color:var(--bad); margin-bottom:6px;">The Problem</p>
+    <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+      A question like <em>"What is the labour cost per meal served at London Canary Wharf?"</em> requires joining EPOS (<code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">SITE-LDN-01</code>) with Infor WFM (<code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">GBR_SITE_0001</code>). Without a semantic bridge, the join silently returns 0 rows. Every cross-system KPI has this problem.
+    </p>
+  </div>
+</section>
+
+<!-- ── 2. SCHEMAS ────────────────────────────────────────────────────────── -->
+<section id="schemas">
+  <div class="section-eyebrow">02 — Dataset Schemas</div>
+  <div class="section-title">Tables &amp; Key Fields per Source System</div>
+  <p class="section-lead">Each source system has one primary table. The site_id column — where it exists — uses a different format per system. The OWL ontology maps all four formats to the same canonical site individual.</p>
+
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="showTab('epos')">EPOS</button>
+    <button class="tab-btn" onclick="showTab('wfm')">WFM</button>
+    <button class="tab-btn" onclick="showTab('proc')">Procurement</button>
+    <button class="tab-btn" onclick="showTab('res')">SAP S/4HANA</button>
+    <button class="tab-btn" onclick="showTab('fb')">HR &amp; Payroll</button>
+  </div>
+
+  <div id="tab-epos" class="tab-panel active">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Column</th><th>Type</th><th>Example Value</th><th>Role</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><code>txn_id</code></td><td>VARCHAR PK</td><td><code>TXN-20260801-LDN-01-BRK-03</code></td><td>Primary key</td></tr>
+          <tr><td><code>site_id</code></td><td>VARCHAR</td><td><code>SITE-LDN-01</code></td><td><strong>EPOS site key</strong> — hyphenated, provider format</td></tr>
+          <tr><td><code>epos_item_id</code></td><td>VARCHAR</td><td><code>EPOS-LATTE</code></td><td>Till-level product code</td></tr>
+          <tr><td><code>item_name</code></td><td>VARCHAR</td><td><code>Latte</code></td><td>Display name</td></tr>
+          <tr><td><code>category</code></td><td>VARCHAR</td><td><code>HOT DRINKS</code></td><td>Product category for revenue grouping</td></tr>
+          <tr><td><code>quantity</code></td><td>INTEGER</td><td><code>2</code></td><td>Units sold per transaction</td></tr>
+          <tr><td><code>unit_price_gbp</code></td><td>DECIMAL(8,2)</td><td><code>3.20</code></td><td>Selling price</td></tr>
+          <tr><td><code>total_gbp</code></td><td>DECIMAL(8,2)</td><td><code>6.40</code></td><td>qty × unit_price</td></tr>
+          <tr><td><code>meal_period</code></td><td>VARCHAR</td><td><code>BREAKFAST</code></td><td>BREAKFAST · LUNCH · AFTERNOON</td></tr>
+          <tr><td><code>txn_date</code></td><td>DATE</td><td><code>2026-08-01</code></td><td>Transaction date</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-wfm" class="tab-panel">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Column</th><th>Type</th><th>Example Value</th><th>Role</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><code>shift_id</code></td><td>VARCHAR PK</td><td><code>SHIFT-20260801-GBR_SITE_0001-02</code></td><td>Primary key</td></tr>
+          <tr><td><code>site_id</code></td><td>VARCHAR</td><td><code>GBR_SITE_0001</code></td><td><strong>Infor WFM site key</strong> — country prefix + underscore separators</td></tr>
+          <tr><td><code>wfm_employee_id</code></td><td>VARCHAR</td><td><code>EMP-WFM-0042</code></td><td>Internal employee reference</td></tr>
+          <tr><td><code>role</code></td><td>VARCHAR</td><td><code>CHEF</code></td><td>CHEF · BARISTA · SERVER · SUPERVISOR</td></tr>
+          <tr><td><code>shift_date</code></td><td>DATE</td><td><code>2026-08-01</code></td><td>Shift date</td></tr>
+          <tr><td><code>hours_worked</code></td><td>DECIMAL(4,2)</td><td><code>8.50</code></td><td>Hours on shift</td></tr>
+          <tr><td><code>labour_cost_gbp</code></td><td>DECIMAL(8,2)</td><td><code>141.63</code></td><td>hours × hourly_rate × 1.15 (on-costs)</td></tr>
+          <tr><td><code>worker_type</code></td><td>VARCHAR</td><td><code>PERMANENT</code></td><td>PERMANENT · PART_TIME · AGENCY</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-proc" class="tab-panel">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Column</th><th>Type</th><th>Example Value</th><th>Role</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><code>proc_product_id</code></td><td>VARCHAR PK</td><td><code>PROD-BEV-001</code></td><td>National catalogue code — <em>different</em> from EPOS item ID</td></tr>
+          <tr><td><code>product_name</code></td><td>VARCHAR</td><td><code>Fresh Ground Coffee Latte</code></td><td>Supplier description</td></tr>
+          <tr><td><code>category</code></td><td>VARCHAR</td><td><code>BEVERAGES</code></td><td>BEVERAGES · FOOD</td></tr>
+          <tr><td><code>contracted_price_gbp</code></td><td>DECIMAL(8,2)</td><td><code>2.10</code></td><td>Agreed cost per unit — vs EPOS selling price</td></tr>
+          <tr><td><code>supplier_tier</code></td><td>VARCHAR</td><td><code>NATIONAL_CONTRACT</code></td><td>NATIONAL_CONTRACT · LOCAL_PREFERRED</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted);">No <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">site_id</code> column — this is a national master catalogue. The product identity bridge (<code>EPOS-LATTE ↔ PROD-BEV-001</code>) is resolved by the ontology via <code>hosp:eposItemId</code> and <code>hosp:procProductId</code> properties on each Product individual.</p>
+  </div>
+
+  <div id="tab-res" class="tab-panel">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Column</th><th>Type</th><th>Example Value</th><th>Role</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><code>invoice_id</code></td><td>VARCHAR PK</td><td><code>INV-20260801-CC-GBR-001-01</code></td><td>Primary key</td></tr>
+          <tr><td><code>cost_center_code</code></td><td>VARCHAR</td><td><code>CC-GBR-001</code></td><td><strong>SAP S/4HANA site key</strong> — cost centre format, SAP standard</td></tr>
+          <tr><td><code>meal_period</code></td><td>VARCHAR</td><td><code>LUNCH</code></td><td>BREAKFAST · LUNCH · AFTERNOON</td></tr>
+          <tr><td><code>covers_billed</code></td><td>INTEGER</td><td><code>48</code></td><td>Covers invoiced to client for the period</td></tr>
+          <tr><td><code>net_revenue_gbp</code></td><td>DECIMAL(10,2)</td><td><code>672.00</code></td><td>Net billed revenue ex-VAT — the authoritative P&amp;L signal</td></tr>
+          <tr><td><code>invoice_date</code></td><td>DATE</td><td><code>2026-08-01</code></td><td>Invoice date</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted);">Identity bridge: <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">SITE-LDN-01</code> (EPOS) → <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">CC-GBR-001</code> (SAP) resolved via <code>hosp:sapCostCenter</code> property in the ontology.</p>
+  </div>
+
+  <div id="tab-fb" class="tab-panel">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Column</th><th>Type</th><th>Example Value</th><th>Role</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><code>employee_id</code></td><td>VARCHAR PK</td><td><code>EMP-SF-0001</code></td><td>SuccessFactors employee ID</td></tr>
+          <tr><td><code>org_unit_id</code></td><td>VARCHAR</td><td><code>OU-GBR-001</code></td><td><strong>SuccessFactors site key</strong> — org unit format, SF standard</td></tr>
+          <tr><td><code>contract_type</code></td><td>VARCHAR</td><td><code>PERMANENT</code></td><td>PERMANENT · PART_TIME · ZERO_HOURS · AGENCY</td></tr>
+          <tr><td><code>fte</code></td><td>DECIMAL(4,2)</td><td><code>1.00</code></td><td>Full-time equivalent (0.5 for part-time, 0.0 for zero-hours)</td></tr>
+          <tr><td><code>hire_date</code></td><td>DATE</td><td><code>2024-03-15</code></td><td>Contract start date</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted);">Identity bridge: <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">SITE-LDN-01</code> (EPOS) → <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">OU-GBR-001</code> (SuccessFactors) resolved via <code>hosp:sfOrgUnitId</code> property in the ontology.</p>
+  </div>
+</section>
+
+<!-- ── 3. TECH STACK ──────────────────────────────────────────────────────── -->
+<section id="stack">
+  <div class="section-eyebrow">03 — Technical Approach</div>
+  <div class="section-title">Local Proof of Concept → AWS Production Equivalent</div>
+  <p class="section-lead">Every layer of the local stack has a direct AWS analogue. The architecture validates the approach locally using open-source tools; migration to AWS replaces each component like-for-like without changing the semantic model.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th style="width:18%">Stage</th>
+        <th class="poc-th" style="width:38%">
+          <button class="poc-toggle" onclick="togglePoc()" title="Show/hide Local Stack column">
+            <span class="poc-toggle-label">Local Stack (PoC)</span>
+            <span class="poc-toggle-hint" id="poc-hint">click to expand ›</span>
+          </button>
+        </th>
+        <th class="aws-col" style="width:44%">&#9650; AWS Equivalent</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Data Storage</strong></td>
+          <td>DuckDB in-process analytical DB (<code>hospitality.duckdb</code>). Single file, no server. 5 tables, ~2,700 rows.</td>
+          <td class="aws-col">Amazon Redshift Serverless or S3 + AWS Glue Data Catalog. Each source system maps to a schema/database in the catalog.</td>
+        </tr>
+        <tr>
+          <td><strong>Schema Discovery</strong></td>
+          <td><code>generate_ontology.py</code> introspects DuckDB with <code>DESCRIBE</code> — reads column names, types, row counts for all 5 tables.</td>
+          <td class="aws-col">AWS Glue Crawlers automatically discover schemas from S3, RDS, or JDBC sources. Results are registered in AWS Glue Data Catalog.</td>
+        </tr>
+        <tr>
+          <td><strong>Ontology Construction</strong></td>
+          <td>rdflib (Python). Explicit OWL Turtle handcrafted from schema introspection: 8 classes, 17 properties, 3 site individuals each with 4 ID bridge properties.</td>
+          <td class="aws-col">AWS Context Ontology Accelerator (COA) MODEL layer. Uses Bedrock embeddings to auto-generate semantic relationships. Equivalent to ~148 OWL triples at schema scale.</td>
+        </tr>
+        <tr>
+          <td><strong>Identity Resolution</strong></td>
+          <td>SPARQL query on rdflib in-memory graph. One call resolves all 4 site ID formats. Returns: <code>{epos_id, infor_code, sap_cc, sf_org, site_name}</code>. Without this, every cross-system query returns 0 rows — silently.</td>
+          <td class="aws-col">AWS COA Virtual Knowledge Graph (VKG) powered by Ontop/SPARQL. Same SPARQL syntax; execution backed by Redshift. Scales to millions of entities across all markets.</td>
+        </tr>
+        <tr>
+          <td><strong>Cross-System Joins</strong></td>
+          <td>Python metric layer. SPARQL resolves IDs first; DuckDB executes per-system SQL queries using the resolved IDs. No hardcoded joins between systems.</td>
+          <td class="aws-col">AWS COA Tier-2 agentic SQL. Resolved IDs are injected into Redshift SQL. Athena federated queries handle multi-source joins across S3/RDS/Redshift.</td>
+        </tr>
+        <tr>
+          <td><strong>Metric Definitions</strong></td>
+          <td>Python functions in <code>metric_layer.py</code>. 5 governed metrics: labour cost per cover, revenue by category, food margin, SAP revenue per cover, SF headcount by contract.</td>
+          <td class="aws-col">Amazon DataZone metric contracts + AWS COA Business Semantic Layer (BSL). Metrics published as versioned data products. Governed via DataZone catalog policies.</td>
+        </tr>
+        <tr>
+          <td><strong>LLM Agent</strong></td>
+          <td>Ollama qwen2.5 (local). OpenAI-compatible tool-calling API. System prompt with 5 governed tools. Max 15 turns.</td>
+          <td class="aws-col">Amazon Bedrock (Claude Sonnet 4.5 or Nova Pro). Bedrock Agents with action groups mapped 1:1 to the metric tools. Fully managed agent loop.</td>
+        </tr>
+        <tr>
+          <td><strong>Dashboard / API</strong></td>
+          <td>FastAPI + uvicorn (<code>dashboard_server.py</code>). Endpoints: <code>/api/ask</code> (LLM path), <code>/api/metric</code> (direct). Embedded Chart.js frontend.</td>
+          <td class="aws-col">Amazon API Gateway + AWS Lambda (Python). CloudFront serves the React/Chart.js frontend. QuickSight Q for embedded NL analytics dashboards.</td>
+        </tr>
+        <tr>
+          <td><strong>Ontology Storage</strong></td>
+          <td>OWL Turtle file (<code>hospitality_ontology.ttl</code>) loaded into rdflib at startup. Re-generated on schema change.</td>
+          <td class="aws-col">Amazon Neptune (RDF store) or AWS COA knowledge graph store. Triples persisted, versioned, and queryable via SPARQL endpoint without in-memory reload.</td>
+        </tr>
+        <tr>
+          <td><strong>Governance &amp; Lineage</strong></td>
+          <td>Tool call logs in agent output. SPARQL resolution logged per metric call. Source system attribution per data row.</td>
+          <td class="aws-col">Amazon DataZone data lineage + AWS Glue Data Quality. Full column-level lineage from source → metric → dashboard. Auto-tracked in the DataZone catalog.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── 4. NLP QUERY EXAMPLES ─────────────────────────────────────────────── -->
+<section id="nlp">
+  <div class="section-eyebrow">04 — Natural Language Interface</div>
+  <div class="section-title">Query Types &amp; Agent Responses</div>
+  <p class="section-lead">The agent receives a plain English question and returns a structured answer — plus the identity resolution proof. Every cross-system query shows which IDs were bridged via SPARQL before the DuckDB query executed. &nbsp;<a href="kpi-reports.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:1px;">View full KPI reports with charts &nbsp;&#8599;</a></p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th style="width:13%">Query Type</th>
+        <th style="width:24%">Example Question</th>
+        <th style="width:35%">Example Agent Response</th>
+        <th style="width:18%">Systems Touched</th>
+        <th style="width:10%">KPI Report</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="q-type">Labour Efficiency</td>
+          <td class="q-question">"What is the labour cost per cover at SITE-LDN-01?"</td>
+          <td class="q-response">
+            London Canary Wharf: <strong>£10.40 avg/cover</strong>. Lunch period highest at <strong>£13.20</strong> — above £20 threshold. Breakfast most efficient at £8.40.
+            <div class="res-strip">
+              <span class="res-chip">SITE-LDN-01</span><span class="res-arrow">→</span>
+              <span class="res-chip">GBR_SITE_0001</span><span style="font-size:9px;color:var(--muted)">Infor WFM · resolved via SPARQL</span>
+            </div>
+          </td>
+          <td><span class="sys-tag">EPOS</span> <span class="sys-tag">WFM</span></td>
+          <td><a href="kpi-reports.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">Labour &nbsp;&#8599;</a></td>
+        </tr>
+        <tr>
+          <td class="q-type">Revenue Analysis</td>
+          <td class="q-question">"Which site generates the most revenue?"</td>
+          <td class="q-response">
+            <strong>London Canary Wharf leads at £26,980</strong> over 30 days. Mains (£9,440) is the top category. Manchester trails at £20,720.
+            <div class="res-strip">
+              <span class="res-chip">SITE-LDN-01</span><span class="res-arrow">·</span>
+              <span class="res-chip">SITE-LDN-02</span><span class="res-arrow">·</span>
+              <span class="res-chip">SITE-MAN-01</span><span style="font-size:9px;color:var(--muted)">EPOS only</span>
+            </div>
+          </td>
+          <td><span class="sys-tag">EPOS</span></td>
+          <td><a href="kpi-reports.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">Revenue &nbsp;&#8599;</a></td>
+        </tr>
+        <tr>
+          <td class="q-type">Product Margin</td>
+          <td class="q-question">"What are the food margins at SITE-LDN-02?"</td>
+          <td class="q-response">
+            <strong>Pasta Bowl highest at £2.70</strong>/unit. Americano at <strong>£0.95</strong> — below £1.00 threshold, flag for procurement review.
+            <div class="res-strip">
+              <span class="res-chip">EPOS-LATTE</span><span class="res-arrow">→</span>
+              <span class="res-chip">PROD-BEV-001</span><span style="font-size:9px;color:var(--muted)">product bridge</span>
+            </div>
+          </td>
+          <td><span class="sys-tag">EPOS</span> <span class="sys-tag">Procurement</span></td>
+          <td><a href="kpi-reports.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">Margin &nbsp;&#8599;</a></td>
+        </tr>
+        <tr>
+          <td class="q-type">SAP Revenue per Cover</td>
+          <td class="q-question">"What is the SAP revenue per cover at Manchester?"</td>
+          <td class="q-response">
+            Manchester: <strong>£11.40/cover</strong> at lunch. Breakfast at <strong>£9.20</strong>. Invoiced to 2 clients — Northern Rail Group and Bridgewater NHS Trust.
+            <div class="res-strip">
+              <span class="res-chip">SITE-MAN-01</span><span class="res-arrow">→</span>
+              <span class="res-chip">CC-GBR-101</span><span style="font-size:9px;color:var(--muted)">SAP cost centre · resolved via SPARQL</span>
+            </div>
+          </td>
+          <td><span class="sys-tag">SAP S/4HANA</span></td>
+          <td><a href="kpi-reports.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">Revenue &nbsp;&#8599;</a></td>
+        </tr>
+        <tr>
+          <td class="q-type">HR Headcount</td>
+          <td class="q-question">"What is the headcount breakdown at London City?"</td>
+          <td class="q-response">
+            London City: <strong>8 permanent</strong>, 3 part-time, 2 zero-hours, 1 agency. Total FTE <strong>11.2</strong>. Zero-hours + agency at 23% — within threshold.
+            <div class="res-strip">
+              <span class="res-chip">SITE-LDN-02</span><span class="res-arrow">→</span>
+              <span class="res-chip">OU-GBR-002</span><span style="font-size:9px;color:var(--muted)">SF org unit · resolved via SPARQL</span>
+            </div>
+          </td>
+          <td><span class="sys-tag">SuccessFactors</span></td>
+          <td><a href="kpi-reports.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">Headcount &nbsp;&#8599;</a></td>
+        </tr>
+        <tr>
+          <td class="q-type">Full Operational Summary</td>
+          <td class="q-question">"Give me a full operational summary for SITE-MAN-01."</td>
+          <td class="q-response">
+            Manchester: Labour <strong>£9.27/cover ✓</strong>, Revenue <strong>£20,720</strong>, All margins positive, SAP Revenue <strong>£11.40/cover</strong>, Headcount FTE <strong>9.8</strong> — 20% flexible contracts. Recommend: investigate revenue gap vs London.
+            <div class="res-strip">
+              <span class="res-chip">SITE-MAN-01</span><span class="res-arrow">→</span>
+              <span class="res-chip">GBR_SITE_0101</span><span class="res-arrow">·</span>
+              <span class="res-chip">CC-GBR-101</span><span class="res-arrow">·</span>
+              <span class="res-chip">OU-GBR-101</span>
+            </div>
+          </td>
+          <td><span class="sys-tag">EPOS</span> <span class="sys-tag">Infor WFM</span> <span class="sys-tag">Procurement</span> <span class="sys-tag">SAP S/4HANA</span> <span class="sys-tag">SuccessFactors</span></td>
+          <td><a href="kpi-reports.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;white-space:nowrap;">All KPIs &nbsp;&#8599;</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── 5. KPI SNAPSHOT ───────────────────────────────────────────────────── -->
+<section id="kpi">
+  <div class="section-eyebrow">05 — KPI Report Snapshot</div>
+  <div class="section-title">30-Day Operational Metrics · All Three Sites</div>
+  <p class="section-lead">Five cross-system KPIs, each requiring identity resolution before the query can execute. All values are real outputs from the metric layer over 30 days of synthetic data. Open the full report for interactive charts.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-hdr">KPI</div>
+    <div class="kpi-hdr kpi-site-hdr">London Canary Wharf<br><small style="font-size:9px;opacity:.7">SITE-LDN-01</small></div>
+    <div class="kpi-hdr kpi-site-hdr">London City<br><small style="font-size:9px;opacity:.7">SITE-LDN-02</small></div>
+    <div class="kpi-hdr kpi-site-hdr">Manchester<br><small style="font-size:9px;opacity:.7">SITE-MAN-01</small></div>
+
+    <!-- Labour Cost per Cover -->
+    <div class="kpi-label">Labour Cost / Cover<small>Infor WFM ↔ EPOS · resolved via hosp:inforSiteCode</small></div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">£10.40</div>
+      <div class="kv-sub">avg/cover</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--warn)">£11.27</div>
+      <div class="kv-sub">avg/cover</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">£9.27</div>
+      <div class="kv-sub">avg/cover</div>
+    </div>
+
+    <!-- Revenue by Category -->
+    <div class="kpi-label">Total Revenue<small>EPOS only · 30 days</small></div>
+    <div class="kpi-val">
+      <div class="kv-num">£26,980</div>
+      <div class="kv-sub"><span class="pill pill-good">Highest</span></div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num">£25,500</div>
+      <div class="kv-sub">&nbsp;</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num">£20,720</div>
+      <div class="kv-sub"><span class="pill pill-warn">−23% vs LDN-01</span></div>
+    </div>
+
+    <!-- Food Margin -->
+    <div class="kpi-label">Best Food Margin<small>EPOS ↔ Procurement · product bridge</small></div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">£2.70</div>
+      <div class="kv-sub">Pasta Bowl</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">£2.70</div>
+      <div class="kv-sub">Pasta Bowl</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">£2.70</div>
+      <div class="kv-sub">Pasta Bowl</div>
+    </div>
+
+    <!-- SAP Revenue per Cover -->
+    <div class="kpi-label">SAP Revenue / Cover<small>SAP S/4HANA · resolved via hosp:sapCostCenter</small></div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">£12.80</div>
+      <div class="kv-sub"><span class="pill pill-good">Highest</span></div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--warn)">£11.50</div>
+      <div class="kv-sub">avg/cover</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">£11.40</div>
+      <div class="kv-sub">avg/cover</div>
+    </div>
+
+    <!-- Headcount by Contract -->
+    <div class="kpi-label">Flexible Contracts %<small>SuccessFactors · resolved via hosp:sfOrgUnitId</small></div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">18%</div>
+      <div class="kv-sub">zero-hrs + agency</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--warn)">23%</div>
+      <div class="kv-sub">zero-hrs + agency</div>
+    </div>
+    <div class="kpi-val">
+      <div class="kv-num" style="color:var(--good)">20%</div>
+      <div class="kv-sub">zero-hrs + agency</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="kpi-cta">
+      <span>Full interactive KPI reports with Chart.js visualisations &rarr;</span>
+      <a href="kpi-reports.html" target="_blank">Open KPI Reports &nbsp;&#8599;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. INTERNALS ──────────────────────────────────────────────────────── -->
+<section id="internals">
+  <div class="section-eyebrow">06 — Architecture &amp; Internals</div>
+  <div class="section-title">Ontology, Pipeline Stages &amp; SPARQL Resolution</div>
+  <p class="section-lead">How the pieces fit together — from raw DuckDB tables to agent answer — and what the OWL ontology looks like under the hood.</p>
+
+  <div class="internals-grid">
+
+    <div class="int-card">
+      <h4>Ontology Statistics</h4>
+      <div class="stat-row"><span>OWL Classes</span><span class="stat-val">8</span></div>
+      <div class="stat-row"><span>Object Properties</span><span class="stat-val">7</span></div>
+      <div class="stat-row"><span>Datatype Properties</span><span class="stat-val">10</span></div>
+      <div class="stat-row"><span>Site Individuals</span><span class="stat-val">3</span></div>
+      <div class="stat-row"><span>Product Individuals</span><span class="stat-val">5</span></div>
+      <div class="stat-row"><span>Total RDF Triples</span><span class="stat-val">148</span></div>
+      <div class="stat-row"><span>Site ID Bridge Properties</span><span class="stat-val">4</span></div>
+      <div class="stat-row"><span>Product ID Bridge Properties</span><span class="stat-val">2</span></div>
+    </div>
+
+    <div class="int-card">
+      <h4>OWL Class Hierarchy</h4>
+      <pre class="code-block"><span class="kw">hosp:Site</span>            <span class="cmt">← anchor for all 4 site IDs</span>
+  <span class="kw">hosp:eposSiteId</span>     <span class="str">"SITE-LDN-01"</span>   <span class="cmt">Oracle MICROS</span>
+  <span class="kw">hosp:inforSiteCode</span>  <span class="str">"GBR_SITE_0001"</span> <span class="cmt">Infor WFM</span>
+  <span class="kw">hosp:sapCostCenter</span>  <span class="str">"CC-GBR-001"</span>    <span class="cmt">SAP S/4HANA</span>
+  <span class="kw">hosp:sfOrgUnitId</span>    <span class="str">"OU-GBR-001"</span>    <span class="cmt">SuccessFactors</span>
+
+<span class="kw">hosp:Product</span>         <span class="cmt">← product ID bridge</span>
+  <span class="kw">hosp:eposItemId</span>     <span class="str">"EPOS-LATTE"</span>    <span class="cmt">MICROS code</span>
+  <span class="kw">hosp:procProductId</span>  <span class="str">"PROD-BEV-001"</span>  <span class="cmt">Coupa SKU</span>
+
+<span class="kw">hosp:Transaction</span>, <span class="kw">hosp:Shift</span>,
+<span class="kw">hosp:SAPInvoice</span>, <span class="kw">hosp:HRRecord</span>,
+<span class="kw">hosp:Supplier</span></pre>
+    </div>
+
+    <div class="int-card">
+      <h4>Identity Resolution SPARQL</h4>
+      <pre class="code-block"><span class="kw">PREFIX</span> hosp: &lt;http://hospitality.example.org/ontology#&gt;
+<span class="kw">SELECT</span> ?epos_id ?infor_code ?sap_cc ?sf_org ?site_name
+<span class="kw">WHERE</span> {
+  ?site hosp:eposSiteId    ?epos_id ;
+        hosp:inforSiteCode ?infor_code ;
+        hosp:sapCostCenter ?sap_cc ;
+        hosp:sfOrgUnitId   ?sf_org ;
+        hosp:siteName      ?site_name .
+  <span class="kw">FILTER</span>(?epos_id = <span class="str">"SITE-LDN-01"</span>)
+}
+<span class="cmt">→ infor="GBR_SITE_0001" sap="CC-GBR-001" sf="OU-GBR-001"</span></pre>
+    </div>
+
+    <div class="int-card" style="grid-column: 1 / -1;">
+      <h4>What is the Identity Resolution Stage?</h4>
+      <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:14px;">
+        It is the step where you answer: <em style="color:var(--text);">"What is the same real-world thing called in each source system?"</em>
+        Every enterprise system names the same physical entity differently — built by a different vendor, at a different time, with no shared key design.
+        Without resolving these, a JOIN across any two systems returns 0 rows, silently. There is no error; the query just finds no match.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Oracle MICROS EPOS</div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:#6CB8F5;">SITE-LDN-01</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Infor WFM</div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:#6CB8F5;">GBR_SITE_0001</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">SAP S/4HANA</div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:#6CB8F5;">CC-GBR-001</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">SAP SuccessFactors</div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:#6CB8F5;">OU-GBR-001</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.7;">
+        Identity resolution builds a <strong style="color:var(--text);">canonical reference</strong> — one authoritative record per real-world entity — and attaches all system-specific IDs as OWL properties. One SPARQL query against that record returns all four IDs at once. DuckDB then queries each system using the ID format that system actually understands.
+        <br><br>
+        In the pipeline this runs <em style="color:var(--text);">before</em> any analytical query. It is a prerequisite, not an optimisation — skip it and multi-system metrics do not exist.
+        On AWS, the same stage is delivered by the <strong style="color:var(--text);">COA Virtual Knowledge Graph (VKG)</strong> — built by the MODEL layer using Bedrock embeddings, exposed as a SPARQL endpoint via Ontop on Amazon Neptune. Same query; automated construction rather than hand-coded.
+      </p>
+    </div>
+
+    <div class="int-card">
+      <h4>End-to-End Pipeline</h4>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <span class="pipe-num">1</span>
+          <div class="pipe-content">
+            <strong>bootstrap_hospitality.py</strong>
+            <span>Seed DuckDB with 5 source tables, 30 days, deliberate ID mismatches baked in.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <span class="pipe-num">2</span>
+          <div class="pipe-content">
+            <strong>generate_ontology.py</strong>
+            <span>Introspect schemas → build OWL Turtle with 8 classes, 17 properties, 148 triples.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <span class="pipe-num">3</span>
+          <div class="pipe-content">
+            <strong>metric_layer.py</strong>
+            <span>SPARQL resolves IDs first. DuckDB executes per-system SQL. 5 governed metrics.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <span class="pipe-num">4</span>
+          <div class="pipe-content">
+            <strong>agent_hospitality_ollama.py</strong>
+            <span>qwen2.5 agent loop with 5 tool definitions. Multi-turn, max 15 turns.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <span class="pipe-num">5</span>
+          <div class="pipe-content">
+            <strong>dashboard_server.py</strong>
+            <span>FastAPI + Chart.js live dashboard. /api/ask (LLM) and /api/metric (direct). Port 8765.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:20px; padding:18px 22px; background:var(--surface);
+       border:1px solid var(--border); border-radius:10px;">
+    <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Key Proof — Without the Ontology</p>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;">Running <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">SELECT SUM(labour_cost_gbp) FROM wfm_shifts WHERE site_id = 'SITE-LDN-01'</code> returns <strong style="color:var(--bad)">0 rows</strong> — the correct Infor WFM ID is <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">GBR_SITE_0001</code>. Similarly, <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">sap_sales WHERE cost_center_code = 'SITE-LDN-01'</code> returns 0 rows — SAP expects <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--code-bg);color:var(--code-fg);padding:1px 5px;border-radius:3px;">CC-GBR-001</code>. Every cross-system metric fails silently without SPARQL resolution. This is the entire point of the ontology layer.</p>
+  </div>
+</section>
+
+<!-- ── 7. REQUEST FLOW ────────────────────────────────────────────────────── -->
+<section id="reqflow" style="background:#FFFFFF;">
+  <div class="section-eyebrow" style="border-color:#1E6FD9;color:#1E6FD9;">07 — Live Request Flow</div>
+  <div class="section-title" style="color:#0A1B35;">POST /api/ask — End-to-End Code Path</div>
+  <p class="section-lead" style="color:#4A5E78;">Trace a single question from browser click to rendered chart. Orange = request path. Green = response path. Python class and function names shown at each layer.</p>
+
+  <style>
+    /* ── flow styles (light-only, scoped) ── */
+    .rf-wrap   { margin-top:28px; display:flex; flex-direction:column; gap:0; }
+    .rf-lane   { display:grid; grid-template-columns:130px 1fr; gap:0; border-left:3px solid #E1E8F0; margin-bottom:0; }
+    .rf-lane + .rf-lane { border-top:1px solid #EEF2F8; }
+    .rf-sys    { padding:18px 16px 18px 20px; display:flex; align-items:flex-start;
+                 border-right:1px solid #EEF2F8; }
+    .rf-sys-label { font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:.1em;
+                    text-transform:uppercase; color:#8FAAC8; line-height:1.5; }
+    .rf-body   { padding:16px 24px; display:flex; flex-direction:column; gap:10px; }
+    .rf-step   { display:flex; align-items:flex-start; gap:14px; }
+    .rf-num    { flex-shrink:0; width:24px; height:24px; border-radius:50%; display:flex;
+                 align-items:center; justify-content:center; font-family:'DM Mono',monospace;
+                 font-size:11px; font-weight:700; background:#F0F5FF; color:#1E6FD9; border:1.5px solid #C5D8F8; }
+    .rf-num.resp { background:#F0FBF5; color:#1A7A52; border-color:#B3E8CC; }
+    .rf-detail { flex:1; }
+    .rf-detail h5 { font-size:12px; font-weight:700; color:#0A1B35; margin-bottom:3px; }
+    .rf-detail .rf-class { display:inline-block; font-family:'DM Mono',monospace; font-size:10.5px;
+                           background:#F0F5FF; color:#1E6FD9; border:1px solid #C5D8F8;
+                           border-radius:4px; padding:1px 7px; margin-right:4px; margin-bottom:3px; }
+    .rf-detail .rf-class.g { background:#F0FBF5; color:#1A7A52; border-color:#B3E8CC; }
+    .rf-detail p  { font-size:12px; color:#4A5E78; line-height:1.6; margin-top:2px; }
+    .rf-detail code { font-family:'DM Mono',monospace; font-size:11px; background:#F4F7FB;
+                      color:#1C3A6A; border-radius:3px; padding:1px 5px; }
+    .rf-connector { display:flex; align-items:center; gap:8px; padding:6px 24px 6px 174px; }
+    .rf-connector .rc-line { flex:1; height:1px; background:repeating-linear-gradient(
+                              90deg,#E8993A 0px,#E8993A 6px,transparent 6px,transparent 12px); }
+    .rf-connector .rc-line.g { background:repeating-linear-gradient(
+                              90deg,#1A7A52 0px,#1A7A52 6px,transparent 6px,transparent 12px); }
+    .rf-connector span { font-family:'DM Mono',monospace; font-size:9.5px; color:#8FAAC8; white-space:nowrap; }
+
+    /* lane accent colours */
+    .rf-lane.browser  { border-color:#1E6FD9; }
+    .rf-lane.fastapi  { border-color:#9B59B6; }
+    .rf-lane.ollama   { border-color:#E87722; }
+    .rf-lane.dispatch { border-color:#9B59B6; }
+    .rf-lane.sparql   { border-color:#1E6FD9; }
+    .rf-lane.duckdb   { border-color:#2E9E5B; }
+    .rf-lane.chart    { border-color:#2E9E5B; }
+    .rf-lane.render   { border-color:#1A7A52; }
+
+    .rf-legend { display:flex; gap:28px; margin-bottom:20px; }
+    .rf-leg-item { display:flex; align-items:center; gap:8px; font-size:12px; color:#4A5E78; }
+    .rf-leg-line { width:32px; height:2px; }
+  </style>
+
+  <div class="rf-legend">
+    <div class="rf-leg-item">
+      <div class="rf-leg-line" style="background:repeating-linear-gradient(90deg,#E8993A 0,#E8993A 6px,transparent 6px,transparent 12px);"></div>
+      Request path (browser → Ollama → DuckDB)
+    </div>
+    <div class="rf-leg-item">
+      <div class="rf-leg-line" style="background:repeating-linear-gradient(90deg,#1A7A52 0,#1A7A52 6px,transparent 6px,transparent 12px);"></div>
+      Response path (DuckDB → chart → browser)
+    </div>
+  </div>
+
+  <div class="rf-wrap">
+
+    <!-- ① Browser -->
+    <div class="rf-lane browser">
+      <div class="rf-sys"><span class="rf-sys-label">Browser<br>JavaScript</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num">1</div>
+          <div class="rf-detail">
+            <h5>User types question and clicks Ask</h5>
+            <span class="rf-class">askAgent()</span>
+            <p>Reads <code>questionInput.value</code>, calls <code>fetch('POST /api/ask', {question})</code>. Shows spinner. Awaits JSON response.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line"></div><span>HTTP POST /api/ask · body: {question: "..."}</span><div class="rc-line"></div></div>
+
+    <!-- ② FastAPI -->
+    <div class="rf-lane fastapi">
+      <div class="rf-sys"><span class="rf-sys-label">FastAPI<br>dashboard_server.py<br>port 8765</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num">2</div>
+          <div class="rf-detail">
+            <h5>FastAPI receives and validates request</h5>
+            <span class="rf-class">AskRequest</span><span class="rf-class">ask_agent(req: AskRequest)</span>
+            <p><code>AskRequest</code> is a Pydantic model — validates <code>question: str</code> automatically. Builds initial message list: <code>[{role:"system", content:SYSTEM_PROMPT}, {role:"user", content:question}]</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line"></div><span>messages list + LLM_TOOLS (5 tool definitions) → Ollama</span><div class="rc-line"></div></div>
+
+    <!-- ③ Ollama first call -->
+    <div class="rf-lane ollama">
+      <div class="rf-sys"><span class="rf-sys-label">Ollama<br>qwen2.5<br>localhost:11434</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num">3</div>
+          <div class="rf-detail">
+            <h5>Ollama decides which tool to call</h5>
+            <span class="rf-class">OpenAI(base_url=OLLAMA_BASE_URL)</span><span class="rf-class">LLM_TOOLS</span>
+            <p>FastAPI uses the OpenAI-compatible client pointed at Ollama. qwen2.5 reads the system prompt and 5 tool schemas. Decides to call <code>get_labour_cost_per_cover</code>. Returns <code>tool_calls=[{name, arguments:{epos_site_id:"SITE-LDN-01"}}]</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line"></div><span>tool_calls: [{name:"get_labour_cost_per_cover", args:{epos_site_id:"SITE-LDN-01"}}]</span><div class="rc-line"></div></div>
+
+    <!-- ④ Tool dispatch -->
+    <div class="rf-lane dispatch">
+      <div class="rf-sys"><span class="rf-sys-label">Tool Dispatch<br>dashboard_server.py</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num">4</div>
+          <div class="rf-detail">
+            <h5>Map tool name → Python function</h5>
+            <span class="rf-class">dispatch_tool(fn_name, args)</span>
+            <p><code>fn_map</code> dict maps <code>"get_labour_cost_per_cover"</code> → <code>metric_layer.labour_cost_per_cover</code>. Calls the function with <code>epos_site_id="SITE-LDN-01"</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line"></div><span>metric_layer.labour_cost_per_cover("SITE-LDN-01")</span><div class="rc-line"></div></div>
+
+    <!-- ⑤ SPARQL -->
+    <div class="rf-lane sparql">
+      <div class="rf-sys"><span class="rf-sys-label">Identity Resolution<br>metric_layer.py<br>rdflib SPARQL</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num">5</div>
+          <div class="rf-detail">
+            <h5>Resolve all system IDs from one EPOS site_id</h5>
+            <span class="rf-class">resolve_site(epos_site_id)</span><span class="rf-class">_ontology() → Graph</span>
+            <p>One SPARQL SELECT against the rdflib <code>Graph</code> (loaded once at startup from <code>hospitality_ontology.ttl</code>). Returns all four IDs:</p>
+            <p><code>infor_site_code = "GBR_SITE_0001"</code> &nbsp;·&nbsp; <code>sap_cost_center = "CC-GBR-001"</code> &nbsp;·&nbsp; <code>sf_org_unit_id = "OU-GBR-001"</code></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line"></div><span>resolved IDs → DuckDB queries use correct ID per system</span><div class="rc-line"></div></div>
+
+    <!-- ⑥ DuckDB -->
+    <div class="rf-lane duckdb">
+      <div class="rf-sys"><span class="rf-sys-label">DuckDB<br>metric_layer.py<br>hospitality.duckdb</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num">6</div>
+          <div class="rf-detail">
+            <h5>Execute per-system SQL with resolved IDs</h5>
+            <span class="rf-class">labour_cost_per_cover(epos_site_id)</span><span class="rf-class">duckdb.connect(DB_FILE)</span>
+            <p>Two separate queries — each system gets its own ID format:</p>
+            <p><code>wfm_shifts WHERE site_id = 'GBR_SITE_0001'</code> → total labour cost<br>
+               <code>epos_transactions WHERE site_id = 'SITE-LDN-01'</code> → covers by meal period<br>
+               Returns <code>list[dict]</code> with <code>labour_cost_per_cover</code> per row.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line g"></div><span>rows[ ] returned up the call stack</span><div class="rc-line g"></div></div>
+
+    <!-- ⑦ Ollama second call -->
+    <div class="rf-lane ollama">
+      <div class="rf-sys"><span class="rf-sys-label">Ollama<br>qwen2.5<br>second call</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num resp">7</div>
+          <div class="rf-detail">
+            <h5>Ollama writes the natural language answer</h5>
+            <span class="rf-class g">ask_agent() — loop iteration 2</span>
+            <p>Tool result JSON appended to <code>messages</code> as <code>{role:"tool"}</code>. Sent back to qwen2.5. Model reads the numbers and generates: <em>"Labour cost at London Canary Wharf: Afternoon £80.35, Breakfast £71.68, Lunch £73.54."</em> Returns plain text, no further tool calls.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line g"></div><span>msg.content = natural language answer string</span><div class="rc-line g"></div></div>
+
+    <!-- ⑧ Chart builder -->
+    <div class="rf-lane chart">
+      <div class="rf-sys"><span class="rf-sys-label">Chart Builder<br>dashboard_server.py</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num resp">8</div>
+          <div class="rf-detail">
+            <h5>Convert rows → Chart.js config dict</h5>
+            <span class="rf-class g">build_chart(metric_name, rows)</span>
+            <p>Maps <code>metric_name="get_labour_cost_per_cover"</code> to bar chart builder. Produces: <code>{type:"bar", title, labels:["Afternoon","Breakfast","Lunch"], datasets:[{data:[80.35,71.68,73.54]}], threshold:{value:20}}</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf-connector"><div class="rc-line g"></div><span>HTTP 200 · body: {answer, steps:[{tool, resolution, data, chart}]}</span><div class="rc-line g"></div></div>
+
+    <!-- ⑨ Browser renders -->
+    <div class="rf-lane render">
+      <div class="rf-sys"><span class="rf-sys-label">Browser<br>JavaScript</span></div>
+      <div class="rf-body">
+        <div class="rf-step">
+          <div class="rf-num resp">9</div>
+          <div class="rf-detail">
+            <h5>Render answer card, identity chips, and chart</h5>
+            <span class="rf-class g">renderAgentResult(data)</span><span class="rf-class g">renderStep(step, n)</span><span class="rf-class g">drawChart(canvasId, cfg)</span>
+            <p><code>renderAgentResult()</code> builds HTML for the answer card and each tool step. <code>renderStep()</code> emits the identity resolution chips (<code>SITE-LDN-01 → GBR_SITE_0001 · CC-GBR-001 · OU-GBR-001</code>). <code>drawChart()</code> calls <code>new Chart(ctx, cfg)</code> — Chart.js draws the bar chart into the <code>&lt;canvas&gt;</code> element.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .rf-wrap -->
+</section>
+
+<footer>
+  <span>Context Engineering — Example 14 &nbsp;·&nbsp; Hospitality Group Multi-Source Intelligence</span>
+  <span>Amit Dixit &nbsp;·&nbsp; <a href="https://github.com/inbravo">github.com/inbravo</a></span>
+</footer>
+
+<script>
+// Theme toggle
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const btn = document.getElementById('themeBtn');
+  btn.textContent = theme === 'dark' ? '☀ Light' : '☾ Dark';
+  try { localStorage.setItem('hosp-theme', theme); } catch(e) {}
+}
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+// ── PoC column toggle ──────────────────────────────────────────────
+(function initPoc() {
+  const table = document.querySelector('#stack table');
+  if (!table) return;
+  table.querySelectorAll('tbody tr').forEach(tr => {
+    const cell = tr.cells[1];
+    if (cell) cell.classList.add('poc-td', 'poc-hidden');
+  });
+})();
+
+function togglePoc() {
+  const tds = document.querySelectorAll('#stack table tbody td.poc-td');
+  if (!tds.length) return;
+  const isHidden = tds[0].classList.contains('poc-hidden');
+  tds.forEach(td => td.classList.toggle('poc-hidden', !isHidden));
+  const hint = document.getElementById('poc-hint');
+  if (hint) hint.textContent = isHidden ? '‹ click to collapse' : 'click to expand ›';
+}
+
+(function() {
+  try {
+    const saved = localStorage.getItem('hosp-theme');
+    if (saved) { applyTheme(saved); return; }
+  } catch(e) {}
+  const prefersDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  applyTheme(prefersDark ? 'dark' : 'light');
+})();
+
+// Schema tabs
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Active nav highlight
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('nav a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

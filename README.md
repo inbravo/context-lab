@@ -5,7 +5,7 @@ Minimal, working examples across the agentic AI stack — MCP servers, agent fra
 
 ## Repository Structure
 
-This repository contains **thirteen examples** organized in separate folders, each introducing a new semantic component in the Context Engineering ladder:
+This repository contains **fourteen examples** organized in separate folders, each introducing a new semantic component in the Context Engineering ladder:
 
 ### 📂 Directory Listing
 
@@ -24,6 +24,7 @@ This repository contains **thirteen examples** organized in separate folders, ea
 | 11 | [[ce]-[knowledge-graph]-[amazon-delivery]-[2026-07]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bknowledge-graph%5D-%5Bamazon-delivery%5D-%5B2026-07%5D) | Knowledge Graph — Neo4j, new domain | Real three-stage context-building pipeline: raw DuckDB rows + a prose policy document are ingested into a Neo4j graph. New domain: Amazon UK Delivery (order tracking, A-to-Z Guarantee) — local, open-source equivalent of Amazon Neptune |
 | 12 | [[ce]-[bsl]-[amazon-delivery]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bbsl%5D-%5Bamazon-delivery%5D-%5B2026-08%5D) | Boring Semantic Layer (BSL) — YAML metric contracts | YAML-governed metric contracts translated to SQL by Ibis. Agent has two tools (glossary + query_metric) and cannot write SQL. Same Amazon UK Delivery domain as Example 11 — compare the graph approach vs. the metric contract approach |
 | 13 | [[ce]-[semantica]-[amazon-delivery]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bsemantica%5D-%5Bamazon-delivery%5D-%5B2026-08%5D) | Semantica ContextGraph — same domain, no Docker | Direct rebuild of Example 11 using Semantica instead of Neo4j. No Cypher, no Docker. Adds W3C PROV-O provenance via record_decision() — every guarantee trigger has a full audit record |
+| 14 | [[ce]-[multi-source]-[hospitality]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bmulti-source%5D-%5Bhospitality%5D-%5B2026-08%5D) | OWL ontology — multi-source identity resolution | Three source systems with deliberately mismatched IDs. OWL ontology + SPARQL resolve identities before any cross-system DuckDB join. New domain: UK Hospitality Group (B&I catering). Local equivalent of AWS COA + Neptune |
 
 ---
 
@@ -267,6 +268,7 @@ Run the examples in this order for the clearest learning curve:
 | 11 | Example 11 — Knowledge Graph (Neo4j) | How a real ingestion pipeline builds a graph from raw data + a prose policy document — and how editing the policy's wording, not the code, changes what the graph connects. |
 | 12 | Example 12 — Boring Semantic Layer (BSL) | How YAML metric contracts lock business formulas so no agent can rewrite them — the metric layer translates YAML to SQL, the agent never sees either. |
 | 13 | Example 13 — Semantica ContextGraph | Same delivery graph as Example 11, rebuilt with Semantica — no Docker, Python API instead of Cypher, and a W3C PROV-O audit record for every guarantee decision. |
+| 14 | Example 14 — OWL Identity Resolution (Hospitality) | How an OWL ontology resolves cross-system ID mismatches — SPARQL bridges three systems before any DuckDB join is possible. Local equivalent of AWS Context Ontology Accelerator + Neptune. |
 
 ---
 
@@ -771,6 +773,99 @@ python3 agent_semantica_ollama.py    # ask questions
 
 ---
 
+### Example 14: OWL Ontology — Multi-Source Identity Resolution (Hospitality Group)
+
+**Semantic component:** OWL ontology as an identity resolution layer — three source systems with mismatched IDs, SPARQL-powered cross-system joins, local equivalent of AWS Context Ontology Accelerator.
+
+**What it shows:**
+- A UK Hospitality Group (B&I catering) runs three operational systems — EPOS, WFM (workforce), and Procurement — and none of them share a key. EPOS calls a site `SITE-LDN-01`; WFM calls the same site `LDN01`. Without resolving these identities, the question "What is the labour cost per cover?" is unanswerable — the WFM query and the EPOS query will never JOIN.
+- `generate_ontology.py` introspects the DuckDB schemas (the local equivalent of AWS Glue Data Catalog / COA SCAN) and builds an OWL Turtle file. Key properties — `hosp:eposSiteId`, `hosp:wfmSiteId`, `hosp:eposItemId`, `hosp:procProductId` — are the identity bridges.
+- `metric_layer.py` calls `resolve_site(epos_site_id)` before every cross-system query. That call runs a SPARQL query on the rdflib graph and returns both IDs. DuckDB can then join. The ontology is load-bearing — comment it out and the metric silently returns wrong data.
+- New domain: **UK Hospitality Group (B&I catering)** — shows the OWL identity-resolution pattern is not BFSI-specific.
+- Local equivalent of **AWS Context Ontology Accelerator (COA)**: COA's SCAN→MODEL→SERVE pipeline automates what `generate_ontology.py` does explicitly. The SPARQL query runs against the COA Virtual Knowledge Graph (Ontop) in production; here it runs against rdflib. Same concept, visible mechanics.
+
+**Quick Start:**
+```bash
+pip3 install duckdb rdflib openai
+ollama serve && ollama pull qwen2.5
+cd my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code
+python3 bootstrap_hospitality.py   # seed DuckDB (3 systems, ~550 rows, deliberate ID mismatches)
+python3 generate_ontology.py       # build OWL TTL (6 classes, 13 properties, 8 individuals)
+python3 metric_layer.py labour_cost_per_cover SITE-LDN-01   # verify identity resolution
+python3 agent_hospitality_ollama.py
+```
+
+**Try these questions:**
+```bash
+python3 agent_hospitality_ollama.py "What is the labour cost per cover at SITE-LDN-01?"
+python3 agent_hospitality_ollama.py "Which categories drive the most revenue at SITE-MAN-01?"
+python3 agent_hospitality_ollama.py "What is the food margin by product at SITE-LDN-02?"
+```
+
+**Local stack vs AWS:**
+
+| Layer | This example (local) | AWS production stack |
+|---|---|---|
+| Schema discovery | DuckDB introspection (`DESCRIBE`) | AWS Glue Crawlers + Glue Data Catalog |
+| Ontology construction | rdflib (explicit OWL) | AWS COA MODEL — Bedrock embeddings + similarity |
+| Identity resolution | SPARQL on rdflib TTL | COA Virtual Knowledge Graph (Ontop / SPARQL endpoint) |
+| Cross-system join | Python: SPARQL → DuckDB SQL | COA Tier-2 agentic SQL (VKG compiles SPARQL to federated SQL) |
+| Agent | Ollama qwen2.5 | Amazon Bedrock (Claude Sonnet 4.5) |
+| Ontology storage | `hospitality_ontology.ttl` | Amazon Neptune (RDF + property graph) |
+
+---
+
+### Example 14: Architecture
+
+```
+┌──────────────────────────────────────────────────────┐
+│   bootstrap_hospitality.py                            │
+│   DuckDB — 3 source systems, deliberate ID mismatches │
+│                                                      │
+│   epos_transactions   site_id = "SITE-LDN-01"        │
+│   wfm_shifts          site_id = "LDN01"  ← different! │
+│   procurement_products  (no site_id — national cat.) │
+└──────────────────────┬───────────────────────────────┘
+                       │ DESCRIBE introspection
+┌──────────────────────┴───────────────────────────────┐
+│   generate_ontology.py  (COA SCAN + MODEL, local)    │
+│                                                      │
+│   inst:site/lnd-01                                   │
+│       hosp:eposSiteId    "SITE-LDN-01"  ← EPOS ID    │
+│       hosp:wfmSiteId     "LDN01"        ← WFM ID     │
+│                                                      │
+│   inst:product/prod_bev_001                          │
+│       hosp:eposItemId    "EPOS-LATTE"                │
+│       hosp:procProductId "PROD-BEV-001"              │
+└──────────────────────┬───────────────────────────────┘
+                       │ writes hospitality_ontology.ttl
+                       ▼
+┌──────────────────────────────────────────────────────┐
+│   metric_layer.py  — resolve before every query      │
+│                                                      │
+│   resolve_site("SITE-LDN-01")                        │
+│     SPARQL → { wfm_site_id: "LDN01", name: "LDN CW" }│
+│                                                      │
+│   DuckDB: WFM query uses "LDN01"                     │
+│   DuckDB: EPOS query uses "SITE-LDN-01"              │
+│   → cross-system JOIN is possible                    │
+└──────────────────────┬───────────────────────────────┘
+                       │ tools: 3 governed metrics
+                       ▼
+┌──────────────────────────────────────────────────────┐
+│   LLM Agent (qwen2.5 via Ollama)                     │
+│   3 tools: labour_cost_per_cover · revenue_by_cat    │
+│            food_margin_by_product                    │
+│   Cannot query systems directly                      │
+└──────────────────────────────────────────────────────┘
+```
+
+**Key difference from Example 8 (BFSI Ontology):** Example 8's ontology encodes domain knowledge — what CET1 Capital *is* conceptually. This example's ontology solves an operational problem — it bridges the ID formats used by different systems for the same real-world entity. Different jobs for the same W3C technology.
+
+**Key difference from Example 11 (Knowledge Graph):** Example 11 uses the graph to represent relationships between entities (Customer → Order → Scan → Guarantee). This example uses the ontology as a translation layer — the graph is not the answer; it is the key that makes the SQL possible.
+
+---
+
 ## 🔍 Debugging Ollama
 
 All Ollama-backed examples (Examples 1–5, 8–11) send requests to the local `qwen2.5` model. Enable debug logging to see every request, response, and token count in real time:
@@ -839,6 +934,12 @@ pkill ollama && ollama serve &
 | **BSL** | Boring Semantic Layer. A metric governance pattern: business formulas are written in human-readable YAML contracts, translated to SQL by a translation layer, and executed via a backend-agnostic query engine. The agent calls a named metric; it cannot modify the formula. |
 | **Ibis** | Python library providing a unified query interface across DuckDB, PostgreSQL, BigQuery, Snowflake, Redshift, and others. Backend-agnostic: the same Python expression compiles to SQL for any registered backend. |
 | **Metric contract** | A YAML file that defines a named business metric — base table, selected columns, derived columns, governance filters, valid dimension filters, owner, version, and approval status. The BSL translation engine reads this and generates SQL. |
+
+| **Semantica** | Open-source in-memory property-graph library (Python). Typed nodes and edges, multi-hop traversal, W3C PROV-O provenance via `record_decision()`. No Docker, no Cypher — same graph model as Neo4j and Amazon Neptune. GitHub: https://github.com/semantica-agi/semantica |
+| **SPARQL** | W3C query language for RDF/OWL graphs. Declarative, like SQL for ontologies. Used in Example 14 to resolve cross-system IDs from the OWL ontology before any DuckDB join. |
+| **VKG** | Virtual Knowledge Graph. An abstraction layer (e.g. Ontop) that exposes relational data as a SPARQL endpoint without materialising triples — the same pattern AWS COA uses to serve its ontology over source systems. |
+| **morph-KGC** | Open-source RDF mapping engine. Generates RDF individuals from relational data via YARRRML/RML mappings — the production equivalent of `generate_ontology.py` in Example 14. |
+| **AWS COA** | AWS Context Ontology Accelerator. A managed pipeline (SCAN → MODEL → SERVE) that auto-generates OWL ontologies from Glue Data Catalog schemas using Bedrock embeddings, and exposes them as a VKG (Ontop SPARQL endpoint) backed by Neptune. |
 
 ---
 

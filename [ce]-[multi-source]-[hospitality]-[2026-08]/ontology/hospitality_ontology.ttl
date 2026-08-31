@@ -1,0 +1,226 @@
+@prefix hosp: <http://hospitality.example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://hospitality.example.org/instance/product/prod_bev_001> a hosp:Product ;
+    rdfs:label "Fresh Ground Coffee — Latte (whole bean + milk)" ;
+    hosp:category "HOT DRINKS" ;
+    hosp:contractedPriceGBP 2.1 ;
+    hosp:eposItemId "EPOS-LATTE" ;
+    hosp:procProductId "PROD-BEV-001" ;
+    hosp:productName "Fresh Ground Coffee — Latte (whole bean + milk)" .
+
+<http://hospitality.example.org/instance/product/prod_bev_002> a hosp:Product ;
+    rdfs:label "Fresh Ground Coffee — Americano (whole bean)" ;
+    hosp:category "HOT DRINKS" ;
+    hosp:contractedPriceGBP 1.85 ;
+    hosp:eposItemId "EPOS-AMERI" ;
+    hosp:procProductId "PROD-BEV-002" ;
+    hosp:productName "Fresh Ground Coffee — Americano (whole bean)" .
+
+<http://hospitality.example.org/instance/product/prod_bev_003> a hosp:Product ;
+    rdfs:label "Tetley English Breakfast Tea — box 100" ;
+    hosp:category "HOT DRINKS" ;
+    hosp:contractedPriceGBP 0.35 ;
+    hosp:eposItemId "EPOS-TEA" ;
+    hosp:procProductId "PROD-BEV-003" ;
+    hosp:productName "Tetley English Breakfast Tea — box 100" .
+
+<http://hospitality.example.org/instance/product/prod_bev_004> a hosp:Product ;
+    rdfs:label "Coca-Cola Still Water — 500ml" ;
+    hosp:category "COLD DRINKS" ;
+    hosp:contractedPriceGBP 0.45 ;
+    hosp:eposItemId "EPOS-WATER" ;
+    hosp:procProductId "PROD-BEV-004" ;
+    hosp:productName "Coca-Cola Still Water — 500ml" .
+
+<http://hospitality.example.org/instance/product/prod_bev_005> a hosp:Product ;
+    rdfs:label "Tropicana Orange Juice — 330ml" ;
+    hosp:category "COLD DRINKS" ;
+    hosp:contractedPriceGBP 0.85 ;
+    hosp:eposItemId "EPOS-OJ" ;
+    hosp:procProductId "PROD-BEV-005" ;
+    hosp:productName "Tropicana Orange Juice — 330ml" .
+
+<http://hospitality.example.org/instance/product/prod_main_001> a hosp:Product ;
+    rdfs:label "Chicken Curry & Basmati Rice — portion" ;
+    hosp:category "MAINS" ;
+    hosp:contractedPriceGBP 3.8 ;
+    hosp:eposItemId "EPOS-CCURRY" ;
+    hosp:procProductId "PROD-MAIN-001" ;
+    hosp:productName "Chicken Curry & Basmati Rice — portion" .
+
+<http://hospitality.example.org/instance/product/prod_main_002> a hosp:Product ;
+    rdfs:label "Pasta Bolognese — hot counter portion" ;
+    hosp:category "MAINS" ;
+    hosp:contractedPriceGBP 3.5 ;
+    hosp:eposItemId "EPOS-PASTA" ;
+    hosp:procProductId "PROD-MAIN-002" ;
+    hosp:productName "Pasta Bolognese — hot counter portion" .
+
+<http://hospitality.example.org/instance/product/prod_main_003> a hosp:Product ;
+    rdfs:label "Vegetable Tagine — hot counter portion" ;
+    hosp:category "MAINS" ;
+    hosp:contractedPriceGBP 3.2 ;
+    hosp:eposItemId "EPOS-VTAG" ;
+    hosp:procProductId "PROD-MAIN-003" ;
+    hosp:productName "Vegetable Tagine — hot counter portion" .
+
+<http://hospitality.example.org/instance/product/prod_sand_001> a hosp:Product ;
+    rdfs:label "BLT Sandwich — chilled, pre-packed" ;
+    hosp:category "SANDWICHES" ;
+    hosp:contractedPriceGBP 2.8 ;
+    hosp:eposItemId "EPOS-BLTSD" ;
+    hosp:procProductId "PROD-SAND-001" ;
+    hosp:productName "BLT Sandwich — chilled, pre-packed" .
+
+<http://hospitality.example.org/instance/product/prod_sand_002> a hosp:Product ;
+    rdfs:label "Chicken Tikka Wrap — chilled, pre-packed" ;
+    hosp:category "SANDWICHES" ;
+    hosp:contractedPriceGBP 2.9 ;
+    hosp:eposItemId "EPOS-CKWRP" ;
+    hosp:procProductId "PROD-SAND-002" ;
+    hosp:productName "Chicken Tikka Wrap — chilled, pre-packed" .
+
+<http://hospitality.example.org/instance/site/gbr-lnd-01> a hosp:HospitalitySite ;
+    rdfs:label "London Canary Wharf" ;
+    hosp:eposSiteId "SITE-LDN-01" ;
+    hosp:inforSiteCode "GBR_SITE_0001" ;
+    hosp:sapCostCenter "CC-GBR-001" ;
+    hosp:sfOrgUnitId "OU-GBR-001" ;
+    hosp:siteName "London Canary Wharf" .
+
+<http://hospitality.example.org/instance/site/gbr-lnd-02> a hosp:HospitalitySite ;
+    rdfs:label "London City" ;
+    hosp:eposSiteId "SITE-LDN-02" ;
+    hosp:inforSiteCode "GBR_SITE_0002" ;
+    hosp:sapCostCenter "CC-GBR-002" ;
+    hosp:sfOrgUnitId "OU-GBR-002" ;
+    hosp:siteName "London City" .
+
+<http://hospitality.example.org/instance/site/gbr-man-01> a hosp:HospitalitySite ;
+    rdfs:label "Manchester" ;
+    hosp:eposSiteId "SITE-MAN-01" ;
+    hosp:inforSiteCode "GBR_SITE_0101" ;
+    hosp:sapCostCenter "CC-GBR-101" ;
+    hosp:sfOrgUnitId "OU-GBR-101" ;
+    hosp:siteName "Manchester" .
+
+hosp:category a owl:DatatypeProperty ;
+    rdfs:comment "Product category" ;
+    rdfs:domain hosp:Product ;
+    rdfs:range xsd:string .
+
+hosp:contractedPriceGBP a owl:DatatypeProperty ;
+    rdfs:comment "Coupa frame contract price per unit (GBP)" ;
+    rdfs:domain hosp:Product ;
+    rdfs:range xsd:decimal .
+
+hosp:eposItemId a owl:DatatypeProperty ;
+    rdfs:comment "Item code as used in Oracle MICROS EPOS (format: EPOS-LATTE)" ;
+    rdfs:domain hosp:Product ;
+    rdfs:range xsd:string .
+
+hosp:eposSiteId a owl:DatatypeProperty ;
+    rdfs:comment "site_id as recorded by Oracle MICROS EPOS (format: SITE-LDN-01)" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range xsd:string .
+
+hosp:hasHRRecord a owl:ObjectProperty ;
+    rdfs:comment "SuccessFactors employee records in this org unit" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range hosp:HRRecord .
+
+hosp:hasSAPInvoice a owl:ObjectProperty ;
+    rdfs:comment "SAP client invoices raised against this cost centre" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range hosp:SAPInvoice .
+
+hosp:hasShift a owl:ObjectProperty ;
+    rdfs:comment "Infor WFM shifts worked at this site" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range hosp:Shift .
+
+hosp:hasTransaction a owl:ObjectProperty ;
+    rdfs:comment "EPOS transactions at this site" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range hosp:Transaction .
+
+hosp:inforSiteCode a owl:DatatypeProperty ;
+    rdfs:comment "site_id as recorded by Infor WFM (format: GBR_SITE_0001) — country-prefixed with underscore" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range xsd:string .
+
+hosp:procProductId a owl:DatatypeProperty ;
+    rdfs:comment "Product SKU in the Coupa procurement catalogue (format: PROD-BEV-001)" ;
+    rdfs:domain hosp:Product ;
+    rdfs:range xsd:string .
+
+hosp:productName a owl:DatatypeProperty ;
+    rdfs:comment "Canonical product description" ;
+    rdfs:domain hosp:Product ;
+    rdfs:range xsd:string .
+
+hosp:sapCostCenter a owl:DatatypeProperty ;
+    rdfs:comment "cost_center_code as recorded by SAP S/4HANA (format: CC-GBR-001) — ERP cost centre" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range xsd:string .
+
+hosp:sfOrgUnitId a owl:DatatypeProperty ;
+    rdfs:comment "org_unit_id as recorded by SAP SuccessFactors (format: OU-GBR-001) — HR org unit" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range xsd:string .
+
+hosp:siteName a owl:DatatypeProperty ;
+    rdfs:comment "Human-readable site name" ;
+    rdfs:domain hosp:HospitalitySite ;
+    rdfs:range xsd:string .
+
+hosp:soldItem a owl:ObjectProperty ;
+    rdfs:comment "Product sold in this EPOS transaction" ;
+    rdfs:domain hosp:Transaction ;
+    rdfs:range hosp:Product .
+
+hosp:suppliedBy a owl:ObjectProperty ;
+    rdfs:comment "Coupa supplier for this product" ;
+    rdfs:domain hosp:Product ;
+    rdfs:range hosp:Supplier .
+
+hosp:workedBy a owl:ObjectProperty ;
+    rdfs:comment "Employee who worked this shift (WFM to SF identity gap)" ;
+    rdfs:domain hosp:Shift ;
+    rdfs:range hosp:Employee .
+
+hosp:Employee a owl:Class ;
+    rdfs:label "Employee" ;
+    rdfs:comment "A workforce member — permanent, part-time, zero-hours, or agency" .
+
+hosp:HRRecord a owl:Class ;
+    rdfs:label "HRRecord" ;
+    rdfs:comment "An employee HR & payroll record in SAP SuccessFactors" .
+
+hosp:SAPInvoice a owl:Class ;
+    rdfs:label "SAPInvoice" ;
+    rdfs:comment "A client invoice generated by SAP S/4HANA for catering services" .
+
+hosp:Supplier a owl:Class ;
+    rdfs:label "Supplier" ;
+    rdfs:comment "A supplier in the Coupa national procurement catalogue" .
+
+hosp:Shift a owl:Class ;
+    rdfs:label "Shift" ;
+    rdfs:comment "A worked shift recorded by Infor WFM" .
+
+hosp:Transaction a owl:Class ;
+    rdfs:label "Transaction" ;
+    rdfs:comment "A point-of-sale transaction recorded by the EPOS system (Oracle MICROS)" .
+
+hosp:HospitalitySite a owl:Class ;
+    rdfs:label "HospitalitySite" ;
+    rdfs:comment "A catering site (campus, office, hospital, etc.) operated by the Hospitality Group" .
+
+hosp:Product a owl:Class ;
+    rdfs:label "Product" ;
+    rdfs:comment "A food or beverage product sold at a site" .
+

@@ -1,0 +1,621 @@
+2026-08-31 22:46:00  INFO      hosp.test                     smoke test OK
+2026-08-31 22:46:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-08-31 22:46:10  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-08-31 22:46:10  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-08-31 22:46:10  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-08-31 22:46:39  INFO      hosp.bootstrap                Bootstrap starting — target DB: hospitality.duckdb
+2026-08-31 22:46:39  DEBUG     hosp.bootstrap                Removing existing DB: hospitality.duckdb
+2026-08-31 22:46:39  INFO      hosp.bootstrap                Creating table: epos_transactions (Oracle MICROS)
+2026-08-31 22:46:43  DEBUG     hosp.bootstrap                epos_transactions: 2691 rows inserted
+2026-08-31 22:46:43  INFO      hosp.bootstrap                Creating table: wfm_shifts (Infor WFM)
+2026-08-31 22:46:43  DEBUG     hosp.bootstrap                wfm_shifts: 537 rows inserted
+2026-08-31 22:46:43  INFO      hosp.bootstrap                Creating table: procurement_products (Coupa)
+2026-08-31 22:46:43  DEBUG     hosp.bootstrap                procurement_products: 10 rows inserted (national catalogue subset)
+2026-08-31 22:46:43  INFO      hosp.bootstrap                Creating table: sap_sales (SAP S/4HANA)
+2026-08-31 22:46:43  DEBUG     hosp.bootstrap                sap_sales: 540 rows inserted
+2026-08-31 22:46:43  INFO      hosp.bootstrap                Creating table: hr_employees (SAP SuccessFactors)
+2026-08-31 22:46:43  DEBUG     hosp.bootstrap                hr_employees: 114 rows inserted
+2026-08-31 22:46:43  INFO      hosp.bootstrap                Bootstrap complete — epos=2691  wfm=537  proc=10  sap=540  hr=114  db=hospitality.duckdb
+2026-08-31 22:46:54  INFO      hosp.ontology                 Opening DB: /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb
+2026-08-31 22:46:54  INFO      hosp.ontology                 Introspecting schemas from 5 source tables
+2026-08-31 22:46:54  DEBUG     hosp.ontology                 Schema: epos_transactions — 10 columns, 2691 rows
+2026-08-31 22:46:54  DEBUG     hosp.ontology                 Schema: wfm_shifts — 8 columns, 537 rows
+2026-08-31 22:46:54  DEBUG     hosp.ontology                 Schema: procurement_products — 9 columns, 10 rows
+2026-08-31 22:46:54  DEBUG     hosp.ontology                 Schema: sap_sales — 9 columns, 540 rows
+2026-08-31 22:46:54  DEBUG     hosp.ontology                 Schema: hr_employees — 9 columns, 114 rows
+2026-08-31 22:46:54  INFO      hosp.ontology                 Building OWL class hierarchy
+2026-08-31 22:46:54  INFO      hosp.ontology                 Building OWL properties (object + datatype identity bridges)
+2026-08-31 22:46:54  INFO      hosp.ontology                 Adding OWL individuals (sites + products)
+2026-08-31 22:46:54  INFO      hosp.ontology                 Ontology written: /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl — classes=8  obj_props=7  dt_props=10  sites=3  products=10  total_triples=183
+2026-08-31 22:47:05  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-08-31 22:48:05  INFO      hosp.server                   POST /api/ask  question='What are the food margins at SITE-LDN-02?'
+2026-08-31 22:48:05  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:48:09  ERROR     hosp.server                   ask_agent error: Connection error.
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1037, in request
+    response = self._send_request(
+        request,
+        stream=stream or self._should_stream_response_body(request=request),
+        **kwargs,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 440, in _send_request
+    return self._send_with_auth_retry(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 418, in _send_with_auth_retry
+    response = super()._send_request(request, stream=stream, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 964, in _send_request
+    return self._client.send(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/dashboard_server.py", line 368, in ask_agent
+    response = client.chat.completions.create(
+        model=MODEL, messages=messages,
+        tools=LLM_TOOLS, tool_choice="auto",
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1215, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<51 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1072, in request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+2026-08-31 22:48:37  INFO      hosp.server                   POST /api/ask  question='What are the food margins at SITE-LDN-02?'
+2026-08-31 22:48:37  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:48:38  ERROR     hosp.server                   ask_agent error: Connection error.
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1037, in request
+    response = self._send_request(
+        request,
+        stream=stream or self._should_stream_response_body(request=request),
+        **kwargs,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 440, in _send_request
+    return self._send_with_auth_retry(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 418, in _send_with_auth_retry
+    response = super()._send_request(request, stream=stream, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 964, in _send_request
+    return self._client.send(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/dashboard_server.py", line 368, in ask_agent
+    response = client.chat.completions.create(
+        model=MODEL, messages=messages,
+        tools=LLM_TOOLS, tool_choice="auto",
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1215, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<51 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1072, in request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+2026-08-31 22:48:39  INFO      hosp.server                   POST /api/ask  question='What are the food margins at SITE-LDN-02?'
+2026-08-31 22:48:39  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:48:40  ERROR     hosp.server                   ask_agent error: Connection error.
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1037, in request
+    response = self._send_request(
+        request,
+        stream=stream or self._should_stream_response_body(request=request),
+        **kwargs,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 440, in _send_request
+    return self._send_with_auth_retry(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 418, in _send_with_auth_retry
+    response = super()._send_request(request, stream=stream, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 964, in _send_request
+    return self._client.send(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/dashboard_server.py", line 368, in ask_agent
+    response = client.chat.completions.create(
+        model=MODEL, messages=messages,
+        tools=LLM_TOOLS, tool_choice="auto",
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1215, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<51 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1072, in request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+2026-08-31 22:48:44  INFO      hosp.server                   POST /api/ask  question='What are the food margins at SITE-LDN-02?'
+2026-08-31 22:48:44  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:48:46  ERROR     hosp.server                   ask_agent error: Connection error.
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1037, in request
+    response = self._send_request(
+        request,
+        stream=stream or self._should_stream_response_body(request=request),
+        **kwargs,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 440, in _send_request
+    return self._send_with_auth_retry(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 418, in _send_with_auth_retry
+    response = super()._send_request(request, stream=stream, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 964, in _send_request
+    return self._client.send(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/dashboard_server.py", line 368, in ask_agent
+    response = client.chat.completions.create(
+        model=MODEL, messages=messages,
+        tools=LLM_TOOLS, tool_choice="auto",
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1215, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<51 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1072, in request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+2026-08-31 22:49:43  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-08-31 22:49:44  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:49:53  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-08-31 22:49:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-08-31 22:49:53  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-08-31 22:49:53  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-08-31 22:49:53  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-08-31 22:49:53  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-08-31 22:49:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-08-31 22:49:53  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-08-31 22:49:54  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-08-31 22:49:54  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-08-31 22:49:54  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-08-31 22:49:54  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 22:49:59  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at SITE-LDN-01 (London Canary Wharf) varies by meal period:
+
+- Afternoon: £80.35 per cover
+- Breakfast: £71.68 per cover
+- Lunch: £73.54 per cover
+2026-08-31 22:50:16  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at Canary Wharf?'
+2026-08-31 22:50:16  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:50:17  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-08-31 22:50:17  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-08-31 22:50:17  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-08-31 22:50:17  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-08-31 22:50:17  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-08-31 22:50:18  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-08-31 22:50:18  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-08-31 22:50:18  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-08-31 22:50:18  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-08-31 22:50:18  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 22:50:25  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at Canary Wharf (SITE-LDN-01) varies by meal period as follows:
+
+- **Afternoon Meal Period:** The labour cost is £80.35 per cover.
+- **Breakfast Meal Period:** The labour cos
+2026-08-31 22:51:11  INFO      hosp.server                   POST /api/ask  question='What is the headcount breakdown at SITE-LDN-02?'
+2026-08-31 22:51:12  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:51:13  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-08-31 22:51:13  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:51:13  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:51:13  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-08-31 22:51:13  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:51:13  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:51:13  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-08-31 22:51:13  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-08-31 22:51:13  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-08-31 22:51:13  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 22:51:20  INFO      hosp.server                   Agent answer (turn 2): The headcount breakdown at SITE-LDN-02 (London City) is as follows:
+
+- **Permanent Staff:** 20 individuals with a combined full-time equivalent (FTE) of 20.
+- **Part-Time Staff:** 10 individuals with 
+2026-08-31 22:52:48  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-08-31 22:52:55  INFO      hosp.server                   POST /api/ask  question='What are the food margins at SITE-LDN-02?'
+2026-08-31 22:52:55  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:52:58  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-02'}
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:52:58  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-08-31 22:52:58  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-08-31 22:52:58  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:52:58  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-02
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:52:58  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:52:58  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-08-31 22:52:58  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-08-31 22:52:58  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-08-31 22:52:58  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-08-31 22:52:58  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 22:53:12  INFO      hosp.server                   Agent answer (turn 2): The food margins for various products at SITE-LDN-02 (London City) are as follows:
+
+- Chicken Curry & Rice: £3.00 per unit sold
+- Pasta Bolognese: £2.70 per unit sold
+- Vegetable Tagine: £2.70 per uni
+2026-08-31 22:54:08  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-08-31 22:54:08  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:54:10  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-08-31 22:54:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-08-31 22:54:10  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-08-31 22:54:10  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-08-31 22:54:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-08-31 22:54:10  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-08-31 22:54:10  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-08-31 22:54:10  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-08-31 22:54:10  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-08-31 22:54:10  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 22:54:15  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at SITE-LDN-01 (London Canary Wharf) varies by meal period:
+- Afternoon: £80.35 per cover
+- Breakfast: £71.68 per cover
+- Lunch: £73.54 per cover
+2026-08-31 22:54:22  INFO      hosp.server                   POST /api/ask  question='What is the headcount breakdown at SITE-LDN-02?'
+2026-08-31 22:54:22  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:54:24  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-08-31 22:54:24  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:54:24  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:54:24  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-08-31 22:54:24  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:54:24  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:54:24  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-08-31 22:54:24  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-08-31 22:54:24  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-08-31 22:54:24  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 22:54:34  INFO      hosp.server                   Agent answer (turn 2): The headcount breakdown for SITE-LDN-02 (London City) is as follows:
+
+- **PERMANENT**: 20 staff members with a total FTE of 20.0 and an average salary of £27,310.
+- **PART-TIME**: 10 staff members wit
+2026-08-31 22:55:07  INFO      hosp.server                   POST /api/ask  question='What is the headcount breakdown at SITE-LDN-02?'
+2026-08-31 22:55:07  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 22:55:09  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-08-31 22:55:09  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:55:09  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:55:09  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-08-31 22:55:09  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 22:55:09  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 22:55:09  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-08-31 22:55:09  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-08-31 22:55:09  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-08-31 22:55:09  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 22:55:16  INFO      hosp.server                   Agent answer (turn 2): The headcount breakdown at SITE-LDN-02 (London City) is as follows:
+
+- **Permanent**: 20 employees with a total of 20.0 FTE
+- **Part-Time**: 10 employees with a total of 5.0 FTE
+- **Zero-Hours**: 4 em
+2026-08-31 23:03:51  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-08-31 23:03:59  INFO      hosp.server                   POST /api/ask  question='What is the headcount breakdown at SITE-LDN-02?'
+2026-08-31 23:03:59  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 23:04:09  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-08-31 23:04:09  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 23:04:09  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-08-31 23:04:09  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-08-31 23:04:10  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 23:04:10  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-08-31 23:04:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 23:04:10  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 23:04:10  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-08-31 23:04:12  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-08-31 23:04:12  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-08-31 23:04:12  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 23:04:20  INFO      hosp.server                   Agent answer (turn 2): The headcount breakdown at SITE-LDN-02 (London City) is as follows:
+
+- **Permanent**: 20 employees with a total FTE of 20.0 and an average salary of £27,310 per year.
+- **Part-Time**: 10 employees wit
+2026-08-31 23:04:44  INFO      hosp.server                   POST /api/ask  question='What are the food margins at SITE-LDN-02?'
+2026-08-31 23:04:44  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-08-31 23:04:46  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-02'}
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 23:04:46  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 23:04:46  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-02
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-08-31 23:04:46  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-08-31 23:04:46  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-08-31 23:04:46  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-08-31 23:04:46  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-08-31 23:04:46  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-08-31 23:04:46  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-08-31 23:05:01  INFO      hosp.server                   Agent answer (turn 2): The food margins at SITE-LDN-02 (London City) for various products are as follows:
+
+- **Chicken Curry & Rice**: Average gross margin per unit is £3.00
+- **Pasta Bolognese**: Average gross margin per u
