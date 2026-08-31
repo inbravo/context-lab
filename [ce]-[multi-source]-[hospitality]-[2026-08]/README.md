@@ -209,6 +209,66 @@ The TTL is human-readable. An ontologist, data steward, or architect can review 
 
 ---
 
+## Live dashboard — `dashboard_server.py`
+
+```bash
+cd code/
+python3 dashboard_server.py        # starts at http://localhost:8765
+```
+
+A single-page FastAPI application that exposes the identity resolution and metric layer interactively in a browser.
+
+### What it does
+
+| Mode | How to use | What happens |
+|---|---|---|
+| **Direct metric** | Pick a KPI from the dropdown, enter a site ID, click Run | Calls the metric layer; shows the resolved IDs, chart, and source attribution |
+| **Agent query** | Type a natural-language question in the Ask field | Runs the qwen2.5 agent loop; shows each tool call, the resolved IDs for that tool, and the final answer |
+
+### Identity resolution strip
+
+Every metric result — whether from a direct call or an agent tool call — shows a two-section strip:
+
+**▶ Queried for data** (green border)
+Each source system that was actually queried for this metric, the resolved ID that was used, and an italic label explaining what that system contributed.
+
+**▌ Identity resolved via SPARQL — not queried for this metric** (muted)
+The remaining systems whose IDs were resolved by the same single SPARQL call but were not needed for this metric. They appear at reduced opacity to show they are part of the resolved identity graph, not dead weight.
+
+Example for `headcount_by_contract`:
+
+```
+▶ Queried for data
+  SAP SuccessFactors   [OU-GBR-001]   headcount & FTE by contract type
+
+▌ Identity resolved via SPARQL — not queried for this metric
+  EPOS — Oracle MICROS [SITE-LDN-01] · Infor WFM [GBR_SITE_0001] · SAP S/4HANA [CC-GBR-001]
+```
+
+This makes the explanation immediate: the SPARQL call always resolves all four IDs in one shot; the metric layer uses only the IDs it needs.
+
+### API endpoints
+
+| Endpoint | Method | Payload | Returns |
+|---|---|---|---|
+| `GET /` | GET | — | The dashboard HTML page |
+| `POST /api/metric` | POST | `{"metric": "headcount_by_contract", "site": "SITE-LDN-01"}` | Chart data + resolved IDs |
+| `POST /api/ask` | POST | `{"question": "What is the labour cost per cover at SITE-LDN-01?"}` | Agent turns: tool calls + resolved IDs + final answer |
+
+### Source attribution map (built into the dashboard)
+
+The UI embeds a `TOOL_SOURCES` map that records, for each of the five metric tools, which systems are queried for data vs. identity-only. This drives the resolution strip without any round-trip to the server — the server returns raw resolved IDs; the browser decides how to colour them.
+
+| KPI tool | Systems queried for data | Systems resolved for identity only |
+|---|---|---|
+| `get_labour_cost_per_cover` | EPOS (cover count), Infor WFM (shift cost) | SAP S/4HANA, SAP SuccessFactors |
+| `get_revenue_by_category` | EPOS (revenue by category) | Infor WFM, SAP S/4HANA, SAP SuccessFactors |
+| `get_food_margin_by_product` | EPOS (selling price), Coupa (contracted cost) | Infor WFM, SAP S/4HANA, SAP SuccessFactors |
+| `get_revenue_per_cover` | SAP S/4HANA (client invoices / net revenue) | EPOS, Infor WFM, SAP SuccessFactors |
+| `get_headcount_by_contract` | SAP SuccessFactors (headcount & FTE) | EPOS, Infor WFM, SAP S/4HANA |
+
+---
+
 ## Open source tools used
 
 | Tool | Role | AWS COA equivalent |
