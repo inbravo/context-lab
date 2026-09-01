@@ -1,3 +1,4 @@
 .DS_Store
 **/*.duckdb
 *.pyc
+\[ce\]-\[multi-source\]-\[hospitality\]-\[2026-08\]/logs/hospitality.log

@@ -411,7 +411,7 @@ def ask_agent(req: AskRequest):
 # ── Embedded dashboard HTML ────────────────────────────────────────────────────
 
 DASHBOARD_HTML = r"""<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -423,7 +423,7 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
   --bg:        #F3F6FB; --surface: #FFFFFF; --border: #E1E8F4;
   --navy:      #1C2B45; --accent:  #E8993A; --text:   #1C2B45;
   --muted:     #617292; --good:    #1E7A50; --bad:    #C23B3B;
-  --header-bg: #1C2B45;
+  --header-bg: #FFFFFF; --header-title: #1C2B45; --header-sub: #617292;
   --mono-bg:   #E2EAF6; --mono-hl: #1A4A8A; --mono-grn: #1A7A52;
   --chip-bg:   #CDD8EF;
   --shadow:    0 2px 12px rgba(0,0,0,.08);
@@ -433,7 +433,7 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
     --bg: #0F1623; --surface: #182030; --border: #24334D;
     --navy: #D6E4F7; --text: #D6E4F7; --muted: #8A9FBF;
     --good: #3EAD72; --bad: #E05555; --accent: #F0A84A;
-    --header-bg: #0A1120;
+    --header-bg: #0A1120; --header-title: #D6E4F7; --header-sub: #8A9FBF;
     --mono-bg: #0E1929; --mono-hl: #6CB8F5; --mono-grn: #5CC898;
     --chip-bg: #1A2E45;
   }
@@ -442,7 +442,7 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
   --bg: #0F1623; --surface: #182030; --border: #24334D;
   --navy: #D6E4F7; --text: #D6E4F7; --muted: #8A9FBF;
   --good: #3EAD72; --bad: #E05555; --accent: #F0A84A;
-  --header-bg: #0A1120;
+  --header-bg: #0A1120; --header-title: #D6E4F7; --header-sub: #8A9FBF;
   --mono-bg: #0E1929; --mono-hl: #6CB8F5; --mono-grn: #5CC898;
   --chip-bg: #1A2E45;
 }
@@ -458,8 +458,8 @@ header::after { content:''; position:absolute; bottom:0; left:0; right:0; height
 .eyebrow { font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.12em;
            text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
 header h1 { font-family:'DM Serif Display',serif; font-size:24px; font-weight:400;
-            color:#fff; line-height:1.2; }
-header p  { font-size:12px; color:#8FAAC8; margin-top:4px; }
+            color:var(--header-title); line-height:1.2; }
+header p  { font-size:12px; color:var(--header-sub); margin-top:4px; }
 
 /* Two-panel layout */
 .layout { display:grid; grid-template-columns:300px 1fr; height:calc(100vh - 80px); }
@@ -630,6 +630,14 @@ select:focus { outline:none; border-color:var(--accent); }
       <button class="suggestion" onclick="setQ(this.textContent)">What is the SAP revenue per cover at SITE-MAN-01?</button>
       <button class="suggestion" onclick="setQ(this.textContent)">What is the headcount breakdown at SITE-LDN-02?</button>
       <button class="suggestion" onclick="setQ(this.textContent)">Give me a full operational summary for SITE-MAN-01.</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">Compare labour cost per cover across all three sites and tell me which is most efficient.</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">Which product categories are driving the most revenue at SITE-LDN-01 and how does that compare to SITE-MAN-01?</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">At SITE-LDN-02, what is the food margin on beverages and which items have the tightest margin vs Coupa contracted cost?</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">For SITE-MAN-01, how does SAP revenue per cover compare to EPOS revenue per cover — is there a gap and what might explain it?</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">Which site has the highest proportion of zero-hours or agency headcount relative to permanent staff?</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">At SITE-LDN-01, is the labour cost per cover within a reasonable range given the headcount mix — show me both metrics together.</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">Rank all three sites by food margin and identify which site should be reviewed for procurement renegotiation.</button>
+      <button class="suggestion" onclick="setQ(this.textContent)">Give me a full operational summary for SITE-LDN-01 — revenue, labour, margins, headcount, and SAP invoiced revenue.</button>
     </div>
 
   </aside>
