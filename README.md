@@ -1,4 +1,4 @@
-# Hello Worlds: First Contact with a Technology
+# This lab is my place to keep the Context Engineering stuff
 Minimal, working examples across the agentic AI stack — MCP servers, agent frameworks, context pipelines, and the scaffolding nobody documents properly.
 
 ---
