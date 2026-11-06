@@ -5,7 +5,7 @@ Minimal, working examples across the agentic AI stack — MCP servers, agent fra
 
 ## Repository Structure
 
-This repository contains **fourteen examples** organized in separate folders, each introducing a new semantic component in the Context Engineering ladder:
+This repository contains **fifteen examples** organized in separate folders, each introducing a new semantic component in the Context Engineering ladder:
 
 ### 📂 Directory Listing
 
@@ -25,6 +25,7 @@ This repository contains **fourteen examples** organized in separate folders, ea
 | 12 | [[ce]-[bsl]-[amazon-delivery]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bbsl%5D-%5Bamazon-delivery%5D-%5B2026-08%5D) | Boring Semantic Layer (BSL) — YAML metric contracts | YAML-governed metric contracts translated to SQL by Ibis. Agent has two tools (glossary + query_metric) and cannot write SQL. Same Amazon UK Delivery domain as Example 11 — compare the graph approach vs. the metric contract approach |
 | 13 | [[ce]-[semantica]-[amazon-delivery]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bsemantica%5D-%5Bamazon-delivery%5D-%5B2026-08%5D) | Semantica ContextGraph — same domain, no Docker | Direct rebuild of Example 11 using Semantica instead of Neo4j. No Cypher, no Docker. Adds W3C PROV-O provenance via record_decision() — every guarantee trigger has a full audit record |
 | 14 | [[ce]-[multi-source]-[hospitality]-[2026-08]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bmulti-source%5D-%5Bhospitality%5D-%5B2026-08%5D) | OWL ontology — multi-source identity resolution | Three source systems with deliberately mismatched IDs. OWL ontology + SPARQL resolve identities before any cross-system DuckDB join. New domain: UK Hospitality Group (B&I catering). Local equivalent of AWS COA + Neptune |
+| 15 | [[ce]-[det]-[fabric-ollama]-[2026-11]](https://github.com/inbravo/my-hello-worlds/tree/main/%5Bce%5D-%5Bdet%5D-%5Bfabric-ollama%5D-%5B2026-11%5D) | Decision Economics Toolkit — Azure Fabric → Ollama | Agent governance layer: classify every query by complexity, route to cheapest capable model, compress context to class budget, run a quality probe on the answer, and record every token against a confirmed business outcome. Local Ollama proof-of-concept for the DET framework built for Microsoft Fabric |
 
 ---
 
@@ -269,6 +270,7 @@ Run the examples in this order for the clearest learning curve:
 | 12 | Example 12 — Boring Semantic Layer (BSL) | How YAML metric contracts lock business formulas so no agent can rewrite them — the metric layer translates YAML to SQL, the agent never sees either. |
 | 13 | Example 13 — Semantica ContextGraph | Same delivery graph as Example 11, rebuilt with Semantica — no Docker, Python API instead of Cypher, and a W3C PROV-O audit record for every guarantee decision. |
 | 14 | Example 14 — OWL Identity Resolution (Hospitality) | How an OWL ontology resolves cross-system ID mismatches — SPARQL bridges three systems before any DuckDB join is possible. Local equivalent of AWS Context Ontology Accelerator + Neptune. |
+| 15 | Example 15 — Decision Economics Toolkit (DET) | How to govern every LLM call as a capital allocation — classify complexity, route to the cheapest capable model, compress context, run a quality probe, and record cost per confirmed business outcome. The agent governance layer above the semantic layer. |
 
 ---
 
@@ -866,6 +868,121 @@ python3 agent_hospitality_ollama.py "What is the food margin by product at SITE-
 
 ---
 
+### Example 15: Decision Economics Toolkit — Azure Fabric → Ollama
+
+**Semantic component:** Agent governance — cost-per-outcome accounting above the semantic layer
+
+**What it shows:**
+- Every LLM call is treated as a **capital allocation**. Before the call: a keyword classifier routes it to the cheapest model tier that can answer correctly and compresses context to the minimum token budget for that class. After the call: a two-tier quality probe (structural regex + sampled Ollama yes/no) catches routing miscalibration. Every call is recorded with its Azure cost equivalent.
+- The core insight the DET fills: no existing framework (Azure Foundry Router, LiteLLM, RouteLLM) maps LLM token spend to confirmed business outcomes. DET adds that layer.
+- Three test queries exercise each decision class. Class 1 (simple NC lookup) costs ~$0.0003 Azure equivalent. Class 4 (root-cause + CAPA recommendation) costs ~$0.025 — an 85× difference. The routing and compression exist to prevent Class 1 questions from paying Class 4 prices.
+- Local version: Ollama (`qwen2.5` for small tier, `llama3.1` for large tier), DuckDB instead of OneLake Delta, structlog instead of Azure Monitor. The classifier, compressor, quality probe, and cost accounting are identical to the production version on Microsoft Fabric.
+
+**Quick Start:**
+```bash
+# 1. Install Ollama and pull the models
+brew install ollama && ollama serve
+ollama pull qwen2.5     # small tier — maps to phi-4 on Azure
+ollama pull llama3.1    # large tier — maps to gpt-4o on Azure
+
+# 2. Install Python dependencies
+cd my-hello-worlds/[ce]-[det]-[fabric-ollama]-[2026-11]/code
+pip install openai duckdb structlog pyyaml
+
+# 3. Run the demo (3 NC queries across decision classes)
+python3 det_runner_ollama.py
+
+# 4. Capture the trace
+python3 det_runner_ollama.py > trace.jsonl
+
+# 5. Query the decision log
+python3 -c "
+import duckdb
+con = duckdb.connect('det.duckdb')
+print(con.execute('SELECT decision_class, model_name, azure_equivalent_usd FROM decisions').fetchall())
+"
+```
+
+---
+
+### Example 15: Architecture
+
+```
+                     ┌──────────────────────────────────┐
+                     │        Incoming NC Query          │
+                     └──────────────┬───────────────────┘
+                                    │
+                     ┌──────────────▼───────────────────┐
+                     │  1. Classifier (keyword regex)    │
+                     │     Class 1–4 · small/large tier  │
+                     │     NO LLM — deterministic, free  │
+                     └──────────────┬───────────────────┘
+                                    │
+                     ┌──────────────▼───────────────────┐
+                     │  2. Compressor                    │
+                     │     Pin NC/CAPA IDs               │
+                     │     Truncate free text to budget  │
+                     │     Class 1: 400t  Class 3: 6000t │
+                     └──────────────┬───────────────────┘
+                                    │
+               ┌────────────────────▼────────────────────┐
+               │            LLM Call                      │
+               │  small tier → qwen2.5 / phi-4            │
+               │  large tier → llama3.1 / gpt-4o          │
+               └────────────────────┬────────────────────┘
+                                    │
+                     ┌──────────────▼───────────────────┐
+                     │  3. Quality Probe (two-tier)      │
+                     │     Structural: regex patterns    │
+                     │     Semantic:   yes/no Ollama     │
+                     │                (10% sample rate)  │
+                     └──────────────┬───────────────────┘
+                                    │
+                     ┌──────────────▼───────────────────┐
+                     │  4. DecisionRecord                │
+                     │     local_cost_usd    = $0.00     │
+                     │     azure_equiv_usd   = $0.0003   │
+                     │     quality_flag      = False     │
+                     │     confirmed         = False     │
+                     │     → DuckDB (local)              │
+                     │     → Delta/OneLake (Azure prod)  │
+                     └──────────────┬───────────────────┘
+                                    │
+                     ┌──────────────▼───────────────────┐
+                     │  5. Showback                      │
+                     │     Routing distribution          │
+                     │     Cost per class                │
+                     │     Compression savings           │
+                     │     Quality flag rate             │
+                     └──────────────────────────────────┘
+```
+
+**Azure vs. Local mapping:**
+
+| Azure (Production) | Local (This Demo) |
+|---|---|
+| `AsyncAzureOpenAI` | `AsyncOpenAI(base_url="http://localhost:11434/v1")` |
+| phi-4 (small tier) | `qwen2.5` |
+| gpt-4o (large tier) | `llama3.1` |
+| Azure Monitor OTel | structlog → console / `.jsonl` |
+| OneLake Delta table | DuckDB (`det.duckdb`) |
+| Fabric Activator confirmation | manual `confirmed=True` flip |
+
+**Agent Governance Harness (production):**
+
+In production on Azure, Semantic Kernel is the execution harness. DET registers as two filters and governs every agent automatically — no per-agent changes needed:
+
+```
+Semantic Kernel Agent Loop
+  ├── IPromptRenderFilter (Pre)         ← DET: classify() + compress()
+  ├── Azure AI Foundry / Azure OpenAI      model call, routed model
+  └── IAutoFunctionInvocationFilter (Post) ← DET: quality_probe() + write_record()
+```
+
+**Key difference from all other examples:** Examples 1–14 answer *how to give the LLM the right context*. Example 15 answers *how to govern what the LLM costs and whether its answer was any good* — the FinOps and quality layer above the semantic layer. These two concerns are independent but complementary: good CE reduces token usage; DET measures whether that reduction happened and whether the saved cost was worth the answer quality.
+
+---
+
 ## 🔍 Debugging Ollama
 
 All Ollama-backed examples (Examples 1–5, 8–11) send requests to the local `qwen2.5` model. Enable debug logging to see every request, response, and token count in real time:
@@ -940,6 +1057,13 @@ pkill ollama && ollama serve &
 | **VKG** | Virtual Knowledge Graph. An abstraction layer (e.g. Ontop) that exposes relational data as a SPARQL endpoint without materialising triples — the same pattern AWS COA uses to serve its ontology over source systems. |
 | **morph-KGC** | Open-source RDF mapping engine. Generates RDF individuals from relational data via YARRRML/RML mappings — the production equivalent of `generate_ontology.py` in Example 14. |
 | **AWS COA** | AWS Context Ontology Accelerator. A managed pipeline (SCAN → MODEL → SERVE) that auto-generates OWL ontologies from Glue Data Catalog schemas using Bedrock embeddings, and exposes them as a VKG (Ontop SPARQL endpoint) backed by Neptune. |
+| **Decision Economics (DET)** | An agent governance framework that treats every LLM call as a capital allocation: classify query complexity, route to the cheapest capable model, compress context to the minimum needed tokens, run a quality probe on the answer, and record every token spend against a confirmed business outcome. |
+| **Decision Class** | A complexity tier (1–4) assigned to a query by the DET classifier. Class 1 = simple retrieval (small model, ~400 tokens). Class 4 = root cause + CAPA recommendation (large model, up to 20 000 tokens). The class determines model routing and context compression budget. |
+| **Semantic Kernel (SK)** | Microsoft's open-source agent framework with a first-class filter architecture — `IPromptRenderFilter` and `IAutoFunctionInvocationFilter` intercept every model call. DET registers as two SK filters, applying governance to all agents without changing agent code. |
+| **Azure AI Foundry** | Microsoft's managed platform for building, deploying, and monitoring AI agents. Provides the Model Router (balanced/cost/quality modes), Azure OpenAI deployments, and agent service (threads, runs, tools). |
+| **Quality Probe** | A two-tier DET check run after every LLM call. Tier 1: structural regex check (always, free). Tier 2: sampled yes/no Ollama/Phi-4 probe against specific verifiable facts in the answer (10% of small-model calls). Result written as `quality_flag` on the DecisionRecord. |
+| **Confirmed outcome** | A DecisionRecord field set by an external confirmation event (e.g. a CAPA status change in the quality system). `confirmed=False` at write time; flipped to `True` by Fabric Activator when the downstream outcome is verified. Query 3 in the showback returns zero rows until confirmation is wired — intentional, to prevent vanity metrics. |
+| **Compression ratio** | The ratio of compressed context tokens to original context tokens (1.0 = no compression; 0.6 = 40% reduction). DET compresses by pinning structured fields (NC IDs, dates, severity codes) and truncating free-text narratives to the class budget. |
 
 ---
 
