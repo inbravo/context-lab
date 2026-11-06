@@ -1,0 +1,35 @@
+# DET quality spec for the NC Closed-Loop Agent
+# Identical to the production spec in:
+#   [lam]-[context-engineering]-[2026-11]/code/de_templates/nc-agent.yaml
+#
+# Two-tier quality probe:
+#   Structural: regex patterns the answer must contain (always, free)
+#   Semantic:   yes/no Ollama probe, 10% sample rate on small-model calls
+
+use_case: nc-agent
+
+routing:
+  class_1: { tier: small, max_tokens: 800 }
+  class_2: { tier: small, max_tokens: 2500 }
+  class_3: { tier: large, max_tokens: 8000 }
+  class_4: { tier: large, max_tokens: null }
+
+budget:
+  per_decision_usd: 0.080    # Azure equivalent target
+  mode: calibrate             # calibrate | enforce
+
+quality:
+  structural:
+    required_patterns:
+      - "NC-\\d{4,8}"
+      - "(?:CAPA|capa)"
+      - "(?:Process Engineering|Quality|Supply Chain)"
+    min_patterns_matched: 2
+
+  semantic_probe:
+    rate: 0.10               # 10% of small-model calls get the semantic probe
+    questions:
+      - "Does the answer cite at least one NC ID in the format NC-NNNNN?"
+      - "Does the answer name a recommended CAPA owner using a role title?"
+      - "Does the answer identify a specific process step, platform, or supplier?"
+    min_yes_to_pass: 2

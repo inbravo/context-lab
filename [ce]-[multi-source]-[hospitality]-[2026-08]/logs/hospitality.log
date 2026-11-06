@@ -619,3 +619,1037 @@ openai.APIConnectionError: Connection error.
 
 - **Chicken Curry & Rice**: Average gross margin per unit is £3.00
 - **Pasta Bolognese**: Average gross margin per u
+2026-09-01 09:30:17  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 09:32:48  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 09:33:00  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-09-01 09:33:00  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 09:33:16  INFO      hosp.server                   Agent answer (turn 1): 
+2026-09-01 09:34:06  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-09-01 09:34:06  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 09:34:08  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-01 09:34:08  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 09:34:08  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 09:34:08  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-09-01 09:34:09  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 09:34:09  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-01 09:34:09  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 09:34:09  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 09:34:12  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-01 09:34:12  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-01 09:34:12  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 09:34:12  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-01 09:34:18  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at SITE-LDN-01 (London Canary Wharf) varies by meal period:
+- Afternoon Meal Period: £80.35 per cover
+- Breakfast Meal Period: £71.68 per cover
+- Lunch Meal Period: £73.54 pe
+2026-09-01 09:34:58  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 09:35:08  INFO      hosp.server                   POST /api/ask  question='What is the headcount breakdown at SITE-LDN-02?'
+2026-09-01 09:35:08  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 09:35:10  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 09:35:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:35:10  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 09:35:10  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-09-01 09:35:10  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:35:10  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-09-01 09:35:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:35:10  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:35:10  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-09-01 09:35:10  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 09:35:10  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 09:35:10  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-01 09:35:15  INFO      hosp.server                   Agent answer (turn 2): The headcount breakdown for SITE-LDN-02 (London City) is as follows:
+
+- **Permanent**: 20 FTE
+- **Part-Time**: 5 FTE
+- **Agency**: 4 FTE
+- **Zero-Hours**: 0 FTE
+
+Note: Zero-hours contracts are not cur
+2026-09-01 09:35:42  INFO      hosp.server                   POST /api/ask  question='Give me a full operational summary for SITE-MAN-01.'
+2026-09-01 09:35:42  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 09:35:50  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:35:50  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-MAN-01
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-01 09:35:51  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-01 09:35:51  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-MAN-01
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-01 09:35:51  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-01 09:35:51  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-01 09:35:51  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-MAN-01
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-101
+2026-09-01 09:35:51  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 09:35:51  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 09:35:51  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-MAN-01
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0101  total_labour_gbp=21282.38
+2026-09-01 09:35:51  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-MAN-01  periods=3
+2026-09-01 09:35:51  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 09:35:51  INFO      hosp.server                   Tool call: get_revenue_per_cover  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  INFO      hosp.metric                   metric=revenue_per_cover  site=SITE-MAN-01
+2026-09-01 09:35:51  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:35:51  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:35:51  DEBUG     hosp.metric                   SAP query: cost_center_code=CC-GBR-101
+2026-09-01 09:35:51  DEBUG     hosp.metric                   SAP revenue_per_cover rows: 3
+2026-09-01 09:35:51  DEBUG     hosp.server                   Tool result: get_revenue_per_cover  rows=3
+2026-09-01 09:35:51  DEBUG     hosp.server                   LLM turn 2 — messages in context: 8
+2026-09-01 09:37:06  INFO      hosp.server                   Agent answer (turn 2): ### Full Operational Summary for SITE-MAN-01 (Manchester)
+
+#### Category-wise Revenue
+- **MAINS**
+  - Transactions: 285
+  - Total Revenue (£): 3,609.9
+- **SANDWICHES**
+  - Transactions: 197
+  - Total 
+2026-09-01 09:38:05  INFO      hosp.server                   POST /api/ask  question='Give me a full operational summary for Manchester.'
+2026-09-01 09:38:05  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 09:38:14  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-MAN-01
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-01 09:38:14  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-01 09:38:14  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-MAN-01
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0101  total_labour_gbp=21282.38
+2026-09-01 09:38:14  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-MAN-01  periods=3
+2026-09-01 09:38:14  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 09:38:14  INFO      hosp.server                   Tool call: get_revenue_per_cover  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  INFO      hosp.metric                   metric=revenue_per_cover  site=SITE-MAN-01
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  DEBUG     hosp.metric                   SAP query: cost_center_code=CC-GBR-101
+2026-09-01 09:38:14  DEBUG     hosp.metric                   SAP revenue_per_cover rows: 3
+2026-09-01 09:38:14  DEBUG     hosp.server                   Tool result: get_revenue_per_cover  rows=3
+2026-09-01 09:38:14  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-MAN-01
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-01 09:38:14  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-01 09:38:14  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-01 09:38:14  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-MAN-01
+2026-09-01 09:38:14  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 09:38:14  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 09:38:14  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-101
+2026-09-01 09:38:14  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 09:38:14  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 09:38:14  DEBUG     hosp.server                   LLM turn 2 — messages in context: 8
+2026-09-01 09:38:53  INFO      hosp.server                   Agent answer (turn 2): ### Full Operational Summary for Manchester
+
+**Revenue by Category:**
+- MAINS: £3,609.90 (285 transactions)
+- SANDWICHES: £1,827.60 (197 transactions)
+- HOT DRINKS: £1,406.80 (251 transactions)
+- COLD
+2026-09-01 09:40:21  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 09:40:44  INFO      hosp.server                   POST /api/ask  question='Give me a full operational summary for SITE-LDN-02 — revenue, labour, margins, headcount, and SAP invoiced revenue.'
+2026-09-01 09:40:44  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 09:40:53  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 09:40:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:53  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 09:40:53  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-09-01 09:40:53  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:53  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-LDN-02
+2026-09-01 09:40:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:53  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-01 09:40:54  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-01 09:40:54  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-02
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0002  total_labour_gbp=21628.82
+2026-09-01 09:40:54  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-02  periods=3
+2026-09-01 09:40:54  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 09:40:54  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-02
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-01 09:40:54  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-01 09:40:54  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-01 09:40:54  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-09-01 09:40:54  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 09:40:54  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 09:40:54  INFO      hosp.server                   Tool call: get_revenue_per_cover  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  INFO      hosp.metric                   metric=revenue_per_cover  site=SITE-LDN-02
+2026-09-01 09:40:54  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 09:40:54  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 09:40:54  DEBUG     hosp.metric                   SAP query: cost_center_code=CC-GBR-002
+2026-09-01 09:40:54  DEBUG     hosp.metric                   SAP revenue_per_cover rows: 3
+2026-09-01 09:40:54  DEBUG     hosp.server                   Tool result: get_revenue_per_cover  rows=3
+2026-09-01 09:40:54  DEBUG     hosp.server                   LLM turn 2 — messages in context: 8
+2026-09-01 09:41:21  INFO      hosp.server                   Agent answer (turn 2): ### Full Operational Summary for SITE-LDN-02 (London City)
+
+**Revenue:**
+- **Total EPOS Revenue:**
+    - Afternoon Meal: £2,355.70
+    - Breakfast Meal: £2,266.80
+    - Lunch Meal: £2,612.50
+
+- **SAP 
+2026-09-01 10:55:02  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-09-01 10:55:02  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 10:55:19  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-01 10:55:19  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 10:55:19  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 10:55:19  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-01 10:55:19  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 10:55:19  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 10:55:19  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-01 10:55:19  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-01 10:55:19  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 10:55:19  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-01 10:55:29  INFO      hosp.server                   Agent answer (turn 2): For SITE-LDN-01 (London Canary Wharf), the labour cost per cover is as follows:
+
+- **Afternoon Meal Period:** £80.35 per cover
+- **Breakfast Meal Period:** £71.68 per cover
+- **Lunch Meal Period:** £7
+2026-09-01 10:56:06  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at Canary Wharf?'
+2026-09-01 10:56:06  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 10:56:10  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-01 10:56:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 10:56:10  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 10:56:10  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-01 10:56:10  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 10:56:10  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 10:56:10  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-01 10:56:10  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-01 10:56:10  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 10:56:10  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-01 10:56:19  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at Canary Wharf (SITE-LDN-01) varies by meal period:
+- Afternoon: £80.35 per cover
+- Breakfast: £71.68 per cover
+- Lunch: £73.54 per cover
+2026-09-01 10:56:29  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at London 1?'
+2026-09-01 10:56:29  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 10:56:33  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-01 10:56:33  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 10:56:33  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 10:56:33  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-01 10:56:33  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 10:56:33  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 10:56:34  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-01 10:56:34  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-01 10:56:34  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 10:56:34  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-01 10:56:42  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at London Canary Wharf (SITE-LDN-01) is as follows:
+
+- Afternoon meal period: £80.35 per cover
+- Breakfast meal period: £71.68 per cover
+- Lunch meal period: £73.54 per cover
+2026-09-01 10:56:57  INFO      hosp.server                   POST /api/ask  question='For SITE-MAN-01, how does SAP revenue per cover compare to EPOS revenue per cover — is there a gap and what might explai'
+2026-09-01 10:56:57  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 10:57:04  INFO      hosp.server                   Tool call: get_revenue_per_cover  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 10:57:04  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 10:57:04  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 10:57:04  INFO      hosp.metric                   metric=revenue_per_cover  site=SITE-MAN-01
+2026-09-01 10:57:04  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 10:57:04  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 10:57:04  DEBUG     hosp.metric                   SAP query: cost_center_code=CC-GBR-101
+2026-09-01 10:57:04  DEBUG     hosp.metric                   SAP revenue_per_cover rows: 3
+2026-09-01 10:57:04  DEBUG     hosp.server                   Tool result: get_revenue_per_cover  rows=3
+2026-09-01 10:57:04  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 10:57:04  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 10:57:04  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 10:57:04  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-MAN-01
+2026-09-01 10:57:04  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 10:57:04  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 10:57:04  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0101  total_labour_gbp=21282.38
+2026-09-01 10:57:04  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-MAN-01  periods=3
+2026-09-01 10:57:04  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 10:57:04  DEBUG     hosp.server                   LLM turn 2 — messages in context: 5
+2026-09-01 10:57:44  INFO      hosp.server                   Agent answer (turn 2): ### Finding:
+The SAP revenue per cover for SITE-MAN-01 is higher than the EPOS revenue per cover across all meal periods.
+
+- **Average Revenue Per Cover from SAP S/4HANA:**
+  - Afternoon: £10.98/cover
+2026-09-01 11:42:56  INFO      hosp.ontology                 Opening DB: /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb
+2026-09-01 11:42:56  INFO      hosp.ontology                 Introspecting schemas from 5 source tables
+2026-09-01 11:42:56  DEBUG     hosp.ontology                 Schema: epos_transactions — 10 columns, 2691 rows
+2026-09-01 11:42:56  DEBUG     hosp.ontology                 Schema: wfm_shifts — 8 columns, 537 rows
+2026-09-01 11:42:56  DEBUG     hosp.ontology                 Schema: procurement_products — 9 columns, 10 rows
+2026-09-01 11:42:56  DEBUG     hosp.ontology                 Schema: sap_sales — 9 columns, 540 rows
+2026-09-01 11:42:56  DEBUG     hosp.ontology                 Schema: hr_employees — 9 columns, 114 rows
+2026-09-01 11:42:56  INFO      hosp.ontology                 Building OWL class hierarchy
+2026-09-01 11:42:56  INFO      hosp.ontology                 Building OWL properties (object + datatype identity bridges)
+2026-09-01 11:42:56  INFO      hosp.ontology                 Adding OWL individuals (sites + products)
+2026-09-01 11:42:56  INFO      hosp.ontology                 Ontology written: /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl — classes=8  obj_props=7  dt_props=10  sites=3  products=10  total_triples=183
+2026-09-01 11:44:05  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 13:17:36  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 13:17:41  INFO      hosp.server                   POST /api/ask  question='Which site has the highest proportion of zero-hours or agency headcount relative to permanent staff?'
+2026-09-01 13:17:42  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 13:17:58  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-01 13:17:58  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 13:17:58  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-01 13:17:58  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-09-01 13:17:58  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 13:17:58  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-01
+2026-09-01 13:17:58  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 13:17:58  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 13:17:58  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-001
+2026-09-01 13:18:02  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 13:18:02  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 13:18:02  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 13:18:02  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 13:18:02  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 13:18:02  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-09-01 13:18:02  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 13:18:02  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 13:18:02  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-09-01 13:18:02  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 13:18:02  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 13:18:02  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 13:18:02  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 13:18:02  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 13:18:02  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-MAN-01
+2026-09-01 13:18:02  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 13:18:02  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 13:18:02  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-101
+2026-09-01 13:18:02  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 13:18:02  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 13:18:02  DEBUG     hosp.server                   LLM turn 2 — messages in context: 6
+2026-09-01 13:18:22  INFO      hosp.server                   Agent answer (turn 2): Based on the headcount data provided:
+
+- **London Canary Wharf** has a total of 28 staff members broken down as follows:
+  - Permanent: 20 FTEs
+  - Part-Time: 5 FTEs
+  - Zero-Hours: 4 FTEs (0%)
+  - Ag
+2026-09-01 14:33:40  INFO      hosp.server                   POST /api/ask  question='Which site has the highest proportion of zero-hours or agency headcount relative to permanent staff?'
+2026-09-01 14:33:40  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 14:33:53  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-01 14:33:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 14:33:53  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 14:33:53  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-01
+2026-09-01 14:33:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 14:33:53  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 14:33:53  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-001
+2026-09-01 14:33:53  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 14:33:53  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 14:33:53  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-01 14:33:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 14:33:53  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 14:33:53  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-02
+2026-09-01 14:33:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-01 14:33:53  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-01 14:33:53  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-002
+2026-09-01 14:33:53  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 14:33:53  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 14:33:53  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-01 14:33:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 14:33:53  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 14:33:53  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-MAN-01
+2026-09-01 14:33:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-01 14:33:53  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-01 14:33:53  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-101
+2026-09-01 14:33:53  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-01 14:33:53  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-01 14:33:53  DEBUG     hosp.server                   LLM turn 2 — messages in context: 6
+2026-09-01 14:34:10  INFO      hosp.server                   Agent answer (turn 2): Based on the headcount data:
+
+- **London Canary Wharf (SITE-LDN-01)**:
+  - Permanent: 20 FTE
+  - Part-time: 5 FTE
+  - Zero-hours: 4 (0.0% of total FTE)
+  - Agency: 4 (20.0% of total FTE)
+
+- **London C
+2026-09-01 15:26:36  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-09-01 15:26:36  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-01 15:26:46  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-01 15:26:46  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 15:26:46  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 15:26:46  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-01 15:26:46  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-01 15:26:46  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-01 15:26:46  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-01 15:26:46  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-01 15:26:46  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-01 15:26:46  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-01 15:26:52  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at SITE-LDN-01 (London Canary Wharf) varies by meal period:
+- Afternoon: £80.35 per cover
+- Breakfast: £71.68 per cover
+- Lunch: £73.54 per cover
+2026-09-02 13:09:09  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-02 13:14:50  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-09-02 13:14:50  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-02 13:15:04  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:15:04  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:15:04  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-02 13:15:04  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-09-02 13:15:04  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:15:04  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-02 13:15:04  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:15:04  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:15:10  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-02 13:15:10  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-02 13:15:10  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-02 13:15:10  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-02 13:15:16  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at SITE-LDN-01 (London Canary Wharf) is as follows:
+
+- **Afternoon Meal Period:** £80.35 per cover
+- **Breakfast Meal Period:** £71.68 per cover
+- **Lunch Meal Period:** £73.
+2026-09-02 13:16:09  INFO      hosp.server                   POST /api/ask  question='Rank all three sites by food margin and identify which site should be reviewed for procurement renegotiation.'
+2026-09-02 13:16:09  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-02 13:16:16  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:16:16  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:16:16  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-01
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:16:16  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:16:16  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-02 13:16:16  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-02 13:16:16  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-02 13:16:16  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-02 13:16:16  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-02
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-02 13:16:16  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-02 13:16:16  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-02 13:16:16  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-02 13:16:16  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-02 13:16:16  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-02 13:16:16  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-MAN-01
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-02 13:16:16  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-02 13:16:16  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-02 13:16:16  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-02 13:16:16  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-02 13:16:16  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-02 13:16:16  DEBUG     hosp.server                   LLM turn 2 — messages in context: 6
+2026-09-02 13:16:50  INFO      hosp.server                   Agent answer (turn 2): Based on the gross margin per product by site, here are the rankings:
+
+1. **London Canary Wharf**
+   - Average Gross Margin: £2.434 per unit (based on calculated average from all products)
+
+2. **Manch
+2026-09-02 13:37:09  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at SITE-LDN-01?'
+2026-09-02 13:37:09  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-02 13:37:19  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:37:19  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:37:19  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:37:19  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-02 13:37:19  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:37:19  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:37:19  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-02 13:37:20  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-02 13:37:20  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-02 13:37:20  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-02 13:37:26  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at SITE-LDN-01 (London Canary Wharf) varies by meal period:
+- Afternoon: £80.35 per cover
+- Breakfast: £71.68 per cover
+- Lunch: £73.54 per cover
+2026-09-02 13:37:45  INFO      hosp.server                   POST /api/ask  question='What is the labour cost per cover at Canary Wharf?'
+2026-09-02 13:37:45  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-02 13:37:48  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:37:48  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:37:48  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:37:48  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-02 13:37:48  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:37:48  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:37:48  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-02 13:37:48  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-02 13:37:48  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-02 13:37:48  DEBUG     hosp.server                   LLM turn 2 — messages in context: 4
+2026-09-02 13:37:56  INFO      hosp.server                   Agent answer (turn 2): The labour cost per cover at London Canary Wharf (SITE-LDN-01) varies by meal period:
+- During the breakfast meal period, the labour cost is approximately £71.68 per cover.
+- During the lunch meal per
+2026-09-02 13:38:08  INFO      hosp.server                   POST /api/ask  question='Rank all three sites by food margin and identify which site should be reviewed for procurement renegotiation.'
+2026-09-02 13:38:08  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-02 13:38:15  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:38:15  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:38:15  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-01
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:38:15  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:38:15  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-02 13:38:15  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-02 13:38:15  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-02 13:38:15  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-02'}
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-02 13:38:15  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-02 13:38:15  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-02
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-02
+2026-09-02 13:38:15  INFO      hosp.metric                   resolve_site: SITE-LDN-02 → infor=GBR_SITE_0002  sap=CC-GBR-002  sf=OU-GBR-002  (London City)
+2026-09-02 13:38:15  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-02 13:38:15  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-02 13:38:15  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-02 13:38:15  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-02 13:38:15  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-02 13:38:15  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-MAN-01
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-02 13:38:15  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-02 13:38:15  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-02 13:38:15  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-02 13:38:16  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-02 13:38:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-02 13:38:16  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-02 13:38:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-02 13:38:16  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-02 13:38:16  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-02 13:38:16  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-02 13:38:16  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-02 13:38:16  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-02 13:38:16  DEBUG     hosp.server                   LLM turn 2 — messages in context: 6
+2026-09-02 13:38:46  INFO      hosp.server                   Agent answer (turn 2): Based on the food margin data from the three sites:
+
+### Food Margin by Site:
+- **London Canary Wharf**: 
+  - Average Gross Margin per Product: £2.43
+  
+- **London City**: 
+  - Average Gross Margin pe
+2026-09-02 13:39:14  INFO      hosp.server                   POST /api/ask  question='Give me a full operational summary for SITE-LDN-01 — revenue, labour, margins, headcount, and SAP invoiced revenue.'
+2026-09-02 13:39:14  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-02 13:39:27  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:39:27  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:27  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:27  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-LDN-01
+2026-09-02 13:39:27  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-02 13:39:28  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-02 13:39:28  INFO      hosp.server                   Tool call: get_labour_cost_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  INFO      hosp.metric                   metric=labour_cost_per_cover  site=SITE-LDN-01
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  DEBUG     hosp.metric                   WFM labour total: infor_site_code=GBR_SITE_0001  total_labour_gbp=22577.63
+2026-09-02 13:39:28  DEBUG     hosp.metric                   EPOS covers by period: epos_site_id=SITE-LDN-01  periods=3
+2026-09-02 13:39:28  DEBUG     hosp.server                   Tool result: get_labour_cost_per_cover  rows=3
+2026-09-02 13:39:28  INFO      hosp.server                   Tool call: get_food_margin_by_product  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  INFO      hosp.metric                   metric=food_margin_by_product  site=SITE-LDN-01
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  DEBUG     hosp.metric                   EPOS products for margin: 10 distinct items
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-PASTA
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-PASTA → proc_id=PROD-MAIN-002
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-LATTE
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-LATTE → proc_id=PROD-BEV-001
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-BLTSD
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-BLTSD → proc_id=PROD-SAND-001
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CCURRY
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-CCURRY → proc_id=PROD-MAIN-001
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-OJ
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-OJ → proc_id=PROD-BEV-005
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-AMERI
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-AMERI → proc_id=PROD-BEV-002
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-TEA
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-TEA → proc_id=PROD-BEV-003
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-VTAG
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-VTAG → proc_id=PROD-MAIN-003
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-WATER
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-WATER → proc_id=PROD-BEV-004
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: epos_item_id=EPOS-CKWRP
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_product: EPOS-CKWRP → proc_id=PROD-SAND-002
+2026-09-02 13:39:28  DEBUG     hosp.metric                   food_margin_by_product: 10 products bridged to Coupa
+2026-09-02 13:39:28  DEBUG     hosp.server                   Tool result: get_food_margin_by_product  rows=10
+2026-09-02 13:39:28  INFO      hosp.server                   Tool call: get_headcount_by_contract  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  INFO      hosp.metric                   metric=headcount_by_contract  site=SITE-LDN-01
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  DEBUG     hosp.metric                   SF query: org_unit_id=OU-GBR-001
+2026-09-02 13:39:28  DEBUG     hosp.metric                   SF headcount_by_contract rows: 4 contract types
+2026-09-02 13:39:28  DEBUG     hosp.server                   Tool result: get_headcount_by_contract  rows=4
+2026-09-02 13:39:28  INFO      hosp.server                   Tool call: get_revenue_per_cover  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  INFO      hosp.metric                   metric=revenue_per_cover  site=SITE-LDN-01
+2026-09-02 13:39:28  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-02 13:39:28  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-02 13:39:28  DEBUG     hosp.metric                   SAP query: cost_center_code=CC-GBR-001
+2026-09-02 13:39:28  DEBUG     hosp.metric                   SAP revenue_per_cover rows: 3
+2026-09-02 13:39:28  DEBUG     hosp.server                   Tool result: get_revenue_per_cover  rows=3
+2026-09-02 13:39:28  DEBUG     hosp.server                   LLM turn 2 — messages in context: 8
+2026-09-02 13:41:09  INFO      hosp.server                   Agent answer (turn 2): ### Operational Summary for SITE-LDN-01 (London Canary Wharf)
+
+#### Revenue by Category:
+- **Mains:** 
+  - Transactions: 271
+  - Revenue: £3,370.00
+
+- **Sandwiches:** 
+  - Transactions: 174
+  - Revenu
+2026-09-03 17:02:30  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-03 23:16:02  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-03 23:16:50  INFO      hosp.server                   POST /api/ask  question='Which product categories are driving the most revenue at SITE-LDN-01 and how does that compare to SITE-MAN-01?'
+2026-09-03 23:16:50  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-03 23:16:59  ERROR     hosp.server                   ask_agent error: Connection error.
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1037, in request
+    response = self._send_request(
+        request,
+        stream=stream or self._should_stream_response_body(request=request),
+        **kwargs,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 440, in _send_request
+    return self._send_with_auth_retry(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 418, in _send_with_auth_retry
+    response = super()._send_request(request, stream=stream, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 964, in _send_request
+    return self._client.send(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/dashboard_server.py", line 368, in ask_agent
+    response = client.chat.completions.create(
+        model=MODEL, messages=messages,
+        tools=LLM_TOOLS, tool_choice="auto",
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1215, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<51 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1072, in request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+2026-09-03 23:17:42  INFO      hosp.server                   POST /api/ask  question='Which product categories are driving the most revenue at SITE-LDN-01 and how does that compare to SITE-MAN-01?'
+2026-09-03 23:17:42  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-03 23:17:53  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-03 23:17:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-03 23:17:53  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-03 23:17:53  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-09-03 23:17:53  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-03 23:17:53  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-LDN-01
+2026-09-03 23:17:53  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-03 23:17:53  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-03 23:17:57  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-03 23:17:57  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-03 23:17:57  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-03 23:17:57  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-03 23:17:57  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-03 23:17:57  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-MAN-01
+2026-09-03 23:17:57  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-03 23:17:57  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-03 23:17:57  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-03 23:17:57  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-03 23:17:57  DEBUG     hosp.server                   LLM turn 2 — messages in context: 5
+2026-09-03 23:18:15  INFO      hosp.server                   Agent answer (turn 2): ### Headline Finding:
+For both London Canary Wharf (SITE-LDN-01) and Manchester (SITE-MAN-01), **MAINS** are the top revenue-driving categories.
+
+### Key Numbers:
+
+#### London Canary Wharf (SITE-LDN-0
+2026-09-09 16:03:45  INFO      hosp.server                   Starting Hospitality Dashboard — port=8765  model=qwen2.5  db=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/hospitality.duckdb  ttl=/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-09 16:04:13  INFO      hosp.server                   POST /api/ask  question='Which product categories are driving the most revenue at SITE-LDN-01 and how does that compare to SITE-MAN-01?'
+2026-09-09 16:04:13  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-09 16:04:17  ERROR     hosp.server                   ask_agent error: Connection error.
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 124, in _connect
+    stream = self._network_backend.connect_tcp(**kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 207, in connect_tcp
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1037, in request
+    response = self._send_request(
+        request,
+        stream=stream or self._should_stream_response_body(request=request),
+        **kwargs,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 440, in _send_request
+    return self._send_with_auth_retry(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_client.py", line 418, in _send_with_auth_retry
+    response = super()._send_request(request, stream=stream, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 964, in _send_request
+    return self._client.send(request, stream=stream, **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/code/dashboard_server.py", line 368, in ask_agent
+    response = client.chat.completions.create(
+        model=MODEL, messages=messages,
+        tools=LLM_TOOLS, tool_choice="auto",
+    )
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1215, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<51 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/inbravo/GitHub/my-hello-worlds/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1072, in request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+2026-09-09 16:04:44  INFO      hosp.server                   POST /api/ask  question='Which product categories are driving the most revenue at SITE-LDN-01 and how does that compare to SITE-MAN-01?'
+2026-09-09 16:04:44  DEBUG     hosp.server                   LLM turn 1 — messages in context: 2
+2026-09-09 16:05:01  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-LDN-01'}
+2026-09-09 16:05:01  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-09 16:05:01  DEBUG     hosp.metric                   Loading ontology from /Users/inbravo/GitHub/my-hello-worlds/[ce]-[multi-source]-[hospitality]-[2026-08]/ontology/hospitality_ontology.ttl
+2026-09-09 16:05:01  INFO      hosp.metric                   Ontology loaded — 183 triples from hospitality_ontology.ttl
+2026-09-09 16:05:02  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-09 16:05:02  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-LDN-01
+2026-09-09 16:05:02  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-LDN-01
+2026-09-09 16:05:02  INFO      hosp.metric                   resolve_site: SITE-LDN-01 → infor=GBR_SITE_0001  sap=CC-GBR-001  sf=OU-GBR-001  (London Canary Wharf)
+2026-09-09 16:05:06  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-09 16:05:06  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-09 16:05:06  INFO      hosp.server                   Tool call: get_revenue_by_category  args={'epos_site_id': 'SITE-MAN-01'}
+2026-09-09 16:05:06  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-09 16:05:06  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-09 16:05:06  INFO      hosp.metric                   metric=revenue_by_category  site=SITE-MAN-01
+2026-09-09 16:05:06  DEBUG     hosp.metric                   resolve_site: epos_site_id=SITE-MAN-01
+2026-09-09 16:05:06  INFO      hosp.metric                   resolve_site: SITE-MAN-01 → infor=GBR_SITE_0101  sap=CC-GBR-101  sf=OU-GBR-101  (Manchester)
+2026-09-09 16:05:06  DEBUG     hosp.metric                   EPOS category rows: 4
+2026-09-09 16:05:06  DEBUG     hosp.server                   Tool result: get_revenue_by_category  rows=4
+2026-09-09 16:05:06  DEBUG     hosp.server                   LLM turn 2 — messages in context: 5
+2026-09-09 16:05:21  INFO      hosp.server                   Agent answer (turn 2): ### Headline Finding:
+**Revenue from MAINS and HOT DRINKS categories is significantly higher at both sites, but the breakdown shows specific differences:**
+
+- **SITE-LDN-01:** 
+  - MAINS generate £3,3

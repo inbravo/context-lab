@@ -1,0 +1,10 @@
+openai>=1.30.0
+duckdb>=0.10.0
+structlog>=24.1.0
+pyyaml>=6.0
+
+# Optional — improves token count accuracy (falls back to word-split estimate)
+# tiktoken>=0.7.0
+
+# Optional — LLMLingua-2 semantic compression (falls back to truncation)
+# llmlingua>=0.2.0
